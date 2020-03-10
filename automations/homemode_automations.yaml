@@ -1,0 +1,391 @@
+########################################
+## Homemode Reset State
+########################################
+- alias: 'Homemode - Reset nacht elke ochtend om 5u'
+  trigger:
+    platform: state
+    entity_id:
+      - binary_sensor.gang_motion
+      - binary_sensor.keuken_motion
+      - binary_sensor.tv_kamer_motion
+      - binary_sensor.woonkamer_motion
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_night
+        state: 'on'
+      - condition: time
+        after: '05:00:00'
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: 
+          - input_boolean.scene_goodmorning
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.current_scene
+        option: "Opstaan"
+# - alias: 'Homemode - Lichten uit bij nacht'
+#   trigger:
+#     platform: state
+#     entity_id: light
+#     to: 'on'
+#     for:
+#       minutes: 5
+#   condition:
+#     - condition: state
+#       entity_id: input_boolean.homemode_night
+#       state: 'on'
+#   action:
+#     - service: homeassistant.turn_off
+#       data:
+#         entity_id:
+#           - light.keuken_1
+#           - light.keuken_2
+#           - light.keuken_3
+#           - light.keuken_4
+#           - light.keuken_5
+#           - light.badkamer_1
+#           - light.badkamer_2
+#           - light.badkamer_3
+#           - light.badkamer_4
+#           - light.badkamer_5
+#           - light.woonkamer_spot
+#           - group.woonkamer_verlichting
+
+########################################
+## Homemode input boolean automations
+########################################
+
+- alias: 'Homemode - Input_boolean home'
+  trigger:
+    platform: state
+    entity_id: input_boolean.homemode_home
+    to: 'on'
+  action:
+    - service: homeassistant.turn_off
+      data:
+        entity_id:
+          - input_boolean.homemode_away
+          - input_boolean.homemode_guest
+          - input_boolean.homemode_vacation
+          - input_boolean.homemode_night
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.current_scene
+        option: "Thuis"
+
+
+- alias: 'Homemode - Input_boolean away'
+  trigger:
+    platform: state
+    entity_id: input_boolean.homemode_away
+    to: 'on'
+  action:
+    - service: homeassistant.turn_off
+      data:
+        entity_id:
+          - input_boolean.homemode_home
+          - input_boolean.homemode_guest
+          - input_boolean.homemode_vacation
+          - input_boolean.homemode_night
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.current_scene
+        option: "Afwezig"
+
+- alias: 'Homemode - Input_boolean guest'
+  trigger:
+    platform: state
+    entity_id: input_boolean.homemode_guest
+    to: 'on'
+  action:
+    - service: homeassistant.turn_off
+      data:
+        entity_id:
+          - input_boolean.homemode_home
+          - input_boolean.homemode_away
+          - input_boolean.homemode_vacation
+          - input_boolean.homemode_night
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.current_scene
+        option: "Gast"
+
+- alias: 'Homemode - Input_boolean night'
+  trigger:
+    platform: state
+    entity_id: input_boolean.homemode_night
+    to: 'on'
+  action:
+    - service: homeassistant.turn_off
+      data:
+        entity_id:
+          - input_boolean.homemode_home
+          - input_boolean.homemode_away
+          - input_boolean.homemode_vacation
+          - input_boolean.homemode_guest
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.current_scene
+        option: "Nacht"
+
+- alias: 'Homemode - Input_boolean vacation'
+  trigger:
+    platform: state
+    entity_id: input_boolean.homemode_vacation
+    to: 'on'
+  action:
+    - service: homeassistant.turn_off
+      data:
+        entity_id:
+          - input_boolean.homemode_home
+          - input_boolean.homemode_away
+          - input_boolean.homemode_night
+          - input_boolean.homemode_guest
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.current_scene
+        option: "Vakantie"
+
+########################################
+## Homemode To Home automations
+########################################
+- alias: 'Homemode - To home at day time'
+  trigger:
+    platform: state
+    entity_id: input_boolean.homemode_home
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.status_donker
+      state: 'off'
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id:
+          - input_boolean.text_to_speech_mute
+    - service: switch.turn_on
+      entity_id:
+        - switch.synology_home_mode
+    - service: climate.set_hvac_mode
+      data:
+        entity_id: climate.netatmo_woonkamer
+        hvac_mode: 'auto'
+    - service: climate.set_hvac_mode
+      data:
+        entity_id: climate.gang_vloerverwarming
+        hvac_mode: 'auto'
+    - service: climate.set_hvac_mode
+      data:
+        entity_id: climate.badkamer_vloerverwarming
+        hvac_mode: 'auto'
+    - service: notify.pushover
+      data_template:
+        message: "Homemode (overdag) is ingeschakeld"
+        title: "Homemode"
+        data:
+          priority: -1
+
+- alias: 'Homemode - To home at dark'
+  trigger:
+    platform: state
+    entity_id: input_boolean.homemode_home
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.status_donker
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.scene_goodmorning
+        state: 'off'
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id:
+          - input_boolean.text_to_speech_mute
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Woonkamer"
+        scene_name: "Normaal"
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Keuken"
+        scene_name: "Normaal"
+    - service: switch.turn_on
+      entity_id:
+        - switch.synology_home_mode
+        - switch.kaku_switch_1
+        - switch.kaku_switch_3
+        - switch.veranda_verlichting
+    - service: climate.set_hvac_mode
+      data:
+        entity_id: climate.netatmo_woonkamer
+        hvac_mode: 'auto'
+    - service: climate.set_hvac_mode
+      data:
+        entity_id: climate.gang_vloerverwarming
+        hvac_mode: 'auto'
+    - service: climate.set_hvac_mode
+      data:
+        entity_id: climate.badkamer_vloerverwarming
+        hvac_mode: 'auto'
+    - service: notify.pushover
+      data_template:
+        message: "Homemode (donker) is ingeschakeld"
+        title: "Homemode"
+        data:
+          priority: -1
+
+########################################
+## Homemode To AWAY automations
+########################################
+- alias: 'Homemode - To away at daytime'
+  trigger:
+    platform: state
+    entity_id: input_boolean.homemode_away
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.status_donker
+      state: 'off'
+  action:
+    - service: homeassistant.turn_off
+      entity_id:
+        - light.alle_verlichting
+        - switch.veranda_verlichting
+        - switch.kaku_switch_3
+        - switch.kaku_switch_1
+        - switch.ganglicht
+        - switch.synology_home_mode
+        - input_boolean.gangkachel_schema
+    - service: climate.set_preset_mode
+      data:
+        entity_id: climate.netatmo_woonkamer
+        preset_mode: 'away'
+    - service: climate.turn_off
+      data:
+        entity_id: climate.gang_vloerverwarming
+    - service: climate.turn_off
+      data:
+        entity_id: climate.badkamer_vloerverwarming
+        temperature: 7
+    - service: media_player.media_pause
+      data_template:
+        entity_id:
+          - media_player.woonkamer
+          - media_player.badkamer
+          - media_player.keuken
+          - media_player.tvkamer
+    - service: notify.pushover
+      data_template:
+        message: "Awaymode (overdag) is ingeschakeld"
+        title: "Awaymode"
+        data:
+          priority: -1
+
+- alias: 'Homemode - To away at dark'
+  trigger:
+    platform: state
+    entity_id: input_boolean.homemode_away
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.status_donker
+      state: 'on'
+  action:
+    - service: homeassistant.turn_off
+      entity_id:
+        - switch.veranda_kachel
+        - switch.keukenkachel
+        - switch.synology_home_mode
+        - input_boolean.gangkachel_schema
+    - service: climate.set_preset_mode
+      data:
+        entity_id: climate.netatmo_woonkamer
+        preset_mode: 'away'
+    - service: climate.turn_off
+      data:
+        entity_id: climate.gang_vloerverwarming
+    - service: climate.turn_off
+      data:
+        entity_id: climate.badkamer_vloerverwarming
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Woonkamer"
+        scene_name: "Sfeerverlichting"
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Keuken"
+        scene_name: "Sfeerverlichting"
+    - service: media_player.media_pause
+      data_template:
+        entity_id:
+          - media_player.woonkamer
+          - media_player.badkamer
+          - media_player.keuken
+          - media_player.tvkamer
+    - service: notify.pushover
+      data_template:
+        message: "Awaymode (avond) is ingeschakeld"
+        title: "Awaymode"
+        data:
+          priority: -1
+
+########################################
+## Homemode To NIGHT automations
+########################################
+- alias: 'Homemode - Nachtmode aan'
+  trigger:
+    platform: state
+    entity_id: input_boolean.homemode_night
+    to: 'on'
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.scene_bedtime
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.text_to_speech_mute
+    - service: homeassistant.turn_off
+      entity_id:
+        - light.alle_verlichting
+        - input_boolean.scene_goodmorning
+        - input_boolean.scene_sfeer
+        - input_boolean.gangkachel_schema
+        - switch.ganglicht
+        - switch.veranda_verlichting
+        - switch.veranda_kachel
+        - switch.kaku_switch_1
+        - switch.kaku_switch_3
+        - input_boolean.gangkachel_schema
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.netatmo_woonkamer
+        temperature: 14
+    - service: media_player.media_pause
+      data_template:
+        entity_id:
+          - media_player.woonkamer
+          - media_player.badkamer
+          - media_player.keuken
+          - media_player.tvkamer
+    - service: media_player.volume_set
+      data_template:
+        volume_level: '0.02'
+        entity_id:
+          - media_player.woonkamer
+          - media_player.badkamer
+          - media_player.keuken
+          - media_player.tvkamer
+    - service: notify.pushover
+      data_template:
+        message: "Nachtmode is ingeschakeld"
+        title: "Nachtmode"
+        data:
+          priority: -1
+

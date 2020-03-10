@@ -1,0 +1,116 @@
+- title: New Home
+  path: newhome
+  icon: mdi:home
+  panel: false
+  cards:
+    - type: vertical-stack
+      cards:
+        - type: horizontal-stack
+          title: Scenes
+          cards:
+            - type: entity-button
+              name: Thuis
+              entity: input_boolean.homemode_home
+              lock:
+                enabled: true
+                unlock: hold
+              tap_action:
+                action: toggle
+            - type: entity-button
+              entity: input_boolean.homemode_away
+              name: Afwezig
+              tap_action:
+                action: toggle
+              show_icon: true
+              show_name: true
+            - type: entity-button
+              name: Nacht
+              entity: input_boolean.homemode_night
+              tap_action:
+                action: toggle
+            - type: entity-button
+              name: Vakantie
+              entity: input_boolean.homemode_vacation
+              tap_action:
+                action: toggle
+            - type: entity-button
+              name: Gast
+              entity: input_boolean.homemode_guest
+              tap_action:
+                action: toggle
+        - type: horizontal-stack
+          cards:
+            - type: entity-button
+              name: Opstaan
+              entity: input_boolean.scene_goodmorning
+              tap_action:
+                action: toggle
+            - type: entity-button
+              entity: input_boolean.scene_bedtime
+              name: Bedtijd
+              tap_action:
+                action: toggle
+              show_icon: true
+              show_name: true
+            - type: entity-button
+              name: Sfeer
+              entity: input_boolean.scene_sfeer
+              tap_action:
+                action: toggle
+            - type: entity-button
+              name: Helder
+              entity: input_boolean.scene_helder
+              tap_action:
+                action: toggle             
+        - type: horizontal-stack
+          title: Favorieten
+          cards:
+            - type: custom:button-card
+              entity: sensor.current_lights_on
+              template: homekit_knop_licht
+              name: Lichten
+              icon: mdi:lightbulb-group
+              tap_action:
+                action: navigate
+                navigation_path: /lovelace/verlichting
+            - type: custom:button-card
+              entity: climate.netatmo_woonkamer
+              template: homekit_knop
+              name: Klimaat
+              tap_action:
+                action: navigate
+                navigation_path: /lovelace/klimaat
+            - type: custom:button-card
+              entity: alarm_control_panel.alarm
+              template: homekit_knop_alarm
+              tap_action:
+                action: navigate
+                navigation_path: /lovelace/alarm
+        - type: horizontal-stack
+          cards:
+            - type: custom:button-card
+              entity: sensor.current_appliances_on
+              template: homekit_knop
+              name: Apparaten
+              icon: mdi:electric-switch
+              tap_action:
+                action: navigate
+                navigation_path: /lovelace/apparaten
+            - type: custom:button-card
+              entity: sensor.dark_sky_temperature
+              template: homekit_knop
+              name: Weer & Verkeer
+              tap_action:
+                action: navigate
+                navigation_path: /lovelace/weerverkeer
+            - type: custom:button-card
+              name: Media
+              entity: light.bol_lamp
+              template: homekit_knop_licht
+        - type: vertical-stack
+          title: Camera's
+          cards:
+            - type: picture-entity
+              entity: camera.babykamer
+            - type: picture-entity
+              entity: camera.oprit

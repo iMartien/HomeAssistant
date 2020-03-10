@@ -1,0 +1,33 @@
+- title: Beweging en Contactsensoren
+  path: motioncontact
+  icon: mdi:motion-sensor
+  cards:
+    - type: custom:homekit-card
+      home: false
+      statePositionTop: true
+      entities:
+        - title: Bewegingssensoren
+          entities:
+            - entity: binary_sensor.tv_kamer_motion
+            - entity: binary_sensor.woonkamer_motion
+            - entity: binary_sensor.keuken_motion
+            - entity: binary_sensor.gang_motion
+            - entity: binary_sensor.overloop_motion
+        - title: Raamsensoren
+          entities:
+            - entity: binary_sensor.woonkamer_raam_1
+            - entity: binary_sensor.woonkamer_raam_2
+            - entity: binary_sensor.woonkamer_raam_3
+            - entity: binary_sensor.badkamerraam
+            - entity: binary_sensor.overloop_raam
+            - entity: binary_sensor.grote_slaapkamer_raam
+            - entity: binary_sensor.kleine_slaapkamer_raam
+            - entity: binary_sensor.charlies_slaapkamer_raam
+        - title: Deurensensoren
+          entities:
+            - entity: binary_sensor.keukendeur
+        - title: Lekkage sensoren
+          entities:
+            - entity: binary_sensor.lekkage_wc_boven
+              name: WC Boven
+              icon: mdi:home-flood

@@ -1,0 +1,52 @@
+- title: Apparaten
+  path: apparaten
+  icon: mdi:power-settings
+  cards:
+    - type: custom:homekit-card
+      home: false
+      statePositionTop: true
+      entities:
+        - title: Witgoed
+          entities:
+            - entity: sensor.wasmachine_status
+              name: Wasmachine
+              offStates:
+                - "Uit"
+            - entity: sensor.droger_status
+              name: Droger
+              offStates:
+                - "Uit"
+        - title: Klimaat & Ventilatie
+          entities:
+            - entity: switch.badkamerfan_sonoff
+              name: Badkamer Ventilator
+              spin: true
+              icon: mdi:fan
+              state: sensor.badkamer_fan_huidig_verbruik
+            - entity: switch.cv_hoofdschakelaar
+              name: CV Hoofdschakelaar
+              icon: mdi:fire
+              state: sensor.cv_huidig_verbruik
+        - title: Schakelaars
+          entities:
+            - entity: switch.tv_meubel_tuya
+              name: TV-Meubel
+              icon: mdi:television-classic
+              state: sensor.tv_meubel_huidig_verbruik
+        - title: Online Status
+          entities:
+            - entity: binary_sensor.router
+            - entity: binary_sensor.internet
+            - entity: binary_sensor.synology_nas
+            - entity: binary_sensor.solaredge
+            - entity: binary_sensor.hue_hub
+            - entity: binary_sensor.harmony_hub
+            - entity: binary_sensor.transmission_server
+            - entity: binary_sensor.hdhomerun
+            - entity: binary_sensor.netatmo_thermostaat
+            - entity: binary_sensor.landroid_grasmaaier
+            - entity: binary_sensor.youless_wallcharger
+            - entity: binary_sensor.youless_zonnepanelen
+            - entity: binary_sensor.oprit_camera
+            - entity: binary_sensor.charlies_camera
+            - entity: binary_sensor.veranda_camera  

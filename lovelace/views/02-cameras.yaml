@@ -1,0 +1,22 @@
+- title: Camera's
+  path: cameras
+  icon: mdi:cctv
+  cards: 
+    - entity: camera.babykamer
+      show_state: false
+      type: picture-entity
+    - aspect_ratio: 50%
+      entity: camera.looppoort_deurbel_live
+      name: Deurbel
+      show_state: false
+      type: picture-entity
+    - entity: camera.oprit
+      show_state: false
+      type: picture-entity
+    - aspect_ratio: 50%
+      entity: camera.veranda
+      show_state: false
+      type: picture-entity
+    - entity: camera.looppoort_deurbel_last_ring
+      show_state: false
+      type: picture-entity

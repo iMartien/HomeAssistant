@@ -1,0 +1,56 @@
+### Tesla update switch aan
+- alias: "Tesla Update Switch - Elke werkdag aan in de ochtend"
+  trigger:
+    platform: time
+    at: "7:00:00"
+  condition:
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'on'  
+  action:
+    - service: switch.turn_on
+      entity_id: switch.marty_mcfly_update_switch
+
+- alias: "Tesla Update Switch - Elke werkdag aan in de middag"
+  trigger:
+    platform: time
+    at: "12:00:00"
+  condition:
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'on'  
+  action:
+    - service: switch.turn_on
+      entity_id: switch.marty_mcfly_update_switch
+
+- alias: "Tesla Update Switch - Elke werkdag aan in de avond"
+  trigger:
+    platform: time
+    at: "16:00:00"
+  condition:
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'on'  
+  action:
+    - service: switch.turn_on
+      entity_id: switch.marty_mcfly_update_switch
+
+
+- alias: "Tesla Update Switch - Uit wanneer niet thuis en aan voor 30 minuten"
+  trigger:
+    platform: state
+    entity_id: switch.marty_mcfly_update_switch
+    to: 'on'
+    for:
+      minutes: 30
+  # condition:
+  #   - condition: and
+  #     conditions:
+  #     - condition: state
+  #       entity_id: binary_sensor.marty_mcfly_charger_sensor
+  #       state: 'off'
+  #     - condition: template
+  #       value_template: "{{ not is_state('device_tracker.tesla_model_3_240589_location_tracker','home') }}"
+  action:
+    - service: switch.turn_off
+      entity_id: switch.marty_mcfly_update_switch

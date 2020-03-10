@@ -1,0 +1,47 @@
+- title: Servers en Systemen
+  path: serverssystemen
+  icon: mdi:server
+  cards:
+    - type: custom:homekit-card
+      home: false
+      statePositionTop: true
+      entities:
+        - title: Home Assistant Server
+          entities:
+            - entity: sensor.last_boot
+            - entity: sensor.processor_use
+            - entity: sensor.memory_use
+            - entity: sensor.memory_free
+            - entity: sensor.disk_use_percent
+            - entity: sensor.disk_free
+            - entity: sensor.cpu_temperature
+            - entity: sensor.network_in_eno1
+            - entity: sensor.network_out_eno1
+            - entity: sensor.network_throughput_in_eno1
+            - entity: sensor.network_throughput_out_eno1
+        - title: Synology NAS
+          entities:
+            - entity: sensor.synology_dsm_cpu_load_total
+            - entity: sensor.synology_dsm_memory_usage_real
+            - entity: sensor.synology_dsm_network_down
+            - entity: sensor.synology_dsm_network_up
+            - entity: sensor.synology_dsm_status_volume_1
+            - entity: sensor.synology_dsm_used_space_volume_1
+            - entity: sensor.synology_dsm_volume_used_volume_1
+        - title: Online Status
+          entities:
+            - entity: binary_sensor.router
+            - entity: binary_sensor.internet
+            - entity: binary_sensor.synology_nas
+            - entity: binary_sensor.solaredge
+            - entity: binary_sensor.hue_hub
+            - entity: binary_sensor.harmony_hub
+            - entity: binary_sensor.transmission_server
+            - entity: binary_sensor.hdhomerun
+            - entity: binary_sensor.netatmo_thermostaat
+            - entity: binary_sensor.landroid_grasmaaier
+            - entity: binary_sensor.youless_wallcharger
+            - entity: binary_sensor.youless_zonnepanelen
+            - entity: binary_sensor.oprit_camera
+            - entity: binary_sensor.charlies_camera
+            - entity: binary_sensor.veranda_camera    

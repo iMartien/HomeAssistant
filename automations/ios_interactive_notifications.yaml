@@ -1,0 +1,40 @@
+- alias: 'Homemode - Lichten uit nadat status donker uit is gegaan'
+  trigger:
+    platform: state
+    entity_id: input_boolean.status_donker
+    to: 'off'
+  condition:
+    - condition: state
+      entity_id: group.all_lights
+      state: 'on'
+  action:
+    - service: notify.notifyall
+      data:
+        message: "Het is niet meer donker in huis maar de verlichting is nog aan, wil je deze uitschakelen?"
+        title: "Verlichting"
+        data:
+          push:
+            badge: 0 ## This will remove the badge/app icon number ##
+            category: "verlichting_nog_aan"
+
+- alias: iOS Notifcation Action - LICHTEN_UIT
+  trigger:
+    platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: ALLE_LICHTEN_UIT
+  action:
+    - service: homeassistant.turn_off
+      entity_id:
+        - group.all_lights
+        - switch.ganglicht
+
+- alias: iOS Notifcation Action - ALARM_DISARM
+  trigger:
+    platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: ALARM_DISARM
+  action:
+    - service: alarm_control_panel.alarm_disarm
+      data: {"entity_id":"alarm_control_panel.ha_alarm","code":"8284"}

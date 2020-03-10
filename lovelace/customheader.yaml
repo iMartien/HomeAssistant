@@ -1,0 +1,28 @@
+#view_css: 'padding-top: 84px !important'
+background: 'rgba(255, 159, 9, 0.8)'
+hide_header: false
+footer_mode: true
+compact_mode: true
+menu_hide: true
+voice_hide: true
+chevrons: false
+reverse_tab_direction: true
+reverse_button_direction: true
+options_hide: true
+hide_help: true
+hide_unused: false
+hide_refresh: false
+hide_config: false
+hide_raw: false
+show_tabs:  
+  - home
+  - menu
+hidden_tab_redirect: false
+#  exceptions:
+#      - conditions:
+#          user_agent: iPhone
+#        config:
+#          chevrons: true
+#          compact_mode: false
+#          menu_hide: false
+#          split_mode: false

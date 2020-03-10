@@ -1,0 +1,108 @@
+# Resources Page
+
+# Homekit UI Panel Card
+  - url: /hacsfiles/Homekit-panel-card/homekit-panel-card.js
+    type: module
+
+  - url: /community_plugin/simple-thermostat/simple-thermostat.js
+    type: module
+
+  - url: /hacsfiles/power-wheel-card/power-wheel-card.js
+    type: module
+    
+  - url: /local/tracker-card.js?v=1
+    type: js
+
+  - url: /community_plugin/lovelace-swipe-navigation/swipe-navigation.js
+    type: js
+
+  - url: /community_plugin/bar-card/bar-card.js
+    type: js
+
+  - url: /community_plugin/browser_mod/browser_mod.js
+    type: module
+
+# Layout Card
+  - url: /community_plugin/lovelace-layout-card/layout-card.js
+    type: module
+
+# Custom Light Popup Card (Install this Manually)
+  - url: /community_plugin/light-popup-card/light-popup-card.js
+    type: module
+
+# Thermostat Popup Card (Install this Manually)
+  - url: /community_plugin/thermostat-popup-card/thermostat-popup-card.js
+    type: module
+
+# Light Entity Card
+  - url: /community_plugin/light-entity-card/light-entity-card.js
+    type: js
+
+# Card Tools
+  - url: /community_plugin/lovelace-card-tools/card-tools.js
+    type: js
+
+# Mini Media Player Card
+  - url: /community_plugin/mini-media-player/mini-media-player-bundle.js
+    type: module
+
+# Upcoming Media Card (Plex, Sonarr and/or Radarr required)
+  - url: /community_plugin/upcoming-media-card/upcoming-media-card.js
+    type: js
+
+# Button Card
+
+  - url: /community_plugin/button-card/button-card.js
+    type: module
+
+# Vertical-Stack-in-Card Card
+  - url: /community_plugin/vertical-stack-in-card/vertical-stack-in-card.js
+    type: js
+
+# Card-Mod
+  - url: /community_plugin/lovelace-card-mod/card-mod.js
+    type: module
+
+# Simple Weather Card
+  - url: /community_plugin/simple-weather-card/simple-weather-card-bundle.js
+    type: module
+
+# Custom Header (This is the replacement for Custom Compact Header, don't confuse them!)
+  - url: /community_plugin/custom-header/custom-header.js
+    type: module
+
+# Mini Graph Card
+  - url: /community_plugin/mini-graph-card/mini-graph-card-bundle.js
+    type: module
+
+# Swipe Card
+  - url: /community_plugin/swipe-card/swipe-card.js
+    type: module
+
+# State-Switch
+  - url: /community_plugin/lovelace-state-switch/state-switch.js
+    type: module
+
+# Weather Card 
+  - url: /community_plugin/weather-card/weather-card.js
+    type: module
+
+# Lovelace More Info Card
+  - url: /community_plugin/lovelace-more-info-card/more-info-card.js
+    type: js
+
+# Auto Entities
+  - url: /community_plugin/lovelace-auto-entities/auto-entities.js
+    type: js
+
+# Air Visual Card (Requires Air Visual account and a sensor, it is free!)
+  - url: /community_plugin/air-visual-card/air-visual-card.js
+    type: js
+
+# Waze Travel Card
+  - url: /community_plugin/ha-card-waze-travel-time/ha-card-waze-travel-time.js
+    type: module
+
+# GUI Sandbox Card (this plugin is AWESOME!)
+  - url: /community_plugin/lovelace-gui-sandbox/gui-sandbox.js
+    type: module

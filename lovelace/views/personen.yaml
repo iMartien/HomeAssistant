@@ -1,0 +1,5 @@
+- title: Personen
+  path: personen
+  icon: mdi:account-group
+  cards:
+    - type: custom:gui-sandbox

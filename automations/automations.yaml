@@ -1,0 +1,997 @@
+########################################
+## Timers
+########################################
+# - alias: 'Timer - Standkachel auto aan op koude werkdagen'
+#   trigger:
+#     platform: time
+#     at: '07:50:00'
+#   condition:
+#     - condition: and
+#       conditions:
+#       - condition: state
+#         entity_id: input_boolean.standkachel_schema
+#         state: 'on'
+#       - condition: state
+#         entity_id: binary_sensor.workday_sensor
+#         state: 'on'
+#       - condition: numeric_state
+#         entity_id: sensor.buiten_temperature
+#         below: 1
+#   action:
+#     - service: climate.set_temperature
+#       data:
+#         entity_id: climate.tesla_model_3_5yj3e7eb2kf240589_hvac_climate_system
+#         temperature: 21
+#     - service: notify.notifyall
+#       data:
+#         message: "De standkachel van de auto is automatisch ingeschakeld!"
+#         title: "Standkachel"
+
+- alias: 'Donker Uit - Input Boolean gebasseerd op Lux sensor'
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.hue_motion_sensor_1_light_level
+    above: 17
+    for:
+      minutes: 30
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.status_donker
+
+- alias: 'Donker Aan - Input Boolean gebasseerd op Lux sensor'
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.hue_motion_sensor_1_light_level
+    below: 15
+    for:
+      minutes: 10
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.status_donker
+
+# - alias: 'Timer - Afvalwijzer Notificatie'
+#   trigger:
+#   - platform: time
+#     at: '07:50:00'
+#   condition:
+#     - condition: or
+#       conditions:
+#       - condition: template
+#         value_template: '{{- (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_gft.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") -}}'
+#       - condition: template
+#         value_template: '{{- (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_restafval.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") -}}'
+#       - condition: template
+#         value_template: '{{- (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_pmd.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") -}}'
+#       - condition: template
+#         value_template: '{{- (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_papier.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") -}}'
+#       - condition: template
+#         value_template: '{{- (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_kerstbomen.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") -}}'
+#   action:
+#   - service: notify.notifyall
+#     data_template:
+#       message: >-
+#         {% if (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_gft.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") %}
+#            Het is vandaag - {{ now().strftime("%d-%m-%Y") }}. De groene bak wordt geleegd op: {{ states.sensor.trash_gft.state }}!
+#         {% endif %}
+#         {% if (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_restafval.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") %}
+#            Het is vandaag - {{ now().strftime("%d-%m-%Y") }}. De grijze bak wordt geleegd op: {{ states.sensor.restafval.state }}!
+#         {% endif %}
+#         {% if (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_pmd.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") %}
+#            Het is vandaag - {{ now().strftime("%d-%m-%Y") }}. Plastic wordt opgehaald op: {{ states.sensor.trash_pmd.state }}!
+#         {% endif %}
+#         {% if (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_papier.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") %}
+#            Het is vandaag - {{ now().strftime("%d-%m-%Y") }}. Papier wordt opgehaald op: {{ states.sensor.trash_papier.state }}!
+#         {% endif %}
+#         {% if (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_kerstbomen.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") %}
+#            Het is vandaag - {{ now().strftime("%d-%m-%Y") }}. Kerstbomen worden opgehaald op: {{ states.sensor.trash_kerstbomen.state }}!
+#         {% endif %}
+
+- alias: "Timer - Automatisch HA Thema wanneer alarm uit"
+  trigger:
+    - platform: homeassistant
+      event: start
+    - platform: state
+      entity_id: sun.sun
+  action:
+    - service_template: frontend.set_theme
+      data_template:
+        name: >
+          {% if states.sun.sun.state == "above_horizon" %}
+          ios-dark-mode-blue-red-alternative
+          {% else %}
+          ios-dark-mode-blue-red-alternative
+          {% endif %}
+
+- alias: "Timer - Notify Me when its time to leave for Work"
+  trigger:
+  - platform: state
+    entity_id: sensor.time_to_leave_for_work
+    to: 'True'
+    from: 'False'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.workday_sensor
+    state: 'on'
+  action:
+    - service: notify.notifyall
+      data:
+        message: "Het duurt {{ states.sensor.reistijd_naar_werk.state | int | string }} minuten om naar je werk te rijden. Je moet over 10 minuten vertrekken wil je om 8:30u aankomen. De snelste route is via {{ states.sensor.reistijd_naar_werk.attributes.route }}."
+        title: "Tijd om te vertrekken"
+
+- alias: "Timer - Notification - Reistijd naar huis"
+  trigger:
+    platform: time
+    at: '17:00:00'
+  condition:
+    - condition: and
+      conditions:
+      - condition: state
+        entity_id: binary_sensor.workday_sensor
+        state: 'on'
+      - condition: template
+        value_template: "{{ not is_state('device_tracker.tesla_model_3_240589_location_tracker','home') }}"
+  action:
+    - service: notify.notifyall
+      data:
+        message: "Het duurt momenteel {{ states.sensor.reistijd_naar_huis.state | int | string }} minuten om naar huis te rijden. De snelste route is via {{ states.sensor.reistijd_naar_huis.attributes.route }}."
+        title: "Reistijd naar huis"
+
+
+- alias: Timer - Notification - Energie Rapport
+  trigger:
+    platform: time
+    at: '23:59:50'
+  action:
+    - service: notify.pushover
+      data:
+        message: |
+          Energieverbruik vandaag: {{ states.sensor.daily_power_netto.state }} kWh.
+          Gasverbruik vandaag: {{ states.sensor.daily_gas.state }} m3.
+        title: "Energie Rapport"
+        data:
+          priority: -1
+
+#- alias: Timer - Turn off Hyper-V machine at night
+#  trigger:
+#    platform: time
+#    at: '00:00:00'
+#  action:
+#    - service: switch.turn_off
+#      entity_id: switch.plex_server
+#    - service: notify.pushover
+#      data:
+#        message: "Shutting down Hyper-V machine..."
+#        title: "Hyper-V"
+#        data:
+#          url: !secret homeassistant_url
+
+#- alias: Timer - Turn on Hyper-V machine in the morning on workday
+#  trigger:
+#    platform: time
+#    at: '06:00:00'
+#  condition:
+#    condition: state
+#    entity_id: 'binary_sensor.workday_sensor'
+#    state: 'on'
+#  action:
+#    - service: switch.turn_on
+#      entity_id: switch.hyperv_host
+#    - service: notify.pushover
+#      data:
+#        message: "Starting Hyper-V machine..."
+#        title: "Hyper-V"
+#        data:
+#          url: !secret homeassistant_url
+
+#- alias: Timer - Turn on Hyper-V machine in the morning on non-workday
+#  trigger:
+#    platform: time
+#    at: '08:00:00'
+#  condition:
+#    condition: state
+#    entity_id: 'binary_sensor.workday_sensor'
+#    state: 'off'
+#  action:
+#    - service: switch.turn_on
+#      entity_id: switch.hyperv_host
+#    - service: notify.pushover
+#      data:
+#        message: "Starting Hyper-V machine..."
+#        title: "Hyper-V"
+#        data:
+#          url: !secret homeassistant_url
+
+- alias: 'Timer - Licht aan wanneer er iemand thuis is'
+  trigger:
+    platform: state
+    entity_id: input_boolean.status_donker
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_home
+        state: 'on'
+      - condition: state
+        entity_id: group.woonkamer_verlichting
+        state: 'off'
+      - condition: state
+        entity_id: group.keuken_verlichting
+        state: 'off'
+  action:
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Woonkamer"
+        scene_name: "Sfeerverlichting"
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Keuken"
+        scene_name: "Ontspannen"
+    - service: switch.turn_on
+      entity_id:
+#        - switch.kerstboom_1
+#        - switch.kerstboom_2
+        - switch.kerstverlichting_buiten
+        - switch.veranda_verlichting
+    - service: notify.pushover
+      data:
+        message: "Home Assistant heeft het licht ingeschakeld."
+        title: "Verlichting"
+        data:
+          priority: -1
+
+- alias: 'Timer - Licht aan wanneer er niemand thuis is'
+  trigger:
+    platform: state
+    entity_id: input_boolean.status_donker
+    to: 'on'
+    for:
+      minutes: 30
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_away
+        state: 'on'
+  action:
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Woonkamer"
+        scene_name: "Sfeerverlichting"
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Keuken"
+        scene_name: "Sfeerverlichting"
+    - service: switch.turn_on
+      entity_id:
+  #      - switch.kerstboom_1
+  #      - switch.kerstboom_2
+        - switch.kerstverlichting_buiten
+        - switch.veranda_verlichting
+    - service: notify.pushover
+      data:
+        message: "Home Assistant heeft het licht ingeschakeld."
+        title: "Verlichting"
+        data:
+          priority: -1
+
+- alias: 'Timer - Licht uit om 23:30 when wanneer er niemand thuis is'
+  trigger:
+    platform: time
+    at: '23:30:00'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_away
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.homemode_guest
+        state: 'off'
+  action:
+    - service: homeassistant.turn_off
+      entity_id:
+        - group.woonkamer_verlichting
+        - group.keuken_verlichting
+    - service: switch.turn_off
+      entity_id:
+  #      - switch.kerstboom_1
+  #      - switch.kerstboom_2
+        - switch.kerstverlichting_buiten
+    - service: notify.pushover
+      data:
+        message: "Home Assistant heeft het licht uitgeschakeld."
+        title: "Verlichting"
+        data:
+          priority: -1
+
+- alias: 'Timer - Start HomeKit'
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    - delay: 00:01  # Waits 1 minute
+    - service: homekit.start
+
+- alias: 'Timer - Buitenverlichting aan wanneer donker'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.donker
+    to: 'on'
+  action:
+    - service: switch.turn_on
+      entity_id: 
+        - switch.veranda_verlichting
+
+# - alias: 'Timer - Kerstverlichting buiten uit om 23:30'
+#   trigger:
+#     platform: time
+#     at: '23:30:00'
+#   action:
+#     - service: switch.turn_off
+#       entity_id: switch.kerstverlichting_buiten
+
+#- alias: 'Time - Turn off Gangkachel above 21 C.'
+#  trigger:
+#    - platform: numeric_state
+#      entity_id: sensor.gang_temperature
+#      above: 21
+#  condition:
+#    condition: numeric_state
+#    entity_id: sensor.gangkachel_huidig_verbruik
+#    above: 800
+#  action:
+#    - service: homeassistant.turn_off
+#      data:
+#        entity_id:
+#          - switch.gangkachel_sonoff
+
+
+
+########################################
+## Droger Status Automations
+########################################
+
+- alias: Droger - Status naar Aan
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.droger_huidig_verbruik
+      above: 1
+  condition:
+    - condition: state
+      entity_id: input_select.droger_status
+      state: Uit
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.droger_status
+        option: Aan
+
+- alias: Droger - Status naar Uit
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.droger_huidig_verbruik
+      below: 1
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: input_select.droger_status
+        state: Aan
+      - condition: state
+        entity_id: input_select.droger_status
+        state: Klaar
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.droger_status
+        option: Uit
+
+- alias: Droger - Status naar Drogen
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.droger_huidig_verbruik
+      above: 2000
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: input_select.droger_status
+        state: Aan
+      - condition: state
+        entity_id: input_select.droger_status
+        state: Uit
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.droger_status
+        option: Drogen
+
+- alias: Droger - Status naar Klaar
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.droger_huidig_verbruik
+      below: 100
+      for:
+        minutes: 5
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.droger_status
+        state: Drogen
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.droger_status
+        option: Klaar
+    - service: notify.notifyall
+      data:
+        message: "De droger is klaar!"
+        title: "Droger"
+
+- alias: Droger - Status naar Aan na Klaar
+  trigger:
+    - platform: state
+      entity_id: input_select.droger_status
+      to: Klaar
+      for:
+        minutes: 15
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.droger_status
+        option: Aan
+
+- alias: Droger - Staat voor niks Aan
+  trigger:
+    - platform: state
+      entity_id: input_select.droger_status
+      to: Aan
+      for:
+        minutes: 15
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.droger_status
+        option: Aan
+    - service: notify.notifyall
+      data:
+        message: "De droger staat nog aan!"
+        title: "Droger"
+
+########################################
+## Wasmachine Status Automations
+########################################
+
+- alias: Wasmachine - Status naar Opwarmen
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.wasmachine_huidig_verbruik
+      above: 1500
+  condition:
+    - condition: state
+      entity_id: input_select.wasmachine_status
+      state: Uit
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.wasmachine_status
+        option: Opwarmen
+
+- alias: Wasmachine - Status naar Uit
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.wasmachine_huidig_verbruik
+      below: 3
+      for:
+        minutes: 15
+  condition:
+    - condition: state
+      entity_id: input_select.wasmachine_status
+      state: Klaar
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.wasmachine_status
+        option: Uit
+
+- alias: Wasmachine - Status naar Wassen
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.wasmachine_huidig_verbruik
+      above: 2
+      below: 1500
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: input_select.wasmachine_status
+        state: Opwarmen
+      - condition: state
+        entity_id: input_select.wasmachine_status
+        state: Uit
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.wasmachine_status
+        option: Wassen
+
+- alias: Wasmachine - Status naar Klaar
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.wasmachine_huidig_verbruik
+      below: 3
+      for:
+        minutes: 5
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: input_select.wasmachine_status
+        state: Wassen
+      - condition: state
+        entity_id: input_select.wasmachine_status
+        state: Opwarmen
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.wasmachine_status
+        option: Klaar
+    - service: notify.notifyall
+      data:
+        message: "De wasmachine is klaar!"
+        title: "Wasmachine"
+
+########################################
+## Gangkachel Status Automations
+########################################
+
+- alias: Gangkachel - Status naar Ventileren
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.gangkachel_huidig_verbruik
+      above: 1
+      below: 500
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.gangkachel_status
+        state: Uit
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.gangkachel_status
+        option: Ventileren
+
+- alias: Gangkachel - Status naar Afkoelen
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.gangkachel_huidig_verbruik
+      above: 1
+      below: 500
+  condition:
+    condition: or
+    conditions:
+        - condition: state
+          entity_id: input_select.gangkachel_status
+          state: Half vermogen
+        - condition: state
+          entity_id: input_select.gangkachel_status
+          state: Vol vermogen
+        - condition: and
+          conditions:
+            - condition: state
+              entity_id: input_boolean.gangkachel
+              state: 'off'
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.gangkachel_status
+        option: Afkoelen
+
+- alias: Gangkachel - Status naar Uit
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.gangkachel_huidig_verbruik
+      below: 1
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.gangkachel_status
+        option: Uit
+
+- alias: Gangkachel - Status naar Half vermogen
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.gangkachel_huidig_verbruik
+      below: 1600
+      above: 500
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.gangkachel_status
+        option: Half vermogen
+
+- alias: Gangkachel - Status naar Vol vermogen
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.gangkachel_huidig_verbruik
+      above: 1600
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.gangkachel_status
+        option: Vol vermogen
+
+
+########################################
+## Crypto Mining Automations
+########################################
+
+#- alias: 'Automatic Crypto Mining On'
+#  trigger:
+#    - platform: numeric_state
+#      entity_id: sensor.power_generation
+#      above: 250
+#      for:
+#        minutes: 5
+#  condition:
+#    - condition: state
+#      entity_id: switch.mining_rig_wol
+#      state: 'off'
+#  action:
+#    - service: notify.pushover
+#      data:
+#        message: "Stable power generation achievied, powering up crypto miner."
+#        title: "Mining Control"
+#        data:
+#          url: !secret homeassistant_url
+#    - service: switch.turn_on
+#      entity_id: switch.mining_rig_wol
+
+#- alias: 'Automatic Crypto Mining Off'
+#  trigger:
+#    - platform: numeric_state
+#      entity_id: sensor.power_generation
+#      below: 100
+#      for:
+#        minutes: 5
+#  condition:
+#    condition: and
+#    conditions:
+#      - condition: state
+#        entity_id: switch.mining_rig_wol
+#        state: 'on'
+#      - condition: time
+#        after: '18:00:00'
+#      - condition: time
+#        before: '23:59:00'
+#  action:
+#    - service: notify.pushover
+#      data:
+#        message: "Insufficient power generation, shutting down crypto miner."
+#        title: "Mining Control"
+#        data:
+#          url: !secret homeassistant_url
+#    - service: switch.turn_off
+#      entity_id: switch.mining_rig_wol
+
+
+
+########################################
+## Motion Automations
+########################################
+
+- alias: 'Motion - Ganglight aan bij Beweging'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.gang_motion
+      to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_home
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.status_donker
+        state: 'on'
+  action:
+    - service: switch.turn_on
+      entity_id: switch.ganglicht
+
+- alias: 'Motion - Ganglight uit bij geen beweging'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.gang_motion
+      to: 'off'
+      for:
+        minutes: 10
+  action:
+     - service: switch.turn_off
+       entity_id:
+         - switch.ganglicht
+
+- alias: 'Motion - Keukenlicht naar normaal bij beweging'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.keuken_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.keukendeur
+      to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_home
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.status_donker
+        state: 'on'
+      - condition: state
+        entity_id: light.keuken_5
+        state: 'on'
+      - condition: state
+        entity_id: light.keuken_4
+        state: 'on'
+      - condition: state
+        entity_id: light.keuken_3
+        state: 'off'
+      - condition: state
+        entity_id: light.keuken_2
+        state: 'off'
+      - condition: state
+        entity_id: light.keuken_1
+        state: 'off'
+  action:
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Keuken"
+        scene_name: "Normaal"
+
+- alias: 'Motion - Keukenlicht naar sfeer bij geen beweging'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.keuken_motion
+      to: 'off'
+      for:
+        minutes: 10
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_home
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.status_donker
+        state: 'on'
+      - condition: state
+        entity_id: light.keuken_5
+        state: 'on'
+      - condition: state
+        entity_id: light.keuken_4
+        state: 'on'
+      - condition: state
+        entity_id: light.keuken_3
+        state: 'on'
+      - condition: state
+        entity_id: light.keuken_2
+        state: 'on'
+      - condition: state
+        entity_id: light.keuken_1
+        state: 'on'
+      - condition: state
+        entity_id: light.eetkamertafel
+        state: 'off'
+  action:
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Keuken"
+        scene_name: "Sfeerverlichting"
+
+- alias: 'Hek openen door drukknop, Tesla of iOS'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.keuken_hekopener
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.woonkamer_hekopener
+      to: 'on'
+    - platform: event
+      event_type: ios.notification_action_fired
+      event_data:
+        actionName: OPEN_HEK
+  action:
+     - service: switch.turn_on
+       entity_id:
+         - switch.looppoort_deurbel_relay_1
+     - service: tts.google_say
+       entity_id: media_player.google_home_mini
+       data:
+         message: 'Hek wordt geopend'
+
+- alias: 'Pushbutton - Nachtkastjes - Bedtijd'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.nachtkastje_martien
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.nachtkastje_deborah
+      to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.scene_bedtime
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.homemode_night
+        state: 'off'
+  action:
+     - service: input_boolean.turn_on
+       entity_id:
+         - input_boolean.scene_bedtime
+
+- alias: 'Pushbutton - Nachtkastjes - Nachtmode'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.nachtkastje_martien
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.nachtkastje_deborah
+      to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.scene_bedtime
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.homemode_night
+        state: 'off'
+  action:
+     - service: input_boolean.turn_on
+       entity_id:
+         - input_boolean.homemode_night
+
+- alias: 'Pushbutton - Nachtkastjes - Nachtlampje Aan'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.nachtkastje_martien
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.nachtkastje_deborah
+      to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.scene_bedtime
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.homemode_night
+        state: 'on'
+      - condition: state
+        entity_id: group.slaapkamer_spots
+        state: 'off'
+  action:
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Slaapkamer"
+        scene_name: "Nachtlampje"
+
+- alias: 'Pushbutton - Nachtkastjes - Nachtlampje Uit'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.nachtkastje_martien
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.nachtkastje_deborah
+      to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.scene_bedtime
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.homemode_night
+        state: 'on'
+      - condition: state
+        entity_id: group.slaapkamer_spots
+        state: 'on'
+  action:
+    - service: homeassistant.turn_off
+      entity_id: group.slaapkamer_spots
+
+########################################
+## Notificatoins Only
+########################################
+- alias: 'Notification - Doorbell pressed'
+  trigger:
+    - platform: event
+      event_type: button_pressed
+      event_data: {"entity_id": "switch.deurbel"}
+    - platform: event
+      event_type: doorbird_looppoort_deurbel_button
+  action:
+    - service: notify.notifyall
+      data:
+        message: "De deurbel gaat!"
+        title: "Ding! Dong!"
+        data:
+          push:
+            badge: 0 ## This will remove the badge/app icon number ##
+            category: 'camera'
+          entity_id: camera.looppoort_deurbel_live
+
+- alias: 'Notification - Landroid Alarm'
+  trigger:
+    - platform: numeric_state
+      entity_id: landroid.no_of_alarms
+      above: 0
+  action:
+    - service: notify.pushover
+      data_template:
+        message: "Warning: The lawnmower is reporting an error."
+        title: "Lawnmower Error"
+    - service: notify.notifyme
+      data:
+        message: "Today at {{(now().strftime('%s') | int | timestamp_custom('%H:%M'))}} the lawnmower had reported an error."
+
+- alias: "Notification - Home Assistant Update Available"
+  trigger:
+    - platform: state
+      entity_id: updater.updater
+  action:
+    - service: notify.notifyall
+      data:
+        message: "Home Assistant versie {{ states.updater.updater.state }} is nu bechikbaar."
+        title: "HA Update beschikbaar"
+    - service: persistent_notification.create
+      data:
+        message: "Home Assistant versie {{ states.updater.updater.state }} is nu bechikbaar."
+        title: "HA Update beschikbaar"
+
+
+- alias: "Notification - Home Assistant Startup"
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    - service: notify.notifyall
+      data:
+        message: "Home Assistant is sinds {{(now().strftime('%s') | int | timestamp_custom('%H:%M'))}} weer online."
+        title: "HA Online"
+    - service: persistent_notification.create
+      data:
+        message: "Home Assistant is sinds {{(now().strftime('%s') | int | timestamp_custom('%H:%M'))}} weer online."
+        title: "HA Online"
+
+- alias: "Notification - Home Assistant Shutdown"
+  trigger:
+    - platform: homeassistant
+      event: shutdown
+  action:
+    - service: notify.notifyall
+      data:
+        message: "Waarschuwing: Home Assistant wordt herstart."
+        title: "HA Herstart"
+    - service: persistent_notification.create
+      data:
+        message: "Waarschuwing: Home Assistant wordt herstart."
+        title: "HA Herstart"
+
+- alias: "IFTTT Webhook verzoeken"
+  trigger:
+    platform: event
+    event_type: ifttt_webhook_received
+    event_data:
+      action: call_service
+  action:
+    service_template: '{{ trigger.event.data.service }}'
+    data_template:
+      entity_id: '{{ trigger.event.data.entity_id }}'

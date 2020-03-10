@@ -1,0 +1,15 @@
+- title: Tempalate
+  name: Template
+  path: template
+  icon: mdi:tools
+  cards:
+    - type: custom:homekit-card
+      home: false
+      statePositionTop: true
+      entities:
+        - title: Rij 1
+          entities:
+            - entity: input_boolean.homemode_home
+        - title: Rij 2
+          entities:
+            - entity: input_boolean.homemode_home

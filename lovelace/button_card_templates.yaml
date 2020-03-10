@@ -1,0 +1,142 @@
+homekit_knop:
+  size: 30%
+  show_state: true
+  show_label: true
+  tap_action:
+    action: toggle
+    haptic: light
+  styles:
+    card:
+      - background-color: white
+      - width: 102px
+      - height: 102px
+      - border-radius: 12%
+    grid:
+      - grid-template-areas: '"i" "n" "s"'
+      - grid-template-columns: 1fr
+      - grid-template-rows: 1fr min-content min-content
+    img_cell:
+      - justify-content: start
+      - align-items: start
+      - margin-left: 10px
+    name:
+      - justify-self: start
+      - padding-left: 10px
+      - color: black
+    state:
+      - justify-self: start
+      - padding-left: 10px
+      - color: grey
+    icon:
+      - color: var(--paper-item-icon-active-color)
+  state:
+    - value: 'off'
+      styles:
+        card:
+          - filter: opacity(50%)
+        icon:
+          - filter: grayscale(100%)
+
+homekit_knop_licht:
+  size: 30%
+  show_state: true
+  show_label: true
+  tap_action:
+    action: toggle
+    haptic: light
+  hold_action:
+    action: call-service
+    haptic: heavy
+    service: browser_mod.popup
+    service_data:
+      title: "Test"
+      card:
+        type: custom:light-popup-card
+        entity: light.bol_lamp
+        brightnessWidth: 110px
+        brightnessHeight: 410px
+        switchWidth: 110px
+        switchHeight: 410px
+        fullscreen: true
+      deviceID:
+        - this
+  styles:
+    card:
+      - background-color: white
+      - width: 102px
+      - height: 102px
+      - border-radius: 12%
+    grid:
+      - grid-template-areas: '"i" "n" "s"'
+      - grid-template-columns: 1fr
+      - grid-template-rows: 1fr min-content min-content
+    img_cell:
+      - justify-content: start
+      - align-items: start
+      - margin-left: 10px
+    name:
+      - justify-self: start
+      - padding-left: 10px
+      - color: black
+    state:
+      - justify-self: start
+      - padding-left: 10px
+      - color: grey
+    icon:
+      - color: var(--paper-item-icon-active-color)
+  state:
+    - value: 'off'
+      styles:
+        card:
+          - filter: opacity(50%)
+        icon:
+          - filter: grayscale(100%)
+
+homekit_knop_alarm:
+  size: 30%
+  show_state: true
+  show_label: true
+  tap_action:
+    action: toggle
+    haptic: light
+  hold_action:
+    action: more-info
+    haptic: success
+  styles:
+    card:
+      - background-color: white
+      - width: 102px
+      - height: 102px
+      - border-radius: 12%
+    grid:
+      - grid-template-areas: '"i" "n" "s"'
+      - grid-template-columns: 1fr
+      - grid-template-rows: 1fr min-content min-content
+    img_cell:
+      - justify-content: start
+      - align-items: start
+      - margin-left: 10px
+    name:
+      - justify-self: start
+      - padding-left: 10px
+      - color: black
+    state:
+      - justify-self: start
+      - padding-left: 10px
+      - color: grey
+    icon:
+      - color: var(--paper-item-icon-active-color)
+  state:
+    - value: 'armed'
+      icon: mdi:shield-check
+      styles:
+        icon:
+          - color: red
+          - animation: blink 2s ease infinite
+    - value: 'disarmed'
+      icon: mdi:shield-off
+      styles:
+        card:
+          - filter: opacity(50%)
+        icon:
+          - filter: grayscale(100%)

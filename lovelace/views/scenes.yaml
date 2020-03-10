@@ -1,0 +1,26 @@
+- title: Scenes
+  path: scenes
+  icon: mdi:weather-sunset
+  cards:
+    - type: custom:homekit-card
+      home: false
+      statePositionTop: true
+      entities:
+        - title: Huismodi
+          entities:
+            - entity: input_boolean.homemode_home
+            - entity: input_boolean.homemode_away
+            - entity: input_boolean.homemode_night
+            - entity: input_boolean.homemode_guest
+            - entity: input_boolean.homemode_vacation
+        - title: Verlichting
+          entities:
+            - entity: input_boolean.scene_normaal
+            - entity: input_boolean.scene_sfeer
+            - entity: input_boolean.scene_helder
+        - title: Activiteiten
+          entities:
+            - entity: input_boolean.scene_goodmorning
+            - entity: input_boolean.scene_bedtime
+            - entity: input_boolean.scene_aantafel
+            - entity: input_boolean.scene_badtijd
