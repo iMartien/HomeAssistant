@@ -1,0 +1,15 @@
+# Custom Card Resources
+resources: !include lovelace/resources.yaml
+custom_header: !include lovelace/customheader.yaml
+# button_card_templates: !include lovelace/button_card_templates.yaml
+
+title: Chateau Charlois
+background: var(--background-image)
+# popup_cards: !include lovelace/templates/legacy_popup_cards.yaml
+# swipe_nav:
+#   wrap: false
+#   animate: swipe
+# #  skip_tabs: 5,6,7,8
+#   prevent_default: true
+
+views: !include_dir_merge_list lovelace/views

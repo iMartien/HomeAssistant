@@ -1,0 +1,88 @@
+  - platform: group
+    name: Alle Verlichting
+    entities:
+        - light.rieten_lamp
+        - light.glazenbol
+        - light.hue_bloom
+        - light.koperen_lamp
+        - light.glazen_lamp
+        - light.bol_lamp
+        - light.woonkamer_spot
+        - light.keuken_1
+        - light.keuken_2
+        - light.keuken_3
+        - light.keuken_4
+        - light.keuken_5
+        - light.keukenlampie
+        - light.eetkamertafel
+        - light.badkamer_1
+        - light.badkamer_2
+        - light.badkamer_3
+        - light.badkamer_4
+        - light.badkamer_5
+        - light.slaapkamer_spot_1
+        - light.slaapkamer_spot_2
+        - light.overloop_1
+        - light.overloop_2
+        - light.wc_boven_1
+        - light.wc_boven_2
+        - light.wc_boven_3
+  
+  - platform: group
+    name: Woonkamer Verlichting
+    entities:
+        - light.rieten_lamp
+        - light.glazenbol
+        - light.hue_bloom
+        - light.koperen_lamp
+        - light.glazen_lamp
+        - light.bol_lamp
+        - light.woonkamer_spot
+
+  - platform: group
+    name: Keuken Spotjes
+    entities:
+        - light.keuken_1
+        - light.keuken_2
+        - light.keuken_3
+        - light.keuken_4
+        - light.keuken_5
+
+  - platform: group
+    name: Keuken Verlichting
+    entities:
+        - light.keuken_1
+        - light.keuken_2
+        - light.keuken_3
+        - light.keuken_4
+        - light.keuken_5
+        - light.eetkamertafel
+        - light.keukenlampie
+
+  - platform: group
+    name: Badkamer Spotjes
+    entities:
+        - light.badkamer_1
+        - light.badkamer_2
+        - light.badkamer_3
+        - light.badkamer_4
+        - light.badkamer_5
+
+  - platform: group
+    name: Slaapkamer Spotjes
+    entities:
+        - light.slaapkamer_spot_1
+        - light.slaapkamer_spot_2
+
+  - platform: group
+    name: Overloop Spotjes
+    entities:
+        - light.overloop_1
+        - light.overloop_2
+
+  - platform: group
+    name: WC Boven Spotjes
+    entities:
+        - light.wc_boven_1
+        - light.wc_boven_2
+        - light.wc_boven_3

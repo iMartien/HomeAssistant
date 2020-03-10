@@ -1,0 +1,664 @@
+  - platform: time_date
+
+  - platform: season
+
+  - platform: darksky
+    api_key: eaeb60c3ef41d7794773842090bdb882
+    language: nl
+    forecast:
+      - 0
+    hourly_forecast:
+      - 0
+      - 1
+    monitored_conditions:
+      - summary
+      - icon
+      - temperature
+
+  # - platform: dsmr
+  #   port: /dev/ttyUSB1
+  #   dsmr_version: 5
+
+  - platform: dsmr_reader
+
+  - platform: rest
+    resource: http://192.168.1.60/a?f=j
+    value_template: '{{ value_json.ps0 }}'
+    method: GET
+    name: Youless Zonnepanelen
+    scan_interval: 5
+    unit_of_measurement: "W"
+
+  - platform: rest
+    resource: http://192.168.1.60/a?f=j
+    value_template: '{{ value_json.cs0 }}'
+    method: GET
+    name: Youless Zonnepanelen Meterstand
+    scan_interval: 5
+    unit_of_measurement: "kWh"
+
+  - platform: rest
+    resource: http://192.168.1.61/a?f=j
+    value_template: '{{ value_json.ps0 }}'
+    method: GET
+    name: Youless Wall Charger
+    scan_interval: 5
+    unit_of_measurement: "W"
+
+  - platform: rest
+    resource: http://192.168.1.61/a?f=j
+    value_template: '{{ value_json.cs0 }}'
+    method: GET
+    name: Youless Wall Charger Meterstand
+    scan_interval: 5
+    unit_of_measurement: "kWh"
+
+  - platform: rfxtrx
+    automatic_add: false
+    debug: false
+    devices:
+      0a5207362c0e006e390149:
+        name: Buiten
+      0a52070e700e00bf310149:
+        name: Slaapkamer
+      0a5207085c0e00c3370179:
+        name: Babykamer
+      0a520709c70e00a73e0169:
+        name: Gang
+      0b550311800c000000504139:
+        name: Regen
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /
+      - type: disk_free
+        arg: /
+      - type: memory_use
+      - type: memory_free
+      - type: processor_use
+      - type: last_boot
+      - type: network_in
+        arg: eno1
+      - type: network_out
+        arg: eno1
+      - type: throughput_network_in
+        arg: eno1
+      - type: throughput_network_out
+        arg: eno1
+
+  - platform: afvalwijzer
+    provider: mijnafvalwijzer
+    zipcode: 3084LA
+    housenumber: 471
+
+  - platform: solaredge
+    api_key: RK9LHI2YXWF12HZOE21V1OPI290R5IR3
+    site_id: 567805
+    name: SolarEdge
+    monitored_conditions:
+      - current_power
+      - energy_today
+      - energy_this_month
+      - energy_this_year
+      - lifetime_energy
+
+#Crypto related sensors
+  - platform: bitcoin
+    currency: EUR
+    display_options:
+      - exchangerate
+#  - platform: etherscan
+#    name: Ledger ETH Wallet
+#    address: '0x3A3CD1458c7686B3a2b231b95e06Afe4dE67aBF8'
+#  - platform: etherscan
+#    name: Jaxx ETH Wallet
+#    address: '0xba372441a528be1903e76ea9a2cf385cc30cdfb6'
+#  - platform: sochain
+#    name: Jaxx BTC Wallet
+#    network: BTC
+#    address: '19h2ufbBJVQr6DNSLm7RwB8Kk7Gy4pgM6t'
+  # - platform: sochain
+  #   name: Ledger BTC Wallet
+  #   network: BTC
+  #   address: 'bc1qtat4nhn082hs8028nzwuaske45tn8u4qn92ucn'
+
+  # - platform: plex
+  #   host: 192.168.1.5
+
+  - platform: plex_recently_added
+    token: ifDYViM4ZDEsKW2VCiH5
+    host: 192.168.1.5
+    port: 32400
+    ssl: true
+    ssl_cert: false
+    download_images: true
+    max: 5
+    section_types:
+    - movie
+    - show
+
+  - platform: sonarr_upcoming_media
+    api_key: 2eb3890ad80946978ba29b8222721b38
+    host: 192.168.1.11
+    port: 8989
+    days: 14
+    ssl: false
+    max: 5
+
+  - platform: radarr_upcoming_media
+    api_key: d3c094f5a1674a8089bb2d2f16f07367
+    host: 192.168.1.11
+    port: 7878
+    days: 120
+    ssl: false
+    theaters: true
+    max: 5
+
+  - platform: moon
+  - platform: yr
+# Tracking entity to entity
+  - platform: waze_travel_time
+    name: "Reistijd naar huis"
+    origin: device_tracker.martiens_iphone_11_pro
+    destination: zone.home
+    region: 'EU'
+  - platform: waze_travel_time
+    name: "Reistijd naar Fujitsu"
+    origin: device_tracker.martiens_iphone_11_pro
+    destination: zone.fujitsu_maarssen
+    region: 'EU'
+  - platform: waze_travel_time
+    name: "Reistijd naar HbR"
+    origin: device_tracker.martiens_iphone_11_pro
+    destination: zone.havenbedrijf_rotterdam
+    region: 'EU'
+  - platform: pvoutput
+    system_id: 55147
+    api_key: !secret pv_output_apikey
+    scan_interval: 120
+  - platform: template
+    sensors:
+      power_consumption_pvoutput:
+        value_template: '{% if is_state_attr("sensor.pvoutput", "power_consumption", "NaN") %}0{% else %}{{ states.sensor.pvoutput.attributes.power_consumption }}{% endif %}'
+        friendly_name: 'Using'
+        unit_of_measurement: 'W'
+      energy_consumption:
+        value_template: '{{ "%0.1f"|format(states.sensor.pvoutput.attributes.energy_consumption|float/1000) }}'
+        friendly_name: 'Used'
+        unit_of_measurement: 'kWh'
+      power_generation:
+        value_template: '{% if is_state_attr("sensor.pvoutput", "power_generation", "NaN") %}0{% else %}{{ states.sensor.pvoutput.attributes.power_generation }}{% endif %}'
+        friendly_name: 'Generating'
+        unit_of_measurement: 'W'
+      energy_generation:
+        value_template: '{% if is_state_attr("sensor.pvoutput", "energy_generation", "NaN") %}0{% else %}{{ "%0.2f"|format(states.sensor.pvoutput.attributes.energy_generation|float/1000) }}{% endif %}'
+        friendly_name: 'Generated'
+        unit_of_measurement: 'kWh'
+      current_net_power_usage:
+        friendly_name: 'Current Net. Power Usage'
+        unit_of_measurement: 'W'
+        value_template: >-
+          {{ (1000 * (states("sensor.power_consumption") | float -
+                      states("sensor.power_generation") | float)) | int }}
+      time_to_leave_for_work:
+        value_template: >
+          {% set t = strptime(states.sensor.time.state,'%H:%M') %}
+          {{ ( t.hour + t.minute / 60 ) > ( 8.33 - states.sensor.reistijd_naar_fujitsu.state | int / 60) }}
+        friendly_name: 'Tijd om naar werk te vertrekken'
+      
+      current_lights_on:
+        friendly_name: 'Lichten momenteel aan'
+        unit_of_measurement: 'aan'
+        value_template: >
+          {% set lights = [
+          states.light.keuken_1,
+          states.light.keuken_2,
+          states.light.keuken_3,
+          states.light.keuken_4,
+          states.light.keuken_5,
+          states.light.keukenlampie,
+          states.light.slaapkamer_spot_1,
+          states.light.slaapkamer_spot_2,
+          states.light.badkamer_1,
+          states.light.badkamer_2,
+          states.light.badkamer_3,
+          states.light.badkamer_4,
+          states.light.badkamer_5,
+          states.light.overloop_1,
+          states.light.overloop_2,
+          states.light.rieten_lamp,
+          states.light.glazenbol,
+          states.light.hue_bloom,
+          states.light.bol_lamp,
+          states.light.woonkamer_spot,
+          states.light.glazen_lamp,
+          states.light.koperen_lamp,
+          states.light.babykamer,
+          ] %}
+          {{ lights | selectattr('state','eq','on') | list | count }}
+
+      current_devices_offline:
+        friendly_name: 'Apparaten momenteel offline'
+        unit_of_measurement: 'offline'
+        value_template: >
+          {% set devices = [
+          states.binary_sensor.charlies_camera,
+          states.binary_sensor.veranda_camera,
+          states.binary_sensor.oprit_camera,
+          states.binary_sensor.harmony_hub,
+          states.binary_sensor.hdhomerun,
+          states.binary_sensor.hue_hub,
+          states.binary_sensor.netatmo_thermostaat,
+          states.binary_sensor.router,
+          states.binary_sensor.solaredge,
+          states.binary_sensor.synology_nas,
+          states.binary_sensor.transmission_server,
+          states.binary_sensor.youless_zonnepanelen,
+          states.binary_sensor.youless_wallcharger,
+          ] %}
+          {{ devices | selectattr('state','eq','off') | list | count }}
+
+      current_appliances_on:
+        friendly_name: 'Apparaten momenteel aan'
+        unit_of_measurement: 'aan'
+        value_template: >
+          {% set appliances = [
+          states.sensor.wasmachine_status,
+          states.sensor.droger_status,
+          states.sensor.gangkachel_status,
+          ] %}
+          {{ appliances | selectattr('state','!=','Uit') | list | count }}
+
+      current_media_players_playing:
+        friendly_name: 'Mediaspelers aan'
+        unit_of_measurement: 'aan'
+        value_template: >
+          {% set mediaplayers = [
+          states.media_player.woonkamer_plex,
+          states.media_player.woonkamer_live_tv,
+          states.media_player.slaapkamer_live_tv,
+          states.media_player.tvkamer,
+          states.media_player.woonkamer,
+          states.media_player.keuken,
+          states.media_player.badkamer,
+          states.media_player.veranda,
+          ] %}
+          {{ mediaplayers | selectattr('state','eq','playing') | list | count }}
+
+  - platform: command_line
+    name: CPU Temperature
+    command: "cat /sys/class/thermal/thermal_zone2/temp"
+    unit_of_measurement: "°C"
+    value_template: '{{ value | multiply(0.001) | round(1) }}'
+  - platform: synologydsm
+    host: !secret synology_ip
+    username: !secret synology_username
+    password: !secret synology_password
+    monitored_conditions:
+      - cpu_total_load
+      - memory_real_usage
+      - network_up
+      - network_down
+      - volume_status
+      - volume_percentage_used
+      - volume_size_used
+
+  - platform: template
+    sensors:
+      daily_power_total:
+        value_template: >
+          {{ (float(states.sensor.daily_power_peak.state) + float(states.sensor.daily_power_offpeak.state)) | round(3) }}
+        unit_of_measurement: 'kWh'
+  - platform: template
+    sensors:
+      daily_power_production_total:
+        value_template: >
+          {{ (float(states.sensor.daily_power_production_peak.state) + float(states.sensor.daily_power_production_offpeak.state)) | round(3) }}
+        unit_of_measurement: 'kWh'
+  - platform: template
+    sensors:
+      daily_power_netto:
+        value_template: >
+          {{ (float(states.sensor.daily_power_total.state) - float(states.sensor.daily_power_production_total.state)) | round(3) }}
+        unit_of_measurement: 'kWh'
+
+  - platform: template
+    sensors:
+      weekly_power_total:
+        value_template: >
+          {{ (float(states.sensor.weekly_power_peak.state) + float(states.sensor.weekly_power_offpeak.state)) | round(3) }}
+        unit_of_measurement: 'kWh'
+  - platform: template
+    sensors:
+      weekly_power_production_total:
+        value_template: >
+          {{ (float(states.sensor.weekly_power_production_peak.state) + float(states.sensor.weekly_power_production_offpeak.state)) | round(3) }}
+        unit_of_measurement: 'kWh'
+  - platform: template
+    sensors:
+      weekly_power_netto:
+        value_template: >
+          {{ (float(states.sensor.weekly_power_total.state) - float(states.sensor.weekly_power_production_total.state)) | round(3) }}
+        unit_of_measurement: 'kWh'
+
+  - platform: template
+    sensors:
+      youless_zonnepanelen_kw:
+        value_template: >
+          {{ (float(states.sensor.youless_zonnepanelen.state) / 1000) | round(3) }}
+        unit_of_measurement: 'kW'
+
+  - platform: template
+    sensors:
+      monthly_power_total:
+        value_template: >
+          {{ (float(states.sensor.monthly_power_peak.state) + float(states.sensor.monthly_power_offpeak.state)) | round(3) }}
+        unit_of_measurement: 'kWh'
+  - platform: template
+    sensors:
+      monthly_power_production_total:
+        value_template: >
+          {{ (float(states.sensor.monthly_power_production_peak.state) + float(states.sensor.monthly_power_production_offpeak.state)) | round(3) }}
+        unit_of_measurement: 'kWh'
+  - platform: template
+    sensors:
+      monthly_power_netto:
+        value_template: >
+          {{ (float(states.sensor.monthly_power_total.state) - float(states.sensor.monthly_power_production_total.state)) | round(3) }}
+        unit_of_measurement: 'kWh'
+
+  - platform: template
+    sensors:
+      yearly_power_total:
+        value_template: >
+          {{ (float(states.sensor.yearly_power_peak.state) + float(states.sensor.yearly_power_offpeak.state)) | round(3) }}
+        unit_of_measurement: 'kWh'
+  - platform: template
+    sensors:
+      yearly_power_production_total:
+        value_template: >
+          {{ (float(states.sensor.yearly_power_production_peak.state) + float(states.sensor.yearly_power_production_offpeak.state)) | round(3) }}
+        unit_of_measurement: 'kWh'
+  - platform: template
+    sensors:
+      yearly_power_netto:
+        value_template: >
+          {{ (float(states.sensor.yearly_power_total.state) - float(states.sensor.yearly_power_production_total.state)) | round(3) }}
+        unit_of_measurement: 'kWh'
+
+  - platform: template
+    sensors:
+      daily_gas_cost:
+        value_template: "{{ states.sensor.daily_gas.state | multiply(0.75264) | round(2)}}"
+        friendly_name: Gas Kosten (Vandaag)
+        unit_of_measurement: €
+
+  - platform: template
+    sensors:
+      daily_power_cost:
+        value_template: "{{ states.sensor.daily_power_netto.state | multiply(0.25625) | round(2)}}"
+        friendly_name: Electra Kosten (Vandaag)
+        unit_of_measurement: €
+
+  - platform: template
+    sensors:
+      wasmachine_status:
+        value_template: '{{ states.input_select.wasmachine_status.state}}'
+        friendly_name: 'Wasmachine Status'
+      droger_status:
+        value_template: '{{ states.input_select.droger_status.state}}'
+        friendly_name: 'Droger Status'
+      gangkachel_status:
+        value_template: '{{ states.input_select.gangkachel_status.state}}'
+        friendly_name: 'Gangkachel Status'
+
+  - platform: template
+    sensors:
+      woonkamer_thermostaat_hvac_state:
+        entity_id: climate.netatmo_woonkamer
+        value_template: "{{ state_attr('climate.netatmo_woonkamer', 'hvac_action') }}"
+        friendly_name: 'Woonkamer Thermostaat'
+  - platform: template
+    sensors:
+      badkamer_radiator_hvac_state:
+        entity_id: climate.netatmo_badkamer
+        value_template: "{{ state_attr('climate.netatmo_badkamer', 'hvac_action') }}"
+        friendly_name: 'Badkamer Radiator'
+  - platform: template
+    sensors:
+      charlies_kamer_radiator_hvac_state:
+        entity_id: climate.netatmo_charlie_s_kamer
+        value_template: "{{ state_attr('climate.netatmo_charlie_s_kamer', 'hvac_action') }}"
+        friendly_name: 'Charlies Radiator'
+  - platform: template
+    sensors:
+      slaapkamer_radiator_hvac_state:
+        entity_id: climate.netatmo_slaapkamer
+        value_template: "{{ state_attr('climate.netatmo_slaapkamer', 'hvac_action') }}"
+        friendly_name: 'Slaapkamer Radiator'
+
+  - platform: mqtt
+    name: "Badkamer Fan Verbruik Vandaag"
+    state_topic: "tele/sonoff_badkamerfan/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Today"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Badkamer Fan Verbruik Gister"
+    state_topic: "tele/sonoff_badkamerfan/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Yesterday"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Badkamer Fan Verbruik Totaal"
+    state_topic: "tele/sonoff_badkamerfan/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Total"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Badkamer Fan Huidig Verbruik"
+    state_topic: "tele/sonoff_badkamerfan/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Power"] }}'
+    unit_of_measurement: "W"
+  - platform: mqtt
+    name: "Badkamer Fan Voltage"
+    state_topic: "tele/sonoff_badkamerfan/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
+    unit_of_measurement: "V"
+  - platform: mqtt
+    name: "Badkamer Fan Stroom"
+    state_topic: "tele/sonoff_badkamerfan/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Current"] }}'
+    unit_of_measurement: "A"
+
+  - platform: mqtt
+    name: "Gangkachel Verbruik Vandaag"
+    state_topic: "tele/sonoff_gangkachel/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Today"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Gangkachel Verbruik Gister"
+    state_topic: "tele/sonoff_gangkachel/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Yesterday"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Gangkachel Verbruik Totaal"
+    state_topic: "tele/sonoff_gangkachel/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Total"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Gangkachel Huidig Verbruik"
+    state_topic: "tele/sonoff_gangkachel/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Power"] }}'
+    unit_of_measurement: "W"
+  - platform: mqtt
+    name: "Gangkachel Voltage"
+    state_topic: "tele/sonoff_gangkachel/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
+    unit_of_measurement: "V"
+  - platform: mqtt
+    name: "Gangkachel Stroom"
+    state_topic: "tele/sonoff_gangkachel/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Current"] }}'
+    unit_of_measurement: "A"
+
+  - platform: mqtt
+    name: "Wasmachine Verbruik Vandaag"
+    state_topic: "tele/sonoff_wasmachine/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Today"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Wasmachine Verbruik Gister"
+    state_topic: "tele/sonoff_wasmachine/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Yesterday"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Wasmachine Verbruik Totaal"
+    state_topic: "tele/sonoff_wasmachine/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Total"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Wasmachine Huidig Verbruik"
+    state_topic: "tele/sonoff_wasmachine/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Power"] }}'
+    unit_of_measurement: "W"
+  - platform: mqtt
+    name: "Wasmachine Voltage"
+    state_topic: "tele/sonoff_wasmachine/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
+    unit_of_measurement: "V"
+  - platform: mqtt
+    name: "Wasmachine Stroom"
+    state_topic: "tele/sonoff_wasmachine/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Current"] }}'
+    unit_of_measurement: "A"
+
+  - platform: mqtt
+    name: "Droger Verbruik Vandaag"
+    state_topic: "tele/sonoff_droger/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Today"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Droger Verbruik Gister"
+    state_topic: "tele/sonoff_droger/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Yesterday"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Droger Verbruik Totaal"
+    state_topic: "tele/sonoff_droger/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Total"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Droger Huidig Verbruik"
+    state_topic: "tele/sonoff_droger/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Power"] }}'
+    unit_of_measurement: "W"
+  - platform: mqtt
+    name: "Droger Voltage"
+    state_topic: "tele/sonoff_droger/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
+    unit_of_measurement: "V"
+  - platform: mqtt
+    name: "Droger Stroom"
+    state_topic: "tele/sonoff_droger/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Current"] }}'
+    unit_of_measurement: "A"
+
+  - platform: mqtt
+    name: "TV-Meubel Verbruik Vandaag"
+    state_topic: "tele/tuya_tvmeubel/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Today"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "TV-Meubel Verbruik Gister"
+    state_topic: "tele/tuya_tvmeubel/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Yesterday"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "TV-Meubel Verbruik Totaal"
+    state_topic: "tele/tuya_tvmeubel/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Total"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "TV-Meubel Huidig Verbruik"
+    state_topic: "tele/tuya_tvmeubel/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Power"] }}'
+    unit_of_measurement: "W"
+  - platform: mqtt
+    name: "TV-Meubel Voltage"
+    state_topic: "tele/tuya_tvmeubel/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
+    unit_of_measurement: "V"
+  - platform: mqtt
+    name: "TV-Meubel Stroom"
+    state_topic: "tele/tuya_tvmeubel/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Current"] }}'
+    unit_of_measurement: "A"
+
+  - platform: mqtt
+    name: "CV Verbruik Vandaag"
+    state_topic: "tele/tuya_cv/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Today"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "CV Verbruik Gister"
+    state_topic: "tele/tuya_cv/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Yesterday"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "CV Verbruik Totaal"
+    state_topic: "tele/tuya_cv/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Total"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "CV Huidig Verbruik"
+    state_topic: "tele/tuya_cv/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Power"] }}'
+    unit_of_measurement: "W"
+  - platform: mqtt
+    name: "CV Voltage"
+    state_topic: "tele/tuya_cv/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
+    unit_of_measurement: "V"
+  - platform: mqtt
+    name: "CV Stroom"
+    state_topic: "tele/tuya_cv/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Current"] }}'
+    unit_of_measurement: "A"
+
+  - platform: mqtt
+    state_topic: "wallpanel/woonkamerwallpanel/sensor/battery"
+    name: "Wallpanel Batterij"
+    unit_of_measurement: "%"
+    value_template: '{{ value_json.value }}'
+  - platform: mqtt
+    state_topic: "wallpanel/woonkamerwallpanel/sensor/brightness"
+    name: "Wallpanel Brightness"
+    unit_of_measurement: "lx"
+    value_template: '{{ value_json.value }}'
+
+  - platform: mqtt
+    state_topic: "worx/status/statusDescription"
+    name: "Landroid Status"
+  - platform: mqtt
+    state_topic: "worx/status/errorDescription"
+    name: "Landroid Fout"
+  - platform: mqtt
+    state_topic: "worx/status/rainDelay"
+    name: "Landroid Regenuitstel"
+    unit_of_measurement: "Minuten"
+  - platform: mqtt
+    state_topic: "worx/status/batteryLevel"
+    name: "Landroid Batterij"
+    unit_of_measurement: "%"
+  - platform: mqtt
+    state_topic: "worx/status/batteryCharging"
+    name: "Landroid Batterij Opladen"
+  - platform: mqtt
+    state_topic: "worx/status/batteryChargeCycle"
+    name: "Landroid Batterij Laadcyclus"
+  - platform: mqtt
+    state_topic: "worx/status/batteryVoltage"
+    name: "Landroid Batterij Voltage"
+    unit_of_measurement: "V"
+  - platform: mqtt
+    state_topic: "worx/status/batteryTemperature"
+    name: "Landroid Batterij Temperatuur"
+    unit_of_measurement: "Celcius"

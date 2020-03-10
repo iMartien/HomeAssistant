@@ -1,0 +1,993 @@
+title: Martien en Deborah's Huis
+views:
+  - path: default_view
+    title: Home
+    cards:
+      - title: Huis Status
+        entities:
+          - input_boolean.homemode_home
+          - input_boolean.homemode_away
+          - input_boolean.homemode_night
+          - input_boolean.homemode_vacation
+          - input_boolean.homemode_guest
+          - input_boolean.homemode_jarvis
+        type: entities
+      - title: Energie Overzicht
+        entities:
+          - entity: sensor.power_production
+          - entity: sensor.power_consumption
+          - entity: sensor.wasmachine_huidig_verbruik
+          - entity: sensor.droger_huidig_verbruik
+          - entity: sensor.gangkachel_huidig_verbruik
+          - entity: sensor.badkamer_fan_huidig_verbruik
+          - entity: sensor.gas_consumption_today
+          - entity: sensor.net_power_usage_today_total
+        type: entities
+      - title: Woonkamer Verlichting
+        entities:
+          - light.rieten_lamp
+          - light.staande_lamp
+          - light.hue_bloom
+          - light.bol_lamp
+          - light.woonkamer_spot
+        type: entities
+      - title: Keuken Verlichting
+        entities:
+          - light.keuken_1
+          - light.keuken_2
+          - light.keuken_3
+          - light.keuken_4
+          - light.keuken_5
+          - light.eetkamertafel
+        type: entities
+      - title: Badkamer Spots
+        entities:
+          - light.badkamer_1
+          - light.badkamer_2
+          - light.badkamer_3
+          - light.badkamer_4
+          - light.badkamer_5
+        type: entities
+      - title: Slaapkamer Spots
+        entities:
+          - light.slaapkamer_spot_1
+          - light.slaapkamer_spot_2
+        type: entities
+      - title: Overloop Spots
+        entities:
+          - light.overloop_spot_1
+          - light.overloop_spot_2
+        type: entities
+      - title: Martiens Volvo
+        entities:
+          - device_tracker.volvo_hj409f
+          - switch.hj409f_heater
+          - lock.hj409f_lock
+          - sensor.hj409f_range
+          - sensor.hj409f_fuel_level
+          - sensor.hj409f_fuel_amount
+          - sensor.hj409f_fuel_consumption
+          - sensor.hj409f_odometer
+          - binary_sensor.hj409f_windows
+          - binary_sensor.hj409f_washer_fluid
+          - binary_sensor.hj409f_service
+          - binary_sensor.hj409f_doors
+          - binary_sensor.hj409f_bulbs
+          - binary_sensor.hj409f_brake_fluid
+        type: entities
+      - title: Gijs de Grasmaaier
+        entities:
+          - landroid.state
+          - landroid.no_of_alarms
+          - landroid.battery_percent
+          - landroid.total_distance
+          - landroid.total_mowing_hours
+        type: entities
+      - title: Buienradar
+        entities:
+          - sensor.br_full_condition
+          - sensor.br_temperature
+          - sensor.br_humidity
+          - sensor.br_precipitation_forecast_total
+          - sensor.br_wind_force
+          - sensor.br_wind_direction
+        type: entities
+      - title: Zonnepanelen
+        entities:
+          - sensor.pvoutput
+          - sensor.energy_generation
+          - sensor.power_generation
+          - sensor.energy_consumption_pvoutput
+        type: entities
+      - title: Batterijen
+        entities:
+          - landroid.battery_percent
+          - sensor.iphone_van_martien_battery_level
+          - sensor.iphone_van_martien_battery_state
+          - sensor.alta_hr_battery
+          - sensor.overloop_dimmer
+          - sensor.slaapkamer_dimmer_deborah
+        type: entities
+      - title: Temperaturen
+        entities:
+          - sensor.babykamer_temperature
+          - sensor.babycam_temperatuur
+          - sensor.buiten_temperature
+          - sensor.keuken_temperature
+          - sensor.slaapkamer_temperature
+        type: entities
+      - title: Reistijden
+        entities:
+          - sensor.reistijd_naar_huis
+          - sensor.reistijd_naar_centric
+        type: entities
+      - title: Martien
+        entities:
+          - device_tracker.martiensiphone
+          - device_tracker.3c2eff1fc9d9
+          - device_tracker.iphone_van_martien
+        type: entities
+      - title: Deborah
+        entities:
+          - device_tracker.3c2eff27ec1e
+          - device_tracker.iphone_van_deborah
+        type: entities
+      - title: Personen
+        entities:
+          - group.martien
+          - group.deborah
+        type: entities
+      - title: Transmission
+        entities:
+          - sensor.transmission_status
+          - sensor.transmission_active_torrents
+          - sensor.transmission_down_speed
+          - sensor.transmission_up_speed
+          - weblink.transmission
+        type: entities
+      - title: System Info
+        entities:
+          - sensor.processor_use
+          - sensor.memory_use
+          - sensor.memory_free
+          - sensor.disk_use_percent_home
+          - sensor.cpu_temperature
+          - sensor.since_last_boot
+        type: entities
+      - title: Alarm Panel
+        entities:
+          - switch.alarm_panel__arm
+          - switch.alarm_panel__arm_home
+          - switch.alarm_panel__disarm
+          - switch.alarm_panel__sos
+        type: entities
+      - title: Netto Stroomverbruik
+        entities:
+          - sensor.power_consumption
+          - sensor.power_consumption_phase_l1
+          - sensor.power_consumption_phase_l2
+          - sensor.power_consumption_phase_l3
+        type: entities
+      - title: Netto Stroomproductie
+        entities:
+          - sensor.power_production
+          - sensor.power_production_phase_l1
+          - sensor.power_production_phase_l2
+          - sensor.power_production_phase_l3
+        type: entities
+      - title: Meterstanden
+        entities:
+          - sensor.power_consumption_low
+          - sensor.power_consumption_normal
+          - sensor.power_production_low
+          - sensor.power_production_normal
+          - sensor.power_consumption_today_low
+          - sensor.power_consumption_today_normal
+          - sensor.power_consumption_today_total
+          - sensor.power_production_today_low
+          - sensor.power_production_today_normal
+          - sensor.power_production_today_total
+          - sensor.net_power_usage_today_total
+        type: entities
+      - title: Voltages
+        entities:
+          - sensor.voltage_sags_phase_l1
+          - sensor.voltage_sags_phase_l2
+          - sensor.voltage_sags_phase_l3
+          - sensor.voltage_swells_phase_l1
+          - sensor.voltage_swells_phase_l2
+          - sensor.voltage_swells_phase_l3
+        type: entities
+      - title: Power Overig
+        entities:
+          - sensor.power_tariff
+          - sensor.long_power_failure_count
+        type: entities
+      - title: Gasverbruik
+        entities:
+          - sensor.hourly_gas_consumption
+          - sensor.gas_consumption_today
+          - sensor.gas_consumption
+        type: entities
+      - title: Martiens Fitbit
+        entities:
+          - sensor.steps
+          - sensor.resting_heart_rate
+          - sensor.weight
+          - sensor.tracker_calories
+          - sensor.tracker_activity_calories
+          - sensor.sleep_start_time
+          - sensor.sleep_time_in_bed
+          - sensor.awakenings_count
+          - sensor.sleep_efficiency
+        type: entities
+      - title: Crypto Markt
+        entities:
+          - sensor.exchange_rate_1_btc
+        type: entities
+      - title: BTC Wallets
+        entities:
+          - sensor.ledger_btc_wallet
+          - sensor.jaxx_btc_wallet
+        type: entities
+      - title: ETH Wallets
+        entities:
+          - sensor.ledger_eth_wallet
+          - sensor.jaxx_eth_wallet
+        type: entities
+      - title: Mining Rig
+        entities:
+          - switch.mining_rig__wol
+          - switch.mining_rig__sonoff
+          - sensor.mining_rig_voltage
+          - sensor.mining_rig_stroom
+          - sensor.mining_rig_huidig_verbruik
+          - sensor.mining_rig_verbruik_vandaag
+          - sensor.mining_rig_verbruik_gister
+          - sensor.mining_rig_verbruik_totaal
+        type: entities
+      - title: Synology NAS
+        entities:
+          - sensor.cpu_load_total
+          - sensor.memory_usage_real
+          - sensor.network_up
+          - sensor.network_down
+          - sensor.status_volume_1
+          - sensor.used_space_volume_1
+          - sensor.volume_used_volume_1
+        type: entities
+      - title: Apparaat Status
+        entities:
+          - binary_sensor.router
+          - binary_sensor.synology_nas
+          - binary_sensor.solaredge
+          - binary_sensor.hue_hub
+          - binary_sensor.tradfri_hub
+          - binary_sensor.harmony_hub
+          - binary_sensor.hdhomerun
+          - binary_sensor.netatmo_thermostaat
+          - binary_sensor.landroid_grasmaaier
+          - binary_sensor.plex_server
+          - binary_sensor.foscam_nvr
+          - binary_sensor.foscam_oprit
+          - binary_sensor.foscam_babykamer
+          - binary_sensor.woonkamer_sonos
+          - binary_sensor.zitkamer_sonos
+          - binary_sensor.keuken_sonos
+          - binary_sensor.badkamer_sonos
+          - binary_sensor.hyperv_host
+          - binary_sensor.mining_rig
+        type: entities
+      - title: Wasmachine
+        entities:
+          - switch.wasmachine__sonoff
+          - sensor.wasmachine_status
+          - sensor.wasmachine_voltage
+          - sensor.wasmachine_stroom
+          - sensor.wasmachine_huidig_verbruik
+          - sensor.wasmachine_verbruik_vandaag
+          - sensor.wasmachine_verbruik_gister
+          - sensor.wasmachine_verbruik_totaal
+        type: entities
+      - title: Droger
+        entities:
+          - switch.droger__sonoff
+          - sensor.droger_status
+          - sensor.droger_voltage
+          - sensor.droger_stroom
+          - sensor.droger_huidig_verbruik
+          - sensor.droger_verbruik_vandaag
+          - sensor.droger_verbruik_gister
+          - sensor.droger_verbruik_totaal
+        type: entities
+      - entity: alarm_control_panel.alarm
+        type: alarm-panel
+      - title: Automatisering
+        entities:
+          - automation.alarm__arm_away_from_keypad
+          - automation.light__turn_on_light_at_night_when_someone_home
+          - automation.presence__turn_on_away_mode
+          - automation.notification__energie_rapport
+          - automation.time__turn_off_hyperv_machine_at_night
+          - automation.alarm__arm_home_from_keypad
+          - automation.alarm__disarm_from_keypad
+          - automation.droger__status_naar_aan_na_klaar
+          - automation.set_input_number_values_at_midnight
+          - automation.time__start_homekit
+          - automation.alarm__disarm_alarm_ha__homekit
+          - automation.time__turn_on_hyperv_machine_in_the_morning_on_nonworkday
+          - automation.alarm__reset_arm_and_disarm_boolean
+          - automation.homemode__switch_homemodes_to_home
+          - automation.alarm__arm_home_from_ha__homekit
+          - automation.homemode__homemode_actions
+          - automation.droger__status_naar_aan
+          - automation.light__turn_on_light_at_when_coming_home
+          - automation.droger__status_naar_drogen
+          - automation.doorbell__play_doorbell_chime_via_sonos
+          - automation.notification__home_assistant_startup
+          - automation.light__turn_off_light_at_2233_when_noone_home
+          - automation.notification__doorbell_pressed
+          - automation.notification__home_assistant_update_available
+          - automation.droger__status_naar_klaar
+          - automation.droger__status_naar_uit
+          - automation.notification__landroid_alarm
+          - automation.homemode__awaymode_actions__at_dark
+          - automation.homemode__awaymode_actions__at_daytime
+          - automation.alarm__arm_night_from_ha__homekit
+          - automation.alarm__arm_away_from_ha__homekit
+          - automation.presence__turn_on_home_mode
+          - automation.notification__home_assistant_shutdown
+          - automation.doorbell__pause_apple_tv_on_doorbell
+          - automation.light__turn_on_light_at_night_when_noone_home
+          - automation.droger__staat_voor_niks_aan
+          - automation.time__turn_on_hyperv_machine_in_the_morning_on_workday
+          - automation.homemode__switch_homemodes_to_away_or_vacation
+        type: entities
+      - title: Camera
+        entities:
+          - camera.looppoort_deurbel_last_ring
+          - camera.babykamer
+          - camera.looppoort_deurbel_last_motion
+          - camera.oprit
+          - camera.looppoort_deurbel_live
+        type: entities
+      - entity: climate.thermostaat
+        type: thermostat
+      - title: Boolean invoer
+        entities:
+          - input_boolean.alarm_disarmfromkeypad
+          - input_boolean.alarm_armfromkeypad
+        type: entities
+      - title: Numerieke invoer
+        entities:
+          - input_number.power_production_returns
+          - input_number.midnight_gas_consumption
+          - input_number.midnight_power_production_normal
+          - input_number.power_consumption_cost
+          - input_number.midnight_power_production_low
+          - input_number.midnight_power_consumption_low
+          - input_number.midnight_power_consumption_normal
+        type: entities
+      - title: Invoer selectie
+        entities:
+          - input_select.wasmachine_status
+          - input_select.droger_status
+        type: entities
+      - title: Licht
+        entities:
+          - light.slaapkamer
+          - light.overloop
+          - light.babykamer
+          - light.woonkamer
+        type: entities
+      - title: Slot
+        entities:
+          - lock.hj409f_door_lock
+        type: entities
+      - entity: media_player.slaapkamer_apple_tv
+        type: media-control
+      - entity: media_player.woonkamer
+        type: media-control
+      - entity: media_player.keuken
+        type: media-control
+      - entity: media_player.woonkamer_apple_tv
+        type: media-control
+      - entity: media_player.lg_webos_smart_tv
+        type: media-control
+      - entity: media_player.keuken_2
+        type: media-control
+      - entity: media_player.tvkamer
+        type: media-control
+      - title: Extern
+        entities:
+          - remote.woonkamer_apple_tv
+          - remote.woonkamer_harmony_hub
+          - remote.slaapkamer_apple_tv
+        type: entities
+      - title: Script
+        entities:
+          - script.switch_everyone_to_not_home
+          - script.badkamer_licht_therapie
+          - script.charlies_kamer_loop
+        type: entities
+      - title: Schakelaar
+        entities:
+          - switch.hyperv_host
+          - switch.kerstboom_2
+          - switch.looppoort_deurbel_ir
+          - switch.deurbel
+          - switch.kerstverlichting_buiten
+          - switch.looppoort_deurbel_relay_1
+          - switch.kerstboom_1
+        type: entities
+      - title: Web link
+        entities:
+          - weblink.foscam_oprit
+          - weblink.foscam_nvr
+          - weblink.sonarr
+          - weblink.foscam_babykamer
+          - weblink.plex
+        type: entities
+    badges:
+      - binary_sensor.hj409f_rear_right_door
+      - binary_sensor.hj409f_engine
+      - binary_sensor.hj409f_rear_left_door
+      - binary_sensor.hj409f_front_right_tyre
+      - binary_sensor.hj409f_front_left_door
+      - binary_sensor.oprit_motion
+      - binary_sensor.workday_sensor
+      - binary_sensor.hj409f_front_left_window
+      - binary_sensor.hj409f_hood
+      - binary_sensor.hj409f_front_left_tyre
+      - binary_sensor.hj409f_front_right_door
+      - binary_sensor.hj409f_rear_right_tyre
+      - binary_sensor.hj409f_front_right_window
+      - binary_sensor.hj409f_rear_right_window
+      - binary_sensor.hj409f_rear_left_tyre
+      - binary_sensor.hj409f_rear_left_window
+      - sensor.moon
+      - sensor.energy_consumption
+      - sensor.hj409f_trip_meter_2
+      - sensor.power_consumption_pvoutput
+      - sensor.hj409f_last_trip
+      - sensor.postnl
+      - sensor.regen_rain_rate
+      - sensor.reistijd_naar_axoft
+      - sensor.hj409f_trip_meter_1
+      - sensor.yr_symbol
+      - sensor.plex
+      - sun.sun
+  - title: Huis
+    theme: default
+    badges:
+      - group.martien
+      - group.deborah
+    path: huis
+    cards:
+      - solar_power_entity: sensor.power_generation
+        grid_power_entity: sensor.current_net_power_usage
+        type: 'custom:power-wheel-card'
+      - severity:
+          red: 1.5
+          green: 0
+          yellow: 0.5
+        max: 5
+        name: Power
+        min: 0
+        entity: sensor.power_consumption
+        type: gauge
+      - severity:
+          red: 10
+          green: 0
+          yellow: 4
+        max: 20
+        name: Gas
+        min: 0
+        entity: sensor.gas_consumption_today
+        type: gauge
+      - entity: climate.thermostaat
+        type: thermostat
+      - title: Energie Overzicht
+        show_header_toggle: false
+        entities:
+          - entity: sensor.power_production
+          - entity: sensor.power_consumption
+          - entity: sensor.wasmachine_huidig_verbruik
+          - entity: sensor.droger_huidig_verbruik
+          - entity: sensor.gangkachel_huidig_verbruik
+          - entity: sensor.badkamer_fan_huidig_verbruik
+          - entity: sensor.gas_consumption_today
+          - entity: sensor.net_power_usage_today_total
+        type: entities
+    icon: 'mdi:home'
+  - path: woonkamer
+    title: Woonkamer
+    badges: []
+    cards:
+      - title: Woonkamer Verlichting
+        entities:
+          - light.rieten_lamp
+          - light.staande_lamp
+          - light.hue_bloom
+          - light.bol_lamp
+          - light.woonkamer_spot
+        type: entities
+      - entity: alarm_control_panel.alarm
+        type: alarm-panel
+      - entity: climate.thermostaat
+        type: thermostat
+      - entity: media_player.woonkamer
+        type: media-control
+      - entity: media_player.woonkamer_apple_tv
+        type: media-control
+      - title: Extern
+        entities:
+          - remote.woonkamer_apple_tv
+          - remote.woonkamer_harmony_hub
+        type: entities
+    icon: 'mdi:sofa'
+  - path: keuken
+    title: Keuken
+    badges:
+      - sensor.keuken_temperature
+    cards:
+      - title: Keuken Verlichting
+        entities:
+          - light.keuken_1
+          - light.keuken_2
+          - light.keuken_3
+          - light.keuken_4
+          - light.keuken_5
+          - light.eetkamertafel
+        type: entities
+      - entity: media_player.keuken
+        type: media-control
+    icon: 'mdi:fridge'
+  - path: badkamer
+    title: Badkamer
+    badges: []
+    cards:
+      - title: Badkamer Spots
+        entities:
+          - light.badkamer_1
+          - light.badkamer_2
+          - light.badkamer_3
+          - light.badkamer_4
+          - light.badkamer_5
+        type: entities
+      - title: Script
+        show_header_toggle: false
+        entities:
+          - script.badkamer_licht_therapie
+        type: entities
+      - title: Badkamerfan
+        show_header_toggle: false
+        entities:
+          - entity: switch.badkamerfan__sonoff
+          - entity: sensor.badkamer_fan_voltage
+          - entity: sensor.badkamer_fan_stroom
+          - entity: sensor.badkamer_fan_huidig_verbruik
+          - entity: sensor.badkamer_fan_verbruik_vandaag
+          - entity: sensor.badkamer_fan_verbruik_gister
+          - entity: sensor.badkamer_fan_verbruik_totaal
+        type: entities
+    icon: 'mdi:shower'
+  - path: washok
+    title: Washok
+    badges: []
+    cards:
+      - title: Wasmachine
+        show_header_toggle: false
+        entities:
+          - switch.wasmachine__sonoff
+          - sensor.wasmachine_status
+          - sensor.wasmachine_voltage
+          - sensor.wasmachine_stroom
+          - sensor.wasmachine_huidig_verbruik
+          - sensor.wasmachine_verbruik_vandaag
+          - sensor.wasmachine_verbruik_gister
+          - sensor.wasmachine_verbruik_totaal
+        type: entities
+      - title: Droger
+        show_header_toggle: false
+        entities:
+          - switch.droger__sonoff
+          - sensor.droger_status
+          - sensor.droger_voltage
+          - sensor.droger_stroom
+          - sensor.droger_huidig_verbruik
+          - sensor.droger_verbruik_vandaag
+          - sensor.droger_verbruik_gister
+          - sensor.droger_verbruik_totaal
+        type: entities
+    icon: 'mdi:washing-machine'
+  - path: slaapkamer
+    title: Slaapkamer
+    badges:
+      - sensor.slaapkamer_temperature
+    cards:
+      - title: Slaapkamer Spots
+        entities:
+          - light.slaapkamer_spot_1
+          - light.slaapkamer_spot_2
+        type: entities
+      - entity: media_player.slaapkamer_apple_tv
+        type: media-control
+      - title: Extern
+        entities:
+          - remote.slaapkamer_apple_tv
+        type: entities
+    icon: 'mdi:hotel'
+  - path: babykamer
+    title: Babykamer
+    badges:
+      - sensor.babykamer_temperature
+    cards:
+      - title: Camera
+        entities:
+          - camera.babykamer
+        type: entities
+      - title: Licht
+        entities:
+          - light.babykamer
+        type: entities
+      - title: Script
+        entities:
+          - script.charlies_kamer_loop
+        type: entities
+      - title: Web link
+        entities:
+          - weblink.foscam_babykamer
+        type: entities
+    icon: 'mdi:baby'
+  - path: overloop
+    title: Overloop
+    badges: []
+    cards:
+      - title: Overloop Spots
+        entities:
+          - light.overloop_spot_1
+          - light.overloop_spot_2
+        type: entities
+    icon: 'mdi:stairs'
+  - path: voortuin
+    title: Voortuin
+    badges:
+      - sensor.postnl
+    cards:
+      - title: Camera
+        entities:
+          - camera.looppoort_deurbel_last_ring
+          - camera.looppoort_deurbel_last_motion
+          - camera.looppoort_deurbel_live
+        type: entities
+    icon: 'mdi:gate'
+  - path: oprit
+    title: Oprit
+    badges:
+      - binary_sensor.oprit_motion
+    cards:
+      - title: Reistijden
+        entities:
+          - entity: sensor.reistijd_naar_huis
+          - entity: sensor.reistijd_naar_axoft
+        type: entities
+      - title: Martiens Volvo
+        entities:
+          - entity: device_tracker.volvo_hj409f
+          - entity: switch.hj409f_heater
+          - entity: lock.hj409f_door_lock
+          - entity: sensor.hj409f_range
+          - entity: sensor.hj409f_fuel_level
+          - entity: sensor.hj409f_fuel_amount
+          - entity: sensor.hj409f_fuel_consumption
+          - entity: sensor.hj409f_odometer
+          - entity: binary_sensor.hj409f_windows
+          - entity: binary_sensor.hj409f_washer_fluid
+          - entity: binary_sensor.hj409f_service
+          - entity: binary_sensor.hj409f_doors
+          - entity: binary_sensor.hj409f_bulbs
+          - entity: binary_sensor.hj409f_brake_fluid
+        type: entities
+      - title: Camera
+        entities:
+          - camera.oprit
+        type: entities
+      - title: Web link
+        entities:
+          - weblink.foscam_oprit
+        type: entities
+    icon: 'mdi:car'
+  - path: achtertuin
+    title: Achtertuin
+    badges:
+      - sensor.yr_symbol
+      - sensor.buiten_temperature
+    cards:
+      - title: Buienradar
+        entities:
+          - sensor.br_full_condition
+          - sensor.br_temperature
+          - sensor.br_humidity
+          - sensor.br_precipitation_forecast_total
+          - sensor.br_wind_force
+          - sensor.br_wind_direction
+        type: entities
+      - title: Gijs de Grasmaaier
+        entities:
+          - landroid.state
+          - landroid.no_of_alarms
+          - landroid.battery_percent
+          - landroid.total_distance
+          - landroid.total_mowing_hours
+        type: entities
+    icon: 'mdi:tree'
+  - path: security
+    title: Security
+    badges: []
+    cards:
+      - entity: alarm_control_panel.alarm
+        type: alarm-panel
+      - show_state: false
+        entity: camera.babykamer
+        type: picture-entity
+      - show_state: false
+        entity: camera.oprit
+        type: picture-entity
+      - show_state: false
+        entity: camera.looppoort_deurbel_live
+        type: picture-entity
+      - title: Web link
+        entities:
+          - weblink.foscam_babykamer
+          - weblink.foscam_oprit
+          - weblink.foscam_nvr
+        type: entities
+    icon: 'mdi:shield'
+  - path: familie
+    title: Familie
+    badges: []
+    cards:
+      - title: Personen
+        entities:
+          - group.martien
+          - group.deborah
+        type: entities
+      - title: Martien
+        entities:
+          - device_tracker.martiensiphone
+          - device_tracker.3c2eff1fc9d9
+          - device_tracker.iphone_van_martien
+        type: entities
+      - title: Deborah
+        entities:
+          - device_tracker.3c2eff27ec1e
+          - device_tracker.iphone_van_deborah
+        type: entities
+      - title: Martiens Fitbit
+        entities:
+          - sensor.steps
+          - sensor.resting_heart_rate
+          - sensor.weight
+          - sensor.tracker_calories
+          - sensor.tracker_activity_calories
+          - sensor.sleep_start_time
+          - sensor.sleep_time_in_bed
+          - sensor.awakenings_count
+          - sensor.sleep_efficiency
+        type: entities
+    icon: 'mdi:account-multiple'
+  - path: crypto
+    title: Crypto
+    badges: []
+    cards:
+      - title: Crypto Markt
+        entities:
+          - sensor.exchange_rate_1_btc
+        type: entities
+      - title: BTC Wallets
+        entities:
+          - sensor.ledger_btc_wallet
+          - sensor.jaxx_btc_wallet
+        type: entities
+      - title: ETH Wallets
+        entities:
+          - sensor.ledger_eth_wallet
+          - sensor.jaxx_eth_wallet
+        type: entities
+      - title: Mining Rig
+        entities:
+          - switch.mining_rig__wol
+          - switch.mining_rig__sonoff
+          - sensor.mining_rig_voltage
+          - sensor.mining_rig_stroom
+          - sensor.mining_rig_huidig_verbruik
+          - sensor.mining_rig_verbruik_vandaag
+          - sensor.mining_rig_verbruik_gister
+          - sensor.mining_rig_verbruik_totaal
+        type: entities
+    icon: 'mdi:bitcoin'
+  - path: energie
+    title: Energie
+    badges: []
+    cards:
+      - title: Meterstanden
+        entities:
+          - sensor.power_consumption_low
+          - sensor.power_consumption_normal
+          - sensor.power_production_low
+          - sensor.power_production_normal
+          - sensor.power_consumption_today_low
+          - sensor.power_consumption_today_normal
+          - sensor.power_consumption_today_total
+          - sensor.power_production_today_low
+          - sensor.power_production_today_normal
+          - sensor.power_production_today_total
+          - sensor.net_power_usage_today_total
+        type: entities
+      - title: Netto Stroomverbruik
+        entities:
+          - entity: sensor.power_consumption
+          - entity: sensor.power_consumption_phase_l1
+          - entity: sensor.power_consumption_phase_l2
+          - entity: sensor.power_consumption_phase_l3
+          - entity: sensor.current_net_power_usage
+        type: entities
+      - title: Netto Stroomproductie
+        entities:
+          - sensor.power_production
+          - sensor.power_production_phase_l1
+          - sensor.power_production_phase_l2
+          - sensor.power_production_phase_l3
+        type: entities
+      - title: Zonnepanelen
+        entities:
+          - entity: sensor.pvoutput
+          - entity: sensor.energy_generation
+          - entity: sensor.power_generation
+        type: entities
+      - title: Voltages
+        entities:
+          - sensor.voltage_sags_phase_l1
+          - sensor.voltage_sags_phase_l2
+          - sensor.voltage_sags_phase_l3
+          - sensor.voltage_swells_phase_l1
+          - sensor.voltage_swells_phase_l2
+          - sensor.voltage_swells_phase_l3
+        type: entities
+      - title: Gasverbruik
+        entities:
+          - sensor.hourly_gas_consumption
+          - sensor.gas_consumption_today
+          - sensor.gas_consumption
+        type: entities
+      - title: Power Overig
+        entities:
+          - sensor.power_tariff
+          - sensor.long_power_failure_count
+        type: entities
+    icon: 'mdi:power-plug'
+  - path: systeem_en_monitoring
+    title: Systeem en Monitoring
+    badges: []
+    cards:
+      - title: Batterijen
+        entities:
+          - landroid.battery_percent
+          - sensor.iphone_van_martien_battery_level
+          - sensor.iphone_van_martien_battery_state
+          - sensor.alta_hr_battery
+          - sensor.overloop_dimmer
+          - sensor.slaapkamer_dimmer_deborah
+        type: entities
+      - title: Apparaat Status
+        entities:
+          - binary_sensor.router
+          - binary_sensor.synology_nas
+          - binary_sensor.solaredge
+          - binary_sensor.hue_hub
+          - binary_sensor.tradfri_hub
+          - binary_sensor.harmony_hub
+          - binary_sensor.hdhomerun
+          - binary_sensor.netatmo_thermostaat
+          - binary_sensor.landroid_grasmaaier
+          - binary_sensor.plex_server
+          - binary_sensor.foscam_nvr
+          - binary_sensor.foscam_oprit
+          - binary_sensor.foscam_babykamer
+          - binary_sensor.woonkamer_sonos
+          - binary_sensor.zitkamer_sonos
+          - binary_sensor.keuken_sonos
+          - binary_sensor.badkamer_sonos
+          - binary_sensor.hyperv_host
+          - binary_sensor.mining_rig
+        type: entities
+      - title: System Info
+        entities:
+          - sensor.processor_use
+          - sensor.memory_use
+          - sensor.memory_free
+          - sensor.disk_use_percent_home
+          - sensor.cpu_temperature
+          - sensor.since_last_boot
+        type: entities
+      - title: Synology NAS
+        entities:
+          - sensor.cpu_load_total
+          - sensor.memory_usage_real
+          - sensor.network_up
+          - sensor.network_down
+          - sensor.status_volume_1
+          - sensor.used_space_volume_1
+          - sensor.volume_used_volume_1
+        type: entities
+      - title: Transmission
+        entities:
+          - sensor.transmission_status
+          - sensor.transmission_active_torrents
+          - sensor.transmission_down_speed
+          - sensor.transmission_up_speed
+          - weblink.transmission
+        type: entities
+      - title: Schakelaar
+        entities:
+          - switch.hyperv_host
+        type: entities
+    icon: 'mdi:server-network'
+  - path: automations_en_scripts
+    title: Automations en Scripts
+    badges: []
+    cards:
+      - type: entities
+        title: Time Automations
+        entities:
+          - entity: automation.time__start_homekit
+          - entity: automation.time__turn_off_hyperv_machine_at_night
+          - entity: automation.time__turn_on_hyperv_machine_in_the_morning_on_workday
+          - entity: >-
+              automation.time__turn_on_hyperv_machine_in_the_morning_on_nonworkday
+          - entity: automation.time__turn_on_badkamerfan_after_7min
+          - entity: automation.time__turn_off_badkamerfan_after_30min
+    icon: 'mdi:robot'
+  - title: Schakelen
+    cards:
+      - title: Woonkamer
+        image: /local/woonkamer_aan.png
+        entities:
+          - climate.thermostaat
+          - light.rieten_lamp
+          - light.staande_lamp
+          - light.hue_bloom
+          - light.bol_lamp
+          - light.woonkamer_spot
+        type: picture-glance
+      - title: Keuken
+        image: /local/keuken_aan.png
+        entities:
+          - sensor.keuken_temperature
+          - group.keuken_verlichting
+        type: picture-glance
+    badges: []
+    theme: default
+    icon: 'mdi:lamp'
+  - title: Gang
+    theme: Backend-selected
+    badges: []
+    path: ''
+    cards:
+      - title: Gangkachel
+        show_header_toggle: false
+        entities:
+          - entity: switch.gangkachel__sonoff
+          - entity: sensor.gangkachel_voltage
+          - entity: sensor.gangkachel_stroom
+          - entity: sensor.gangkachel_huidig_verbruik
+          - entity: sensor.gangkachel_verbruik_vandaag
+          - entity: sensor.gangkachel_verbruik_gister
+          - entity: sensor.gangkachel_verbruik_totaal
+        theme: default
+        type: entities
+    icon: 'mdi:shoe-formal'
+resources:
+  - url: /local/power-wheel-card.js?v=2
+    type: module

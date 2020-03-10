@@ -1,0 +1,94 @@
+  homemode_home:
+    name: Thuis
+    icon: mdi:home
+  homemode_away:
+    name: Afwezig
+    icon: mdi:run-fast
+  homemode_night:
+    name: Nacht
+    icon: mdi:weather-night
+  homemode_vacation:
+    name: Vakantie
+    icon: mdi:briefcase
+  homemode_guest:
+    name: Gast
+    icon: mdi:home-account
+  scene_goodmorning:
+    name: Opstaan
+    icon: mdi:coffee
+  scene_bedtime:
+    name: Bedtijd
+    icon: mdi:hotel
+  scene_sfeer:
+    name: Sfeer
+    icon: mdi:candle
+  scene_helder:
+    name: Helder
+    icon: mdi:lightbulb-on
+  scene_aantafel:
+    name: Aan tafel
+    icon: mdi:table-chair
+  scene_badtijd:
+    name: Badtijd
+    icon: mdi:shower
+  scene_normaal:
+    name: Normaal
+    icon: mdi:palette-outline
+
+  status_donker:
+    name: Donker
+    icon: mdi:weather-night
+
+  text_to_speech_mute:
+    name: Text to Speech Mute
+    icon: mdi:message-text
+
+  media_start_netflix:
+    name: Netflix
+    icon: mdi:netflix
+  media_start_plex:
+    name: Plex
+    icon: mdi:plex
+  media_start_prime:
+    name: Amazon Prime
+    icon: mdi:amazon
+  media_start_youtube:
+    name: YouTube
+    icon: mdi:youtube
+
+  media_start_radio2:
+    name: NPO Radio 2
+    icon: mdi:radio
+  media_start_3fm:
+    name: NPO 3FM
+    icon: mdi:radio
+  media_start_skyradio:
+    name: Sky Radio
+    icon: mdi:radio
+  media_start_sublimefm:
+    name: Sublime FM
+    icon: mdi:radio
+
+
+  alarm_armfromkeypad:
+    name: Alarm armed from Keypad
+    icon: mdi:dialpad
+  alarm_disarmfromkeypad:
+    name: Alarm disarmd from keypad
+    icon: mdi:dialpad
+
+  gangkachel:
+    name: Gangkachel
+    icon: mdi:radiator
+
+  gangkachel_schema:
+    name: Gangkachel Schema
+    icon: mdi:calendar-clock
+
+  keukenkachel_schema:
+    name: Keukenkachel Schema
+    icon: mdi:calendar-clock
+
+  standkachel_schema:
+    name: Standkachel Schema
+    icon: mdi:calendar-clock

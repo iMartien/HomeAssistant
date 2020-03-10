@@ -1,0 +1,179 @@
+switch.deurbel:
+  friendly_name: Deurbel
+  icon: mdi:bell-ring
+  assumed_state: false
+switch.alarm_panel_arm:
+  icon: mdi:home-lock
+  assumed_state: false
+switch.alarm_panel_arm_home:
+  icon: mdi:home-account
+  assumed_state: false
+switch.alarm_panel_disarm:
+  icon: mdi:home-lock-open
+  assumed_state: false
+switch.alarm_panel_sos:
+  icon: mdi:home-alert
+  assumed_state: false
+switch.hyperv_host:
+  icon: mdi:server
+switch.mining_rig:
+  icon: mdi:ethereum
+  assumed_state: false
+switch.wasmachine_sonoff:
+  icon: mdi:washing-machine
+switch.droger_sonoff:
+  icon: mdi:tumble-dryer
+switch.mining_rig_sonoff:
+  icon: mdi:bitcoin
+switch.kaku_switch_2:
+  icon: mdi:numeric-2-circle-outline
+  assumed_state: false
+switch.kaku_switch_1:
+  icon: mdi:numeric-1-circle-outline
+  assumed_state: false
+switch.kaku_switch_3:
+  icon: mdi:numeric-3-circle-outline
+  assumed_state: false
+switch.looppoort_deurbel_relay_1:
+  device_class: lock
+  icon: mdi:lock
+sensor.wasmachine_status:
+  icon: mdi:washing-machine
+sensor.droger_status:
+  icon: mdi:tumble-dryer
+binary_sensor.router:
+  icon: mdi:router-wireless
+binary_sensor.synology_nas:
+  icon: mdi:harddisk
+binary_sensor.solaredge:
+  icon: mdi:power-plug
+binary_sensor.hue_hub:
+  icon: mdi:lightbulb
+binary_sensor.tradfri_hub:
+  icon: mdi:lightbulb
+binary_sensor.harmony_hub:
+  icon: mdi:remote
+binary_sensor.hdhomerun:
+  icon: mdi:television-classic
+binary_sensor.netatmo_thermostaat:
+  icon: mdi:thermostat-box
+
+binary_sensor.oprit_camera:
+  icon: mdi:cctv
+binary_sensor.charlies_camera:
+  icon: mdi:cctv
+binary_sensor.veranda_camera:
+  icon: mdi:cctv
+
+binary_sensor.landroid_grasmaaier:
+  icon: mdi:robot-vacuum-variant
+
+sensor.power_consumption_today_total:
+  icon: mdi:flash-outline
+sensor.power_consumption_today_low:
+  icon: mdi:flash
+sensor.power_consumption_today_normal:
+  icon: mdi:flash
+sensor.power_production_today_total:
+  icon: mdi:flash-outline
+sensor.power_production_today_low:
+  icon: mdi:flash
+sensor.power_production_today_normal:
+  icon: mdi:flash
+sensor.net_power_usage_today_total:
+  icon: mdi:power-plug
+
+sensor.trash_gft:
+  friendly_name: Ophalen GFT
+  icon: mdi:food-apple
+sensor.trash_papier:
+  friendly_name: Ophalen Papier
+  icon: mdi:package-variant
+sensor.trash_restafval:
+  friendly_name: Ophalen Restafval
+  icon: mdi:recycle
+
+group.martien:
+  icon: mdi:human-male
+group.deborah:
+  icon: mdi:human-female
+
+device_tracker.tesla_model_3_location_tracker:
+  friendly_name: Tesla - GPS Locatie
+  icon: mdi:crosshairs-gps
+binary_sensor.tesla_model_3_charger_sensor:
+  device_class: connectivity
+  friendly_name: Tesla - Laadkabel
+  icon: mdi:battery-charging-80
+sensor.tesla_model_35yj3e7eb2kf240589_battery_sensor:
+  friendly_name: Tesla - Batterijlading
+  icon: mdi:battery-charging
+sensor.tesla_model_3_range_sensor:
+  friendly_name: Tesla - Actieradius
+  icon: mdi:car-cruise-control
+binary_sensor.tesla_model_3_parking_brake_sensor:
+  friendly_name: Tesla - Parkeerrem
+  icon: mdi:car-brake-parking
+sensor.tesla_model_3_mileage_sensor:
+  friendly_name: Tesla - Kilometerstand
+  icon: mdi:counter
+climate.tesla_model_3_hvac_climate_system:
+  friendly_name: Tesla - Air conditioning
+sensor.tesla_model_3_temperature_sensor_inside:
+  friendly_name: Tesla - Temperatuur (binnen)
+sensor.tesla_model_3_temperature_sensor_outside:
+  friendly_name: Tesla - Temperatuur (buiten)
+
+media_player.lg_webos_smart_tv:
+  device_class: tv
+
+switch.veranda_verlichting:
+  icon: mdi:string-lights
+switch.veranda_kachel:
+  icon: mdi:radiator
+
+light.keuken_1:
+  icon: mdi:wall-sconce-flat
+light.keuken_2:
+  icon: mdi:wall-sconce-flat
+light.keuken_3:
+  icon: mdi:wall-sconce-flat
+light.keuken_4:
+  icon: mdi:wall-sconce-flat
+light.keuken_5:
+  icon: mdi:wall-sconce-flat
+
+light.eetkamertafel:
+  icon: mdi:ceiling-light
+
+light.badkamer_1:
+  icon: mdi:wall-sconce-flat
+light.badkamer_2:
+  icon: mdi:wall-sconce-flat
+light.badkamer_3:
+  icon: mdi:wall-sconce-flat
+light.badkamer_4:
+  icon: mdi:wall-sconce-flat
+light.badkamer_5:
+  icon: mdi:wall-sconce-flat
+
+light.overloop_1:
+  icon: mdi:track-light
+light.overloop_2:
+  icon: mdi:track-light
+
+light.slaapkamer_spot_1:
+  icon: mdi:track-light
+light.slaapkamer_spot_2:
+  icon: mdi:track-light
+
+light.woonkamer_spot:
+  icon: mdi:track-light
+
+sensor.current_net_power_usage:
+  icon: mdi:transmission-tower
+
+person.martien:
+  entity_picture: "/local/Martien.png"
+person.deborah:
+  entity_picture: "/local/Deborah.png"
