@@ -18,11 +18,11 @@
         <li>{{states('sensor.dark_sky_summary_0h')}} ({{states('sensor.dark_sky_temperature')}}°)</li>
         {% if "on" in states('binary_sensor.workday_sensor') %} <li>Reistijd naar werk is momenteel {{states('sensor.reistijd_naar_fujitsu')}} minuten.</li> {% endif %}
         {% if "gft" in states('sensor.trash_today') %} <li>GFT wordt vandaag opgehaald.</li> {% endif %}
-        {% if "gft" in states('sensor.trash_tomorow') %} <li>GFT wordt morgen opgehaald.</li> {% endif %}
+        {% if "gft" in states('sensor.trash_tomorrow') %} <li>GFT wordt morgen opgehaald.</li> {% endif %}
         {% if "restafval" in states('sensor.trash_today') %} <li>Restafval wordt vandaag opgehaald.</li> {% endif %}
-        {% if "restafval" in states('sensor.trash_tomorow') %} <li>Restafval wordt morgen opgehaald.</li> {% endif %}
+        {% if "restafval" in states('sensor.trash_tomorrow') %} <li>Restafval wordt morgen opgehaald.</li> {% endif %}
         {% if "papier" in states('sensor.trash_today') %} <li>Papier wordt vandaag opgehaald.</li> {% endif %}
-        {% if "papier" in states('sensor.trash_tomorow') %} <li>Papier wordt morgen opgehaald.</li> {% endif %}
+        {% if "papier" in states('sensor.trash_tomorrow') %} <li>Papier wordt morgen opgehaald.</li> {% endif %}
         {% if states('sensor.current_lights_on') | float > 0 %} <li>{{states('sensor.current_lights_on')}} lichten aan.</li> {% endif %}
         {% if states('sensor.current_media_players_on') | float > 0 %} <li>{{states('sensor.current_media_players_on')}} speakers aan</li> {% endif %}
         {% if "armed_away" in states('alarm_control_panel.alarm') %} <li></li><li>Alarmsysteem ingeschakeld.</li> {% endif %}
