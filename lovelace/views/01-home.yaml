@@ -84,6 +84,12 @@
                 navigation_path: /lovelace/mediacontrol
               offStates:
                 - '0'
+            - entity: switch.looppoort_deurbel_relay_1
+              name: Inrijpoort
+              icon: mdi:boom-gate
+              hold_action:
+                action: navigate
+                navigation_path: /lovelace/inrijpoort
         - title: Energie
           entities:
             - card: custom:mini-graph-card

@@ -18,4 +18,5 @@
         - title: Inrijpoort
           entities:
             - entity: switch.looppoort_deurbel_relay_1
-              name: Hek open/dicht
+              name: Inrijpoort open / dicht
+              icon: mdi:boom-gate
