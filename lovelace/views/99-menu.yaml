@@ -111,18 +111,6 @@
                   graph: line
                 entities:
                   - sensor.dsmr_reading_electricity_currently_delivered
-            - card: custom:mini-graph-card
-              tap_action:
-                action: navigate
-                navigation_path: /lovelace/energie
-              noPadding: true
-              cardOptions:
-                name: Elektra
-                show_graph: false
-                show_legend: false
-                show:
-                  graph: line
-                entities:
                   - sensor.dsmr_reading_electricity_currently_returned
             - card: custom:mini-graph-card
               tap_action:
@@ -137,6 +125,19 @@
                   - sensor.dsmr_consumption_gas_currently_delivered
               offStates:
                 - '0.0'
+            - card: custom:mini-graph-card
+              tap_action:
+                action: navigate
+                navigation_path: /lovelace/energie
+              noPadding: true
+              cardOptions:
+                name: Kosten
+                show_graph: false
+                show_legend: false
+                show:
+                  graph: line
+                entities:
+                  - sensor.dsmr_day_consumption_total_cost
         - title: Nerd Alert
           entities:
             - entity: sensor.processor_use
