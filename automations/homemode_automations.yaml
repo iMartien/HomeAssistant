@@ -182,12 +182,10 @@
       data:
         entity_id: climate.badkamer_vloerverwarming
         hvac_mode: 'auto'
-    - service: notify.pushover
-      data_template:
-        message: "Homemode (overdag) is ingeschakeld"
-        title: "Homemode"
-        data:
-          priority: -1
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.current_scene
+        option: "Thuis"
 
 - alias: 'Homemode - To home at dark'
   trigger:
@@ -234,12 +232,10 @@
       data:
         entity_id: climate.badkamer_vloerverwarming
         hvac_mode: 'auto'
-    - service: notify.pushover
-      data_template:
-        message: "Homemode (donker) is ingeschakeld"
-        title: "Homemode"
-        data:
-          priority: -1
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.current_scene
+        option: "Thuis"
 
 ########################################
 ## Homemode To AWAY automations
@@ -281,12 +277,10 @@
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
-    - service: notify.pushover
-      data_template:
-        message: "Awaymode (overdag) is ingeschakeld"
-        title: "Awaymode"
-        data:
-          priority: -1
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.current_scene
+        option: "Afwezig"
 
 - alias: 'Homemode - To away at dark'
   trigger:
@@ -329,12 +323,10 @@
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
-    - service: notify.pushover
-      data_template:
-        message: "Awaymode (avond) is ingeschakeld"
-        title: "Awaymode"
-        data:
-          priority: -1
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.current_scene
+        option: "Afwezig"
 
 ########################################
 ## Homemode To NIGHT automations
@@ -382,10 +374,8 @@
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
-    - service: notify.pushover
-      data_template:
-        message: "Nachtmode is ingeschakeld"
-        title: "Nachtmode"
-        data:
-          priority: -1
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.current_scene
+        option: "Nacht"
 

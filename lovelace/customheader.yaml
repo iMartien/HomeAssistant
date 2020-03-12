@@ -1,4 +1,4 @@
-#view_css: 'padding-top: 84px !important'
+header_css: 'padding: 5px'
 background: 'rgba(255, 159, 9, 0.8)'
 hide_header: false
 footer_mode: true
@@ -8,7 +8,7 @@ voice_hide: true
 chevrons: false
 reverse_tab_direction: true
 reverse_button_direction: true
-options_hide: true
+options_hide: false
 hide_help: true
 hide_unused: false
 hide_refresh: false

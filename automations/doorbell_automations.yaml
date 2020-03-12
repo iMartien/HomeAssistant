@@ -11,11 +11,11 @@
       event_type: doorbird_looppoort_deurbel_button
   condition:
     - condition: state
-      entity_id:  media_player.woonkamer_apple_tv
+      entity_id:  media_player.woonkamer
       state: 'playing'
   action:
     - service: media_player.media_pause
-      entity_id:  media_player.woonkamer_apple_tv
+      entity_id:  media_player.woonkamer
 
 - alias: 'Doorbell - Play doorbell chime via Sonos'
   trigger:
@@ -29,41 +29,6 @@
     entity_id: group.personen
     state: 'home'
   action:
-#    - service: media_player.sonos_snapshot
-#      data_template:
-#        with_group: yes
-#        entity_id:
-#          - media_player.woonkamer
-#          - media_player.badkamer
-#          - media_player.keuken
-#          - media_player.tvkamer
-#    - service: media_player.sonos_unjoin
-#      data_template:
-#        entity_id:
-#          - media_player.tvkamer
-#          - media_player.woonkamer
-#          - media_player.badkamer
-#          - media_player.keuken
-#    - service: media_player.volume_set
-#      entity_id:
-#        - media_player.tvkamer
-#      data:
-#        volume_level: 0.10
-#    - service: media_player.play_media
-#      data_template:
-#        entity_id:
-#          - media_player.tvkamer
-#        media_content_id: https://martiendekleijn.duckdns.org:8123/local/doorbell.mp3
-#        media_content_type: music
-#    - delay: '00:00:13'
-#    - service: media_player.sonos_restore
-#      data_template:
-#        with_group: yes
-#        entity_id:
-#          - media_player.tvkamer
-#          - media_player.woonkamer
-#          - media_player.badkamer
-#          - media_player.keuken
     - service: media_player.volume_set
       entity_id:
         - media_player.google_home_mini
