@@ -58,6 +58,51 @@ binary_sensor.hdhomerun:
 binary_sensor.netatmo_thermostaat:
   icon: mdi:thermostat-box
 
+
+# Water sensors
+binary_sensor.lekkage_wc_boven:
+  icon: mdi:home-flood
+binary_sensor.lekkage_badkamer:
+  icon: mdi:home-flood
+
+#Smoke Sensors
+binary_sensor.rookmelder_overloop:
+  icon: mdi:fire
+
+#Motion Sensors
+binary_sensor.tv_kamer_motion:
+  icon: mdi:motion-sensor
+binary_sensor.woonkamer_motion:
+  icon: mdi:motion-sensor
+binary_sensor.keuken_motion:
+  icon: mdi:motion-sensor
+binary_sensor.gang_motion:
+  icon: mdi:motion-sensor
+binary_sensor.overloop_motion:
+  icon: mdi:motion-sensor
+
+#Door Sensors
+binary_sensor.keukendeur:
+  icon: mdi:door-closed
+
+#Window Sensors
+binary_sensor.woonkamer_raam_1:
+  icon: mdi:window-closed
+binary_sensor.woonkamer_raam_2:
+  icon: mdi:window-closed
+binary_sensor.woonkamer_raam_3:
+  icon: mdi:window-closed
+binary_sensor.badkamerraam:
+  icon: mdi:window-closed
+binary_sensor.overloop_raam:
+  icon: mdi:window-closed
+binary_sensor.grote_slaapkamer_raam:
+  icon: mdi:window-closed
+binary_sensor.kleine_slaapkamer_raam:
+  icon: mdi:window-closed
+binary_sensor.charlies_slaapkamer_raam:
+  icon: mdi:window-closed
+
 binary_sensor.oprit_camera:
   icon: mdi:cctv
 binary_sensor.charlies_camera:
@@ -67,21 +112,6 @@ binary_sensor.veranda_camera:
 
 binary_sensor.landroid_grasmaaier:
   icon: mdi:robot-vacuum-variant
-
-sensor.power_consumption_today_total:
-  icon: mdi:flash-outline
-sensor.power_consumption_today_low:
-  icon: mdi:flash
-sensor.power_consumption_today_normal:
-  icon: mdi:flash
-sensor.power_production_today_total:
-  icon: mdi:flash-outline
-sensor.power_production_today_low:
-  icon: mdi:flash
-sensor.power_production_today_normal:
-  icon: mdi:flash
-sensor.net_power_usage_today_total:
-  icon: mdi:power-plug
 
 sensor.trash_gft:
   friendly_name: Ophalen GFT

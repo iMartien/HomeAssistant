@@ -6,6 +6,9 @@
       home: false
       statePositionTop: true
       entities:
+        - title: Rookmelders
+          entities:
+            - entity: binary_sensor.rookmelder_overloop
         - title: Bewegingssensoren
           entities:
             - entity: binary_sensor.tv_kamer_motion
@@ -30,4 +33,7 @@
           entities:
             - entity: binary_sensor.lekkage_wc_boven
               name: WC Boven
+              icon: mdi:home-flood
+            - entity: binary_sensor.lekkage_badkamer
+              name: Badkamer
               icon: mdi:home-flood
