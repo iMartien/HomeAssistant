@@ -58,26 +58,6 @@
               tap_action:
                 action: navigate
                 navigation_path: /lovelace/alarm
-            # - card: picture-entity
-            #   name: Camera's
-            #   cardOptions:
-            #     entity: camera.babykamer
-            #     show_name: false
-            #     show_state: false
-            #     aspect_ratio: 4x4
-            #   cardStyle: |
-            #     .header {
-            #       padding: 0;
-            #     }
-            #     .header .icon {
-            #         color: #f7d959;
-            #     }
-            #     .states {
-            #       padding: 0;
-            #     }
-            #   tap_action:
-            #     action: navigate
-            #     navigation_path: /lovelace/cameras
             - entity: camera.babykamer
               name: Camera's
               tap_action:

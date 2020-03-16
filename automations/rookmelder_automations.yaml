@@ -1,0 +1,13 @@
+- alias: 'Alarm - Rook gedetecteerd op overloop'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.rookmelder_overloop
+    to: 'on'
+  action:
+    - service: notify.notifyall
+      data_template:
+        message: "{{ trigger.to_state.attributes.friendly_name }} heeft rook gedetecteerd!!"
+        title: "Rook gedetecteerd!!"
+    - service: script.speak
+      data:
+        what: 'Waarschuwing! Er is rook gedetecteerd op de overloop!'

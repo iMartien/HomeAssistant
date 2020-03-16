@@ -10,10 +10,16 @@
           entities:
             - entity: sensor.wasmachine_status
               name: Wasmachine
+              hold_action:
+                action: toggle
+                entity: switch.wasmachine_sonoff
               offStates:
                 - "Uit"
-            - entity: sensor.droger_status
+            - entity: switch.droger_sonoff
               name: Droger
+              hold_action:
+                action: toggle
+                entity: switch.droger_sonoff
               offStates:
                 - "Uit"
         - title: Klimaat & Ventilatie

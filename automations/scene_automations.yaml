@@ -232,7 +232,7 @@
     - service: hue.hue_activate_scene
       data:
         group_name: "Woonkamer"
-        scene_name: "Sfeerverlichting"
+        scene_name: "Normaal"
     - service: input_select.select_option
       data:
         entity_id: input_select.current_scene
@@ -241,7 +241,7 @@
 - alias: 'Scene - Normaal'
   trigger:
     - platform: state
-      entity_id: input_boolean.scene_aantafel
+      entity_id: input_boolean.scene_normaal
       to: 'on'
   action:
     - service: hue.hue_activate_scene

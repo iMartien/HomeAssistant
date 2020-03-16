@@ -259,21 +259,6 @@
             badge: 0 ## This will remove the badge/app icon number ##
             category: "bewegingniemandthuis"
 
-- alias: 'Alarm - Water lekkage gedetecteerd'
-  trigger:
-    platform: state
-    entity_id: binary_sensor.lekkage_wc_boven
-    to: 'on'
-  action:
-    - service: notify.notifyall
-      data_template:
-        message: "{{ trigger.to_state.attributes.friendly_name }} gedetecteerd!!"
-        title: "Water lekkage gedetecteerd!!"
-    - service: script.speak
-      data:
-        what: 'Waarschuwing! Er is water lekkage gedetecteerd in de WC boven!'
-
-
 ########################################
 ## Legacy Alarm Control
 ########################################

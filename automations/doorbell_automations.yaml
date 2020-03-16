@@ -2,7 +2,7 @@
 ## Doorbell Automations
 ########################################
 
-- alias: 'Doorbell - Pause Apple TV on Doorbell'
+- alias: 'Doorbell - Pause Woonkamer TV on Doorbell'
   trigger:
     - platform: event
       event_type: button_pressed
@@ -11,11 +11,11 @@
       event_type: doorbird_looppoort_deurbel_button
   condition:
     - condition: state
-      entity_id:  media_player.woonkamer
+      entity_id:  media_player.woonkamer_live_tv
       state: 'playing'
   action:
     - service: media_player.media_pause
-      entity_id:  media_player.woonkamer
+      entity_id:  media_player.woonkamer_live_tv
 
 - alias: 'Doorbell - Play doorbell chime via Sonos'
   trigger:

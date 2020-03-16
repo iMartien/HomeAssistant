@@ -35,14 +35,14 @@
             - title: Favorieten
               entities:
                 - entity: alarm_control_panel.alarm
-                  name: Alarm
+                  name: Beveiliging
                   icon: mdi:shield-check
                   offIcon: mdi:shield-off
                   offStates:
                     - 'disarmed'
                   tap_action:
                     action: navigate
-                    navigation_path: /lovelace/alarm
+                    navigation_path: /lovelace/beveiliging
                 - entity: input_select.current_scene
                   name: Scenes
                   icon: mdi:island
