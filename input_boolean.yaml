@@ -62,6 +62,9 @@
   media_start_3fm:
     name: NPO 3FM
     icon: mdi:radio
+  media_start_radio10:
+    name: Radio 10
+    icon: mdi:radio
   media_start_skyradio:
     name: Sky Radio
     icon: mdi:radio

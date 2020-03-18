@@ -3,3 +3,10 @@
   icon: mdi:account-group
   cards:
     - type: custom:gui-sandbox
+    - type: media-control
+      entity: media_player.woonkamer
+    - type: entities
+      entities:
+        - input_boolean.media_start_radio2
+        - input_boolean.media_start_skyradio
+        - input_boolean.media_start_3fm
