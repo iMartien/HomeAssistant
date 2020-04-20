@@ -1,0 +1,7 @@
+# dwains_theme
+# Custom button for room addon: sonos
+
+type: picture-entity
+entity: camera.deurbel
+camera_view: live
+template: rooms_child

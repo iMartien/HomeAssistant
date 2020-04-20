@@ -1,0 +1,83 @@
+## Created by Jeroen Klompen
+## Room add-on: Sonos
+## Version: 1.0.0
+
+- type: custom:dwains-flexbox-card
+  items_classes: 'col-xs-12 col-sm-6 col-sm-6'
+  #padding: true
+  cards:
+    - type: entities
+      style: |
+        ha-card {
+          border-radius: 5px;
+          background-color: var(--dwains-theme-primary);
+        }
+      entities:
+        #- entity: {{ (data | fromjson)['entity'] }}
+        - entity: media_player.woonkamer_live_tv
+          group: true
+          name: TV
+          info: scroll
+          type: 'custom:mini-media-player'
+          artwork: full-cover
+          hide:
+            volume: true
+            power: true
+            icon: true
+            source: true
+            icon_state: false
+            power_color: false
+          shortcuts:
+            columns: 3
+            hide_when_off: true
+            label: Select Input
+            align_text: center
+            buttons:
+              - name: NPO 1
+                icon: mdi:numeric-1-circle
+                type: source
+                id: "NPO 1 HD"
+              - name: NPO 2
+                icon: mdi:numeric-2-circle
+                type: source
+                id: "NPO 2 HD"
+              - name: NPO 3
+                icon: mdi:numeric-3-circle
+                type: source
+                id: "NPO 3 HD"
+              - name: RTL 4
+                icon: mdi:numeric-4-circle
+                type: source
+                id: "RTL 4"
+              - name: RTL 5
+                icon: mdi:numeric-5-circle
+                type: source
+                id: "RTL 5"
+              - name: SBS 6
+                icon: mdi:tent
+                type: source
+                id: "SBS6"
+              - name: RTL 7
+                icon: mdi:numeric-7-circle
+                type: source
+                id: "RTL 7"
+              - name: RTL 8
+                icon: mdi:mdi:numeric-8-circle
+                type: source
+                id: "RTL 8"
+              - name: Veronica / Disney XD
+                icon: mdi:television-classic
+                type: source
+                id: "Veronica / Disn"
+
+    - type: entities
+      style: |
+        ha-card {
+          border-radius: 5px;
+          background-color: var(--dwains-theme-primary);
+        }
+      entities:
+        - type: 'custom:slider-entity-row'
+          entity: media_player.tvkamer
+          icon: 'mdi:speaker'
+          name: 'TV Volume'

@@ -100,19 +100,6 @@
         entity_id:
           - switch.gangkachel_sonoff
 
-- alias: 'Timer - Keukenkachel uit na 1 uur'
-  trigger:
-    - platform: state
-      entity_id: switch.keukenkachel
-      to: 'on'
-      for:
-        minutes: 60
-  action:
-    - service: homeassistant.turn_off
-      data:
-        entity_id:
-          - switch.keukenkachel
-
 ########################################
 ## Gangkachel Thermostaat Automations
 ########################################
@@ -193,13 +180,13 @@
     - service: switch.turn_off
       entity_id: switch.gangkachel_aanuit
 
-- alias: 'Gangkachel - Terug naar Half vermogen na 15min.'
+- alias: 'Gangkachel - Terug naar Half vermogen na 30min.'
   trigger:
     - platform: state
       entity_id: input_select.gangkachel_status
       to: Vol vermogen
       for:
-        minutes: 15
+        minutes: 30
   action:
     - service: switch.turn_on
       entity_id: switch.gangkachel_highlow

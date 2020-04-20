@@ -1,0 +1,106 @@
+## Created by Jeroen Klompen
+## Room add-on: Sonos
+## Version: 1.0.0
+
+- type: custom:dwains-flexbox-card
+  items_classes: 'col-xs-12 col-sm-6 col-sm-6'
+  #padding: true
+  cards:
+    - type: entities
+      style: |
+        ha-card {
+          border-radius: 5px;
+          background-color: var(--dwains-theme-primary);
+        }
+      entities:
+        #- entity: {{ (data | fromjson)['entity'] }}
+        - entity: media_player.veranda
+          group: true
+          name: Veranda
+          info: scroll
+          type: 'custom:mini-media-player'
+          artwork: full-cover-fit
+          hide:
+            power: true
+            icon: true
+            source: true
+            icon_state: false
+            power_color: false
+          speaker_group:
+            platform: sonos
+            show_group_count: true
+            entities:
+              - entity_id: media_player.woonkamer
+                name: 'Woonkamer'
+              - entity_id: media_player.tvkamer
+                name: 'Keuken'
+              - entity_id: media_player.badkamer
+                name: 'Badkamer'
+              - entity_id: media_player.keuken
+                name: 'Veranda'
+          shortcuts:
+            columns: 3
+            hide_when_off: true
+            label: Select Input
+            align_text: center
+            buttons:
+              - name: NPO Radio 2
+                icon: mdi:radio
+                type: source
+                id: "NPO Radio 2 92.9 (Pop)"
+              - name: NPO Radio 3
+                icon: mdi:radio
+                type: source
+                id: "NPO 3FM 96.5 (Top-40-Pop)"
+              - name: Radio 10
+                icon: mdi:radio
+                type: source
+                id: "Radio 10 88.1 (Classic Hits)"
+              - name: Sublime FM
+                icon: mdi:radio
+                type: source
+                id: "Sublime FM"
+              - name: Sky Radio
+                icon: mdi:radio
+                type: source
+                id: "Sky Radio 101 FM 101.2 (Pop)"
+              - name: The Christmas Station
+                icon: mdi:string-lights
+                type: source
+                id: "Sky Radio Christmas"
+              - name: Morning Tea
+                icon: mdi:tea
+                type: source
+                id: "Morning Tea"
+              - name: "It's The Weekend!"
+                icon: mdi:party-popper
+                type: source
+                id: "'Cause it's the Weekeeeeend!"
+              - name: Liedjes voor Charlie
+                icon: mdi:emoticon-happy-outline
+                type: source
+                id: "Liedjes voor Charlie"
+
+    - type: entities
+      style: |
+        ha-card {
+          border-radius: 5px;
+          background-color: var(--dwains-theme-primary);
+        }
+      entities:
+        - type: 'custom:slider-entity-row'
+          entity: media_player.woonkamer
+          icon: 'mdi:speaker'
+          name: 'Woonkamer'
+        - type: 'custom:slider-entity-row'
+          entity: media_player.tvkamer
+          icon: 'mdi:speaker'
+          name: 'TV-kamer'
+        - type: 'custom:slider-entity-row'
+          entity: media_player.badkamer
+          icon: 'mdi:speaker'
+          name: 'Badkamer'
+        - type: 'custom:slider-entity-row'
+          entity: media_player.keuken
+          icon: 'mdi:speaker'
+          name: 'Keuken'

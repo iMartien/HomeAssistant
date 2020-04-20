@@ -3,6 +3,8 @@
     platform: numeric_state
     entity_id: sensor.transmission_paused_torrents
     above: 0
+    for:
+      minutes: 10
   action:
     - service: notify.notifyall
       data:

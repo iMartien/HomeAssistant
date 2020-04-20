@@ -31,9 +31,9 @@
       data_template:
         name: >
           {% if states.sun.sun.state == "above_horizon" %}
-          ios-light-mode-light-green
+          synthwave
           {% else %}
-          ios-dark-mode-blue-red
+          synthwave
           {% endif %}
 
 - alias: "Timer - Notify Me when its time to leave for Work"

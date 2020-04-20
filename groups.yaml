@@ -1,11 +1,32 @@
   Woonkamer Verlichting:
     entities:
-      - light.rieten_lamp
-      - light.hue_bloom
-      - light.bol_lamp
-      - light.woonkamer_spot
-      - light.glazen_lamp
-      - light.koperen_lamp
+        - light.rieten_lamp
+        - light.glazenbol
+        - light.hue_bloom
+        - light.koperen_lamp
+        - light.glazen_lamp
+        - light.bol_lamp
+        - light.woonkamer_spot
+
+  Woonkamer Media Players:
+    entities:
+      - media_player.tvkamer
+      - media_player.woonkamer_live_tv
+      - media_player.woonkamer_plex
+      - media_player.woonkamer
+      - media_player.tvkamer
+
+  Woonkamer Ramen:
+    entities:
+      - binary_sensor.woonkamer_raam_1
+      - binary_sensor.woonkamer_raam_2
+      - binary_sensor.woonkamer_raam_3
+
+  Woonkamer Motion:
+    entities:
+      - binary_sensor.woonkamer_motion
+      - binary_sensor.tv_kamer_motion
+      - binary_sensor.hue_motion_sensor_1_motion
 
   Keuken Verlichting:
     entities:
@@ -25,10 +46,20 @@
       - light.badkamer_4
       - light.badkamer_5
 
+  Washok Apparaten:
+    entities:
+      - sensor.wasmachine_status
+      - sensor.droger_status
+
   Slaapkamer Spots:
     entities:
     - light.slaapkamer_spot_1
     - light.slaapkamer_spot_2
+
+  Slaapkamer Ramen:
+    entities:
+      - binary_sensor.grote_slaapkamer_raam
+      - binary_sensor.kleine_slaapkamer_raam
 
   Overloop Spots:
     entities:
@@ -50,3 +81,18 @@
     entities:
       - person.bertus
       - person.ria
+
+  Tesla Sloten:
+    entities:
+      - lock.marty_mcfly_charger_door_lock
+      - lock.marty_mcfly_door_lock
+
+  Tesla Temperaturen:
+    entities:
+      - sensor.marty_mcfly_temperature_sensor_inside
+      - sensor.marty_mcfly_temperature_sensor_outside
+
+  Tesla Switches:
+    entities:
+      - switch.marty_mcfly_charger_switch
+      - switch.marty_mcfly_maxrange_switch

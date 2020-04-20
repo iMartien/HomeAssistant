@@ -64,6 +64,12 @@ binary_sensor.lekkage_wc_boven:
   icon: mdi:home-flood
 binary_sensor.lekkage_badkamer:
   icon: mdi:home-flood
+binary_sensor.hoogwater_kelder:
+  icon: mdi:home-flood
+
+plant.grote_woonkamer_plant:
+  icon: mdi:sprout
+  name: Grote Woonkamer Plant
 
 #Smoke Sensors
 binary_sensor.rookmelder_overloop:

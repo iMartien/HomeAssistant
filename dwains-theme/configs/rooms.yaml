@@ -1,0 +1,199 @@
+# https://dwainscheeren.github.io/lovelace-dwains-theme/configuration/rooms.html
+
+rooms:
+  - name: Woonkamer
+    icon: fas:couch
+    light: group.woonkamer_verlichting
+#    temperature: climate.netatmo_woonkamer
+    climate: climate.netatmo_woonkamer
+    motion: group.woonkamer_motion
+    window: group.woonkamer_ramen
+    plant: plant.grote_woonkamer_plant
+    media_player: group.woonkamer_media_players
+    addons:
+      - name: Sonos
+        icon: fas:speaker
+        path: 'dwains-theme/addons/rooms/woonkamer/sonos/page.yaml'
+        button_path: 'dwains-theme/addons/rooms/woonkamer/sonos/button.yaml'
+        data:
+          entity: media_player.tvkamer
+      - name: Live TV
+        icon: fas:tv-retro
+        path: 'dwains-theme/addons/rooms/woonkamer/tv/page.yaml'
+        button_path: 'dwains-theme/addons/rooms/woonkamer/tv/button.yaml'
+        data:
+          entity: media_player.woonkamer_live_tv
+
+  - name: Keuken
+    icon: fas:refrigerator
+    light: group.keuken_verlichting
+#    temperature: climate.netatmo_keuken
+    climate: climate.netatmo_keuken
+    motion: binary_sensor.keuken_motion
+    door: binary_sensor.keukendeur
+    media_player: media_player.keuken
+    addons:
+      - name: Sonos
+        icon: fas:speaker
+        path: 'dwains-theme/addons/rooms/keuken/sonos/page.yaml'
+        button_path: 'dwains-theme/addons/rooms/keuken/sonos/button.yaml'
+        data:
+          entity: media_player.keuken
+
+  - name: Kantoor
+    icon: fas:chair-office
+    addons:
+      - name: Printer
+        icon: fas:print
+        path: 'dwains-theme/addons/rooms/kantoor/printer/page.yaml'
+        button_path: 'dwains-theme/addons/rooms/kantoor/printer/button.yaml'
+        data:
+          entity: sensor.hp_printer_color_laserjet_status
+
+  - name: Badkamer
+    icon: fas:bath
+    light: group.badkamer_spots
+    device: switch.badkamerfan_sonoff
+    climate: climate.netatmo_badkamer
+    media_player: media_player.badkamer
+    window: binary_sensor.badkamerraam
+    addons:
+      - name: Sonos
+        icon: fas:speaker
+        path: 'dwains-theme/addons/rooms/badkamer/sonos/page.yaml'
+        button_path: 'dwains-theme/addons/rooms/badkamer/sonos/button.yaml'
+        data:
+          entity: media_player.badkamer
+
+  - name: Gang
+    icon: fas:shoe-prints
+    light: switch.ganglicht
+    temperature: sensor.gang_temperature
+    climate: climate.gang
+    motion: binary_sensor.gang_motion
+#    door: binary_sensor.gangdeur
+    more_entities:
+      columns: 2 #optional
+      entities:
+        - entity: sensor.gangkachel_status
+        - entity: switch.gangkachel_aanuit
+        - entity: switch.gangkachel_highlow
+        - entity: switch.gangkachel_sonoff
+    page_entities:
+      columns: 1 #optional
+      show_title: 'false' #optional
+      entities:
+        - entity: sensor.gangkachel_status
+
+  - name: Washok
+    icon: fas:washer
+    device: group.washok_apparaten
+    page_entities:
+      columns: 2 #optional
+      show_title: 'false' #optional
+      entities:
+        - entity: sensor.wasmachine_huidig_verbruik
+        - entity: sensor.wasmachine_verbruik_vandaag
+        - entity: sensor.wasmachine_verbruik_gister
+        - entity: sensor.wasmachine_verbruik_totaal
+    more_entities:
+      columns: 2 #optional
+      entities:
+        - entity: switch.wasmachine_sonoff
+        - entity: switch.droger_sonoff
+
+  - name: Slaapkamer
+    icon: fas:bed
+    light: group.slaapkamer_spots
+    temperature: sensor.slaapkamer_temperature
+    climate: climate.netatmo_slaapkamer
+    window: group.slaapkamer_ramen
+
+  - name: Charlie's Kamer
+    icon: fas:dreidel
+    light: light.babykamer
+    temperature: sensor.babykamer_temperature
+    climate: climate.netatmo_charlies_kamer
+    motion: binary_sensor.keuken_motion
+    windows: binary_sensor.charlies_kamer_raam
+    addons:
+      - name: CharlieCam
+        path: 'dwains-theme/addons/rooms/charlies-kamer/camera/page.yaml'
+        button_path: 'dwains-theme/addons/rooms/charlies-kamer/camera/button.yaml'
+        data:
+          entity: camera.charliecam
+
+  - name: Overloop
+    icon: fas:level-up
+    light: group.overloop_spots
+    motion: binary_sensor.overloop_motion
+    device: binary_sensor.rookmelder_overloop
+    window: binary_sensor.overloop_raam
+
+  - name: Kelder
+    icon: fas:spider-web
+    light: switch.kelderlicht
+    page_entities:
+      columns: 2 #optional
+      show_title: 'false' #optional
+      entities:
+        - entity: binary_sensor.hoogwater_kelder
+    addons:
+      - name: Camera
+        path: 'dwains-theme/addons/rooms/kelder/camera/page.yaml'
+        button_path: 'dwains-theme/addons/rooms/kelder/camera/button.yaml'
+        data:
+          entity: camera.muizencam
+
+  - name: Veranda & Achtertuin
+    icon: fas:tree
+    temperature: sensor.buiten_temperature
+    addons:
+      - name: Sonos
+        icon: fas:speaker
+        path: 'dwains-theme/addons/rooms/veranda/sonos/page.yaml'
+        button_path: 'dwains-theme/addons/rooms/veranda/sonos/button.yaml'
+        data:
+          entity: media_player.badkamer
+      - name: Camera
+        path: 'dwains-theme/addons/rooms/veranda/camera/page.yaml'
+        button_path: 'dwains-theme/addons/rooms/veranda/camera/button.yaml'
+        data:
+          entity: camera.veranda
+
+  - name: Oprit & Voortuin
+    icon: fas:car-garage
+    device: switch.looppoort_deurbel_relay_1
+    addons:
+      - name: Deurbel
+        path: 'dwains-theme/addons/rooms/voortuin/camera/page.yaml'
+        button_path: 'dwains-theme/addons/rooms/voortuin/camera/button.yaml'
+        data:
+          entity: camera.deurbel
+      - name: Oprit
+        path: 'dwains-theme/addons/rooms/oprit/camera/page.yaml'
+        button_path: 'dwains-theme/addons/rooms/oprit/camera/button.yaml'
+        data:
+          entity: camera.oprit
+
+  - name: Tesla
+    icon: fas:car
+    lock: group.tesla_sloten
+    device: group.tesla_switches
+    temperature: group.tesla_temperaturen
+    climate: climate.marty_mcfly_hvac_climate_system
+    page_entities:
+      columns: 2 #optional
+      show_title: 'false' #optional
+      entities:
+        - entity: sensor.marty_mcfly_range_sensor
+        - entity: sensor.marty_mcfly_mileage_sensor
+        - entity: sensor.marty_mcfly_battery_sensor
+        - entity: binary_sensor.marty_mcfly_charger_sensor
+        - entity: sensor.marty_mcfly_charging_rate_sensor
+        - entity: binary_sensor.marty_mcfly_parking_brake_sensor
+        - entity: binary_sensor.marty_mcfly_online_sensor
+    more_entities:
+      columns: 2 #optional
+      entities:
+        - entity: switch.marty_mcfly_update_switch

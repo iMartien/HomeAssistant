@@ -172,6 +172,10 @@
       data:
         entity_id: climate.badkamer_vloerverwarming
         hvac_mode: 'auto'
+    - service: zoneminder.set_run_state
+      data:
+        id: 192.168.1.15:8443
+        name: Home
     - service: input_select.select_option
       data:
         entity_id: input_select.current_scene
@@ -222,6 +226,10 @@
       data:
         entity_id: climate.badkamer_vloerverwarming
         hvac_mode: 'auto'
+    - service: zoneminder.set_run_state
+      data:
+        id: 192.168.1.15:8443
+        name: Home
     - service: input_select.select_option
       data:
         entity_id: input_select.current_scene
@@ -267,6 +275,10 @@
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
+    - service: zoneminder.set_run_state
+      data:
+        id: 192.168.1.15:8443
+        name: Away
     - service: input_select.select_option
       data:
         entity_id: input_select.current_scene
@@ -313,6 +325,10 @@
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
+    - service: zoneminder.set_run_state
+      data:
+        id: 192.168.1.15:8443
+        name: Away
     - service: input_select.select_option
       data:
         entity_id: input_select.current_scene
@@ -364,6 +380,10 @@
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
+    - service: zoneminder.set_run_state
+      data:
+        id: 192.168.1.15:8443
+        name: Night
     - service: input_select.select_option
       data:
         entity_id: input_select.current_scene

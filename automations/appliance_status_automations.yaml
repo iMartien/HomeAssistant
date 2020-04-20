@@ -256,7 +256,7 @@
   trigger:
     - platform: numeric_state
       entity_id: sensor.gangkachel_huidig_verbruik
-      below: 1600
+      below: 1500
       above: 500
   action:
     - service: input_select.select_option
@@ -268,7 +268,7 @@
   trigger:
     - platform: numeric_state
       entity_id: sensor.gangkachel_huidig_verbruik
-      above: 1600
+      above: 1500
   action:
     - service: input_select.select_option
       data:

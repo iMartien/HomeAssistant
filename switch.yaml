@@ -159,6 +159,16 @@
     optimistic: false
 
   - platform: mqtt
+    name: "Kelderlicht"
+    state_topic: "shellies/shelly1-kelder/relay/0"
+    command_topic: "shellies/shelly1-kelder/relay/0/command"
+    qos: 1
+    payload_on: "on"
+    payload_off: "off"
+    retain: true
+    optimistic: false
+
+  - platform: mqtt
     name: "Landriod Start"
     state_topic: "worx/status/statusCode"
     command_topic: "worx/set/mow"

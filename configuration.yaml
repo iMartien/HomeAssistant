@@ -1,11 +1,8 @@
+#Copy from here#
+#Start of dwains-theme necessary code#
 homeassistant:
-  name: Chateau Charlois
-  latitude: !secret homelocation_lat
-  longitude: !secret homelocation_long
-  elevation: 0
-  unit_system: metric
-  time_zone: Europe/Amsterdam
   customize: !include customize.yaml
+  packages: !include_dir_named packages/ # Comment this whole line if you want to disable Dwains Theme
 
 system_health:
 
@@ -16,20 +13,21 @@ hacs:
 
 breaking_changes:
 
-# Enables the frontend
-frontend:
-  themes: !include_dir_merge_named themes
-
 # Enables configuration UI
 config:
 
 mobile_app:
 
+mqtt:
+  broker: !secret mqtt_broker
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+
 logger:
   default: warning
 
 recorder:
-  db_url: !secret db_url
+#  db_url: !secret db_url
   purge_keep_days: 7
   purge_interval: 1
 
@@ -42,9 +40,6 @@ http:
 
 updater:
   include_used_components: true
-
-lovelace:
-  mode: yaml
 
 browser_mod:
 
@@ -258,6 +253,13 @@ device_tracker:
     interval_seconds: 30
     consider_home: 600
 
+zoneminder:
+  - host: !secret zoneminder_host
+    username: !secret zoneminder_username
+    password: !secret zoneminder_password
+    ssl: true
+    verify_ssl: false
+
 alarm_control_panel:
   - platform: manual
     name: Alarm
@@ -291,8 +293,21 @@ climate:
     max_temp: 21
     cold_tolerance: 0.5
     hot_tolerance: 0.5
+    min_cycle_duration:
+      minutes: 15
     away_temp: 7
     target_temp: 7
+
+plant:
+  grote_woonkamer_plant:
+    sensors:
+      moisture: sensor.mi_flora_moisture
+      battery: sensor.mi_flora_battery
+      temperature: sensor.mi_flora_temperature
+      conductivity: sensor.mi_flora_conductivity
+      brightness: sensor.mi_flora_light_intensity
+    min_moisture: 20
+    min_conductivity: 100
 
 doorbird:
   devices:
@@ -303,21 +318,7 @@ doorbird:
       token: !secret doorbird_token
 
 camera:
-  - platform: foscam
-    name: Babykamer
-    ip: !secret babykamercam_ip
-    username: !secret foscam_username
-    password: !secret foscam_password
-  - platform: foscam
-    name: Oprit
-    ip: !secret opritcam_ip
-    username: !secret foscam_username
-    password: !secret foscam_password
-  - platform: doorbird
-  - platform: generic
-    name: Veranda
-    still_image_url: !secret verandacam_still_image_url
-    stream_source: !secret verandacam_stream_source
+  - platform: zoneminder
 
 utility_meter:
   daily_youless_zonnepanelen:

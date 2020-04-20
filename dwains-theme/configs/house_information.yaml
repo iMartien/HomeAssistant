@@ -1,0 +1,23 @@
+# https://dwainscheeren.github.io/lovelace-dwains-theme/configuration/house_information.html
+
+house_information:
+  favorites:
+    - entity: input_boolean.homemode_home
+      icon_on: fas:house
+      icon_off: fas:house-leave
+    - entity: input_boolean.homemode_away
+      icon_on: fas:house-leave
+      icon_off: fas:house-return
+    - entity: input_boolean.homemode_night
+      icon_on: fas:house-night
+      icon_off: fas:house-day
+    - entity: input_boolean.homemode_guest
+      icon_on: fas:users
+      icon_off: fas:user
+    - entity: input_boolean.homemode_vacation
+      icon_on: fas:tree-palm
+      icon_off: fas:home-heart
+
+  # calendar:
+  #   - calendar.trash
+  #   - calendar.birthdays
