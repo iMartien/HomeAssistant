@@ -13,3 +13,18 @@ more_page:
     - name: Energie
       icon: fas:tachometer-alt
       path: 'dwains-theme/addons/more_page/power_usage/power_usage.yaml'
+    - name: Afvalwijzer
+      icon: fas:recycle
+      path: 'dwains-theme/addons/more_page/afvalwijzer/page.yaml'
+    - name: P2000
+      icon: fas:ambulance
+      path: 'dwains-theme/addons/more_page/p2000/page.yaml'
+    - name: Home Assistant
+      icon: mdi:home-assistant
+      path: 'dwains-theme/addons/more_page/ha_view/ha_monitoring.yaml'
+    - name: Netwerk
+      icon: fas:network-wired
+      path: 'dwains-theme/addons/more_page/ubiquiti/unifi.yaml'
+    - name: AdGuard
+      icon: fas:ad
+      path: 'dwains-theme/addons/more_page/adguard/page.yaml'

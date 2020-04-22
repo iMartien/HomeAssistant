@@ -1,0 +1,72 @@
+## Created by Jeroen Klompen
+## More-page add-on: P2000
+## Version: 1.0.0
+
+- type: custom:dwains-flexbox-card
+  items_classes: 'col-xs-12 col-sm-6 col-sm-6'
+  cards:
+    - type: custom:dwains-flexbox-card
+      items_classes: 'col-xs-12 col-md-12'
+      padding: true
+      cards:
+        - entity: sensor.politie
+          style: |
+            ha-card {
+              border-radius: 5px;
+              background-color: var(--dwains-theme-primary);
+              font-size: 10px;
+              font-weight: normal;
+            }
+            span#value {
+              font-size: 16px;
+              font-weight: normal;
+            }
+          icon: 'mdi:police-badge'
+          name: Politie
+          type: sensor
+        - entity: sensor.ambulance
+          style: |
+            ha-card {
+              border-radius: 5px;
+              background-color: var(--dwains-theme-primary);
+            }
+            span#value {
+              font-size: 16px;
+              font-weight: normal;
+            }
+          icon: 'mdi:ambulance'
+          name: Ambulance
+          type: sensor
+        - entity: sensor.brandweer
+          style: |
+            ha-card {
+              border-radius: 5px;
+              background-color: var(--dwains-theme-primary);
+              font-size: 10px;
+              font-weight: normal;
+            }
+            span#value {
+              font-size: 16px;
+              font-weight: normal;
+            }
+          icon: 'mdi:fire-truck'
+          name: Brandweer
+          type: sensor
+
+    - type: custom:dwains-flexbox-card
+      items_classes: 'col-xs-12 col-md-12'
+      padding: true
+      cards:
+        - type: map
+          style: |
+            ha-card {
+              border-radius: 5px;
+              background-color: var(--dwains-theme-primary);
+            }
+          default_zoom: 11
+          entities:
+            - entity: sensor.politie
+            - entity: sensor.ambulance
+            - entity: sensor.brandweer
+            - entity: zone.home
+          # title: Someren & Brabant

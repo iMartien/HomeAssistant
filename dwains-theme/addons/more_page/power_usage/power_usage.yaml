@@ -24,7 +24,7 @@
             red: 2
         - type: gauge
           entity: sensor.dsmr_reading_electricity_currently_returned
-          name: Opwekking
+          name: Teruglevering
           max: 4.5
           severity:
             green: 2
@@ -147,6 +147,8 @@
                     from: 1
                     to: 1.5
 # Power Graph
+  - type: vertical-stack
+    cards:
     - type: custom:mini-graph-card
       style: |
         ha-card {
@@ -171,6 +173,8 @@
       entities:
         - entity: sensor.dsmr_day_consumption_electricity_merged
           name: Verbruik vandaag
+        - entity: sensor.dsmr_day_consumption_electricity_returned_merged
+          name: Teruglevering vandaag
         - entity: sensor.dsmr_day_consumption_electricity_cost_merged
           name: Kosten vandaag
         - entity: sensor.dsmr_meter_stats_electricity_tariff

@@ -32,6 +32,10 @@ rooms:
     motion: binary_sensor.keuken_motion
     door: binary_sensor.keukendeur
     media_player: media_player.keuken
+    page_entities:
+      columns: 2
+      entities:
+        - entity: binary_sensor.lekkage_gootsteenkastje
     addons:
       - name: Sonos
         icon: fas:speaker
@@ -57,6 +61,10 @@ rooms:
     climate: climate.netatmo_badkamer
     media_player: media_player.badkamer
     window: binary_sensor.badkamerraam
+    page_entities:
+      columns: 2
+      entities:
+        - entity: binary_sensor.lekkage_badkamer
     addons:
       - name: Sonos
         icon: fas:speaker
@@ -75,6 +83,7 @@ rooms:
     more_entities:
       columns: 2 #optional
       entities:
+        - entity: input_boolean.gangkachel_schema
         - entity: sensor.gangkachel_status
         - entity: switch.gangkachel_aanuit
         - entity: switch.gangkachel_highlow
@@ -113,9 +122,8 @@ rooms:
     icon: fas:dreidel
     light: light.babykamer
     temperature: sensor.babykamer_temperature
-    climate: climate.netatmo_charlies_kamer
-    motion: binary_sensor.keuken_motion
-    windows: binary_sensor.charlies_kamer_raam
+    climate: climate.netatmo_charlie_s_kamer
+    window: binary_sensor.charlies_slaapkamer_raam
     addons:
       - name: CharlieCam
         path: 'dwains-theme/addons/rooms/charlies-kamer/camera/page.yaml'
@@ -129,6 +137,15 @@ rooms:
     motion: binary_sensor.overloop_motion
     device: binary_sensor.rookmelder_overloop
     window: binary_sensor.overloop_raam
+
+  - name: WC Boven
+    icon: fas:toilet
+    light: group.wc_boven_spots
+    window: binary_sensor.wc_boven
+    page_entities:
+      columns: 2
+      entities:
+        - entity: binary_sensor.lekkage_wc_boven
 
   - name: Kelder
     icon: fas:spider-web

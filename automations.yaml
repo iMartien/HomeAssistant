@@ -21,20 +21,6 @@
       data:
         entity_id: input_boolean.homemode_home
 
-- alias: 'Presence - Inrijpoort automatisch openen'
-  trigger:
-    - platform: state
-      entity_id: person.martien
-      to: 'home'
-  condition:
-    condition: state
-    entity_id: device_tracker.volvo_hj409f
-    state: 'not_home'
-  action:
-    - service: notify.notifyall
-      data:
-        message: "Het hek zou nu automatisch worden geopend..."
-        title: "Hek automatisch geopend"
 
 ########################################
 ## Homemode Changes and Actions
@@ -151,7 +137,7 @@
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
-    - service: notify.notifyall
+    - service: notify.martien
       data:
         message: "Away mode is geactiveerd, tot ziens!"
         title: "Away Mode (Overdag)"
@@ -199,7 +185,7 @@
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
-    - service: notify.notifyall
+    - service: notify.martien
       data:
         message: "Away mode is geactiveerd, tot ziens!"
         title: "Away Mode (Avond)"
@@ -245,7 +231,7 @@
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
-    - service: notify.notifyall
+    - service: notify.martien
       data:
         message: "Slaap lekker!"
         title: "Nachtmode"
@@ -299,7 +285,7 @@
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
-    - service: notify.notifyall
+    - service: notify.martien
       data:
         message: "Het huis is klaar gemaakt voor bedtijd!"
         title: "Bedtijd"
@@ -339,7 +325,7 @@
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
-    - service: notify.notifyall
+    - service: notify.martien
       data:
         message: "Goedemorgen! Tijd voor een nieuwe dag!"
         title: "Opstaan"
@@ -581,86 +567,43 @@
 ########################################
 ## Timers
 ########################################
-- alias: 'Timer - Standkachel auto aan op koude werkdagen'
-  trigger:
-    platform: time
-    at: '07:50:00'
-  condition:
-    - condition: and
-      conditions:
-      - condition: state
-        entity_id: input_boolean.standkachel_schema
-        state: 'on'
-      - condition: state
-        entity_id: binary_sensor.workday_sensor
-        state: 'on'
-      - condition: numeric_state
-        entity_id: sensor.buiten_temperature
-        below: 1
-  action:
-    - service: switch.turn_on
-      entity_id: switch.hj409f_heater
-    - service: notify.notifyall
-      data:
-        message: "De standkachel van de auto is automatisch ingeschakeld!"
-        title: "Standkachel"
 
-- alias: 'Timer - Notificatie - Notificatie lege tank op werkdagen'
-  trigger:
-    platform: time
-    at: '07:45:00'
-  condition:
-    - condition: and
-      conditions:
-      - condition: state
-        entity_id: binary_sensor.workday_sensor
-        state: 'on'
-      - condition: numeric_state
-        entity_id: sensor.hj409f_range
-        below: 100
-  action:
-    - service: notify.notifyall
-      data:
-        message: "De actieradius van je auto is {{ states.sensor.hj409f_range.state }}km. Vergeet niet dat je moet tanken!"
-        title: "Tank leeg!"
-
-
-- alias: 'Timer - Afvalwijzer Notificatie'
-  trigger:
-  - platform: time
-    at: '07:50:00'
-  condition:
-    - condition: or
-      conditions:
-      - condition: template
-        value_template: '{{- (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_gft.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") -}}'
-      - condition: template
-        value_template: '{{- (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_restafval.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") -}}'
-      - condition: template
-        value_template: '{{- (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_pmd.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") -}}'
-      - condition: template
-        value_template: '{{- (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_papier.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") -}}'
-      - condition: template
-        value_template: '{{- (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_kerstbomen.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") -}}'
-  action:
-  - service: notify.notifyall
-    data_template:
-      message: >-
-        {% if (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_gft.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") %}
-           Het is vandaag - {{ now().strftime("%d-%m-%Y") }}. De groene bak wordt geleegd op: {{ states.sensor.trash_gft.state }}!
-        {% endif %}
-        {% if (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_restafval.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") %}
-           Het is vandaag - {{ now().strftime("%d-%m-%Y") }}. De grijze bak wordt geleegd op: {{ states.sensor.restafval.state }}!
-        {% endif %}
-        {% if (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_pmd.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") %}
-           Het is vandaag - {{ now().strftime("%d-%m-%Y") }}. Plastic wordt opgehaald op: {{ states.sensor.trash_pmd.state }}!
-        {% endif %}
-        {% if (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_papier.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") %}
-           Het is vandaag - {{ now().strftime("%d-%m-%Y") }}. Papier wordt opgehaald op: {{ states.sensor.trash_papier.state }}!
-        {% endif %}
-        {% if (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_kerstbomen.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") %}
-           Het is vandaag - {{ now().strftime("%d-%m-%Y") }}. Kerstbomen worden opgehaald op: {{ states.sensor.trash_kerstbomen.state }}!
-        {% endif %}
+# - alias: 'Timer - Afvalwijzer Notificatie'
+#   trigger:
+#   - platform: time
+#     at: '07:50:00'
+#   condition:
+#     - condition: or
+#       conditions:
+#       - condition: template
+#         value_template: '{{- (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_gft.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") -}}'
+#       - condition: template
+#         value_template: '{{- (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_restafval.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") -}}'
+#       - condition: template
+#         value_template: '{{- (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_pmd.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") -}}'
+#       - condition: template
+#         value_template: '{{- (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_papier.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") -}}'
+#       - condition: template
+#         value_template: '{{- (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_kerstbomen.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") -}}'
+#   action:
+#   - service: notify.notifyall
+#     data_template:
+#       message: >-
+#         {% if (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_gft.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") %}
+#            Het is vandaag - {{ now().strftime("%d-%m-%Y") }}. De groene bak wordt geleegd op: {{ states.sensor.trash_gft.state }}!
+#         {% endif %}
+#         {% if (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_restafval.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") %}
+#            Het is vandaag - {{ now().strftime("%d-%m-%Y") }}. De grijze bak wordt geleegd op: {{ states.sensor.restafval.state }}!
+#         {% endif %}
+#         {% if (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_pmd.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") %}
+#            Het is vandaag - {{ now().strftime("%d-%m-%Y") }}. Plastic wordt opgehaald op: {{ states.sensor.trash_pmd.state }}!
+#         {% endif %}
+#         {% if (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_papier.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") %}
+#            Het is vandaag - {{ now().strftime("%d-%m-%Y") }}. Papier wordt opgehaald op: {{ states.sensor.trash_papier.state }}!
+#         {% endif %}
+#         {% if (now().strftime("%d-%m-%Y")) == (as_timestamp(strptime(states.sensor.trash_kerstbomen.state, "%d-%m-%Y")) - (1 * 86400 )) | timestamp_custom("%d-%m-%Y") %}
+#            Het is vandaag - {{ now().strftime("%d-%m-%Y") }}. Kerstbomen worden opgehaald op: {{ states.sensor.trash_kerstbomen.state }}!
+#         {% endif %}
 
 - alias: Timer - Set Input_number Values at Midnight
   trigger:
@@ -715,7 +658,7 @@
     entity_id: binary_sensor.workday_sensor
     state: 'on'
   action:
-    - service: notify.notifyall
+    - service: notify.martien
       data:
         message: "Het duurt {{ states.sensor.reistijd_naar_werk.state | int | string }} minuten om naar je werk te rijden. Je moet over 10 minuten vertrekken wil je om 8:30u aankomen. De snelste route is via {{ states.sensor.reistijd_naar_werk.attributes.route }}."
         title: "Tijd om te vertrekken"
@@ -729,7 +672,7 @@
     entity_id: binary_sensor.workday_sensor
     state: 'on'
   action:
-    - service: notify.notifyall
+    - service: notify.martien
       data:
         message: "Het duurt momenteel {{ states.sensor.reistijd_naar_huis.state | int | string }} minuten om naar huis te rijden. De snelste route is via {{ states.sensor.reistijd_naar_huis.attributes.route }}."
         title: "Reistijd naar huis"
@@ -1136,7 +1079,7 @@
       data:
         entity_id: climate.gang
         temperature: 14
-    - service: notify.notifyall
+    - service: notify.martien
       data:
         message: "De verwarming is lager gezet om dat er een raam of deur is geopend."
         title: "Verwarming lager"
@@ -1907,38 +1850,25 @@
       data:
         message: "Today at {{(now().strftime('%s') | int | timestamp_custom('%H:%M'))}} the lawnmower had reported an error."
 
-- alias: "Notification - Home Assistant Update Available"
-  trigger:
-    - platform: state
-      entity_id: updater.updater
-  action:
-    - service: notify.notifyall
-      data:
-        message: "Home Assistant versie {{ states.updater.updater.state }} is nu bechikbaar."
-
 - alias: "Notification - Home Assistant Startup"
   trigger:
     - platform: homeassistant
       event: start
   action:
-    - service: notify.notifyall
+    - service: notify.martien
       data:
         message: "Home Assistant is sinds {{(now().strftime('%s') | int | timestamp_custom('%H:%M'))}} weer online."
         title: "HA Online"
-        data:
-          url: !secret homeassistant_url
 
 - alias: "Notification - Home Assistant Shutdown"
   trigger:
     - platform: homeassistant
       event: shutdown
   action:
-    - service: notify.notifyall
+    - service: notify.martien
       data:
         message: "Waarschuwing: Home Assistant wordt herstart."
         title: "HA Herstart"
-        data:
-          url: !secret homeassistant_url
 
 - alias: "IFTTT Webhook verzoeken"
   trigger:

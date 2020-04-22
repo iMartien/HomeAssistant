@@ -1,6 +1,10 @@
-#Copy from here#
-#Start of dwains-theme necessary code#
 homeassistant:
+  name: Chateau Charlois
+  latitude: !secret homelocation_lat
+  longitude: !secret homelocation_long
+  elevation: 0
+  unit_system: metric
+  time_zone: Europe/Amsterdam
   customize: !include customize.yaml
   packages: !include_dir_named packages/ # Comment this whole line if you want to disable Dwains Theme
 
@@ -13,15 +17,14 @@ hacs:
 
 breaking_changes:
 
-# Enables configuration UI
 config:
 
 mobile_app:
 
-mqtt:
-  broker: !secret mqtt_broker
-  username: !secret mqtt_username
-  password: !secret mqtt_password
+# mqtt:
+#   broker: !secret mqtt_broker
+#   username: !secret mqtt_username
+#   password: !secret mqtt_password
 
 logger:
   default: warning
@@ -162,26 +165,6 @@ transmission:
   host: !secret transmission_ip
   username: !secret transmission_username
   password: !secret transmission_password
-
-sabnzbd:
-  api_key: !secret sabz_api_key
-  host: !secret sabz_ip
-  path: /sabnzbd
-  name: sab
-  port: 8080
-  ssl: false
-  sensors:
-    - current_status
-    - speed
-    - queue_size
-    - queue_remaining
-    - disk_size
-    - disk_free
-    - queue_count
-    - day_size
-    - week_size
-    - month_size
-    - total_size
 
 media_player:
   - platform: channels
@@ -356,6 +339,12 @@ notify:
     platform: group
     services:
       - service: mobile_app_martiens_iphone_11_pro
+      - service: mobile_app_martiens_ipad_pro
+  - name: martien
+    platform: group
+    services:
+      - service: mobile_app_martiens_iphone_11_pro
+      - service: mobile_app_martiens_ipad_pro
 
 tesla:
   username: !secret tesla_username

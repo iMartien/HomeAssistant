@@ -42,7 +42,7 @@ exceptions:
       tab_container_css: "width: auto !important; margin: 0 !important; padding: 0 !important;"
       options_hide: true 
   - conditions:
-      user_agent: 605.1.15
+      user_agent: iPad
     config:
       footer_mode: true
       disable_sidebar: true
