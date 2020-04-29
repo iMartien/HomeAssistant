@@ -167,6 +167,10 @@ switch.veranda_verlichting:
   icon: mdi:string-lights
 switch.veranda_kachel:
   icon: mdi:radiator
+switch.badkamerfan_sonoff:
+  friendly_name: Badkamer ventilator
+  icon: mdi:fan
+
 
 light.keuken_1:
   icon: mdi:wall-sconce-flat

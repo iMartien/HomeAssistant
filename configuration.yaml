@@ -292,6 +292,11 @@ plant:
     min_moisture: 20
     min_conductivity: 100
 
+nzbget:
+  host: !secret nzbget_host
+  username: !secret nzbget_user
+  password: !secret nzbget_password
+
 doorbird:
   devices:
     - host: !secret doorbird_ip
@@ -302,6 +307,19 @@ doorbird:
 
 camera:
   - platform: zoneminder
+
+lock:
+  - platform: template
+    name: Inrijpoort
+    value_template: "{{ is_state('switch.looppoort_deurbel_relay_1', 'off') }}"
+    lock:
+      service: switch.turn_on
+      data:
+        entity_id: switch.looppoort_deurbel_relay_1
+    unlock:
+      service: switch.turn_on
+      data:
+        entity_id: switch.looppoort_deurbel_relay_1
 
 utility_meter:
   daily_youless_zonnepanelen:

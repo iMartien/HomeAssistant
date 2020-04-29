@@ -38,13 +38,6 @@
         name: kaku_switch_1
         fire_event: true
 
-  # - platform: wake_on_lan
-  #   mac_address: '40-8D-5C-72-FC-E6'
-  #   name: Plex Server
-  #   host: 192.168.1.15
-  #   turn_off:
-  #     service: shell_command.turn_off_plex_server
-
   - platform: doorbird
     switches:
       - light_on
@@ -168,54 +161,54 @@
     retain: true
     optimistic: false
 
-  - platform: mqtt
-    name: "Landriod Start"
-    state_topic: "worx/status/statusCode"
-    command_topic: "worx/set/mow"
-    qos: 1
-    payload_on: "start"
-    payload_off: "stop"
-    state_on: "7"
-    state_off: "1"
-    retain: true
-    optimistic: false
-    icon: mdi:play
-  - platform: mqtt
-    name: "Landriod Home"
-    state_topic: "worx/status/statusCode"
-    command_topic: "worx/set/mow"
-    qos: 1
-    payload_on: "home"
-    payload_off: "start"
-    state_on: "1"
-    state_off: "7"
-    retain: true
-    optimistic: false
-    icon: mdi:home
-  - platform: mqtt
-    name: "Landriod Pause"
-    state_topic: "worx/status/statusCode"
-    command_topic: "worx/set/mow"
-    payload_on: "pause"
-    payload_off: "start"
-    qos: 1
-    state_on: "34"
-    state_off: "7"
-    retain: true
-    optimistic: false
-    icon: mdi:pause
+  # - platform: mqtt
+  #   name: "Landriod Start"
+  #   state_topic: "worx/status/statusCode"
+  #   command_topic: "worx/set/mow"
+  #   qos: 1
+  #   payload_on: "start"
+  #   payload_off: "stop"
+  #   state_on: "7"
+  #   state_off: "1"
+  #   retain: true
+  #   optimistic: false
+  #   icon: mdi:play
+  # - platform: mqtt
+  #   name: "Landriod Home"
+  #   state_topic: "worx/status/statusCode"
+  #   command_topic: "worx/set/mow"
+  #   qos: 1
+  #   payload_on: "home"
+  #   payload_off: "start"
+  #   state_on: "1"
+  #   state_off: "7"
+  #   retain: true
+  #   optimistic: false
+  #   icon: mdi:home
+  # - platform: mqtt
+  #   name: "Landriod Pause"
+  #   state_topic: "worx/status/statusCode"
+  #   command_topic: "worx/set/mow"
+  #   payload_on: "pause"
+  #   payload_off: "start"
+  #   qos: 1
+  #   state_on: "34"
+  #   state_off: "7"
+  #   retain: true
+  #   optimistic: false
+  #   icon: mdi:pause
 
-  - platform: command_line
-    scan_interval: 60
-    switches:
-      synology_home_mode:
-        command_on: 'python3 custom_components/synology_home_mode/synology_home_mode.py home'
-        command_off: 'python3 custom_components/synology_home_mode/synology_home_mode.py away'
-        command_state: 'python3 custom_components/synology_home_mode/synology_home_mode.py status'
-        value_template: >
-          {% if value_json is defined %}
-            {{ value_json.data.on}}
-          {% else %}
-            {{ states.switch.synology_home_mode.state == 'on' }}
-          {% endif %}
-        friendly_name: Synology Home Mode
+  # - platform: command_line
+  #   scan_interval: 60
+  #   switches:
+  #     synology_home_mode:
+  #       command_on: 'python3 custom_components/synology_home_mode/synology_home_mode.py home'
+  #       command_off: 'python3 custom_components/synology_home_mode/synology_home_mode.py away'
+  #       command_state: 'python3 custom_components/synology_home_mode/synology_home_mode.py status'
+  #       value_template: >
+  #         {% if value_json is defined %}
+  #           {{ value_json.data.on}}
+  #         {% else %}
+  #           {{ states.switch.synology_home_mode.state == 'on' }}
+  #         {% endif %}
+  #       friendly_name: Synology Home Mode

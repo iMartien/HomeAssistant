@@ -1,10 +1,10 @@
 # dwains_theme
-## Custom button for room add-on: Printer
+## Room add-on custom button: Plant
 ## Created by Jeroen Klompen
-## Version: 1.0.2
+## Version: 1.1.0
 
 type: custom:button-card
-entity: {{ (data | fromjson)['entity'] }}
+entity: {{ (data | fromjson)['plant'] }}
 template: rooms_child
 name: {{ name }}
 icon: {{ icon|default('fas:puzzle-piece') }}

@@ -1,0 +1,31 @@
+- type: custom:dwains-flexbox-card
+  padding: true
+  items_classes: 'col-lg-6 col-md-6 col-sm-12 col-xs-12'
+  cards:
+    - type: custom:upcoming-media-card
+      title: Series onlangs toegevoegd
+      entity: sensor.plex_recently_added
+      image_style: fanart
+    - type: custom:upcoming-media-card
+      title: Series binnenkort beschikbaar
+      entity: sensor.sonarr_upcoming_media
+      image_style: fanart
+    - type: custom:upcoming-media-card
+      title: Films binnenkort beschikbaar
+      entity: sensor.radarr_upcoming_media
+      image_style: fanart
+    - type: entities
+      name: Huidige downloads
+      entities:
+        - entity: sensor.nzbget_speed
+          name: Huidige snelheid
+        - entity: sensor.nzbget_average_speed
+          name: Gemiddelde snelheid
+        - entity: sensor.nzbget_queue_size
+          name: Download queue grootte
+        - entity: sensor.nzbget_download_paused
+          name: Downloads gepauzeerd
+        - entity: sensor.nzbget_disk_free
+          name: Vrije ruimte
+        - entity: sensor.nzbget_uptime
+          name: NZBget Uptime

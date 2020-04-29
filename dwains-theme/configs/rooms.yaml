@@ -10,6 +10,10 @@ rooms:
     window: group.woonkamer_ramen
     plant: plant.grote_woonkamer_plant
     media_player: group.woonkamer_media_players
+    more_entities:
+      columns: 2 #optional
+      entities:
+        - entity: switch.tv_meubel_tuya
     addons:
       - name: Sonos
         icon: fas:speaker
@@ -23,6 +27,13 @@ rooms:
         button_path: 'dwains-theme/addons/rooms/woonkamer/tv/button.yaml'
         data:
           entity: media_player.woonkamer_live_tv
+      - name: Grote Plant
+        icon: fas:leaf
+        path: 'dwains-theme/addons/rooms/woonkamer/plant/page.yaml'
+        button_path: 'dwains-theme/addons/rooms/woonkamer/plant/button.yaml'
+        data:
+          plant: plant.grote_woonkamer_plant
+          plant_species: draceana arborea
 
   - name: Keuken
     icon: fas:refrigerator
@@ -180,7 +191,7 @@ rooms:
 
   - name: Oprit & Voortuin
     icon: fas:car-garage
-    device: switch.looppoort_deurbel_relay_1
+    lock: lock.inrijpoort
     addons:
       - name: Deurbel
         path: 'dwains-theme/addons/rooms/voortuin/camera/page.yaml'
@@ -193,24 +204,28 @@ rooms:
         data:
           entity: camera.oprit
 
-  - name: Tesla
-    icon: fas:car
-    lock: group.tesla_sloten
-    device: group.tesla_switches
-    temperature: group.tesla_temperaturen
-    climate: climate.marty_mcfly_hvac_climate_system
-    page_entities:
-      columns: 2 #optional
-      show_title: 'false' #optional
-      entities:
-        - entity: sensor.marty_mcfly_range_sensor
-        - entity: sensor.marty_mcfly_mileage_sensor
-        - entity: sensor.marty_mcfly_battery_sensor
-        - entity: binary_sensor.marty_mcfly_charger_sensor
-        - entity: sensor.marty_mcfly_charging_rate_sensor
-        - entity: binary_sensor.marty_mcfly_parking_brake_sensor
-        - entity: binary_sensor.marty_mcfly_online_sensor
-    more_entities:
-      columns: 2 #optional
-      entities:
-        - entity: switch.marty_mcfly_update_switch
+  - name: Technische Ruimte
+    icon: fas:exclamation-triangle
+    device: switch.cv_hoofdschakelaar
+
+  # - name: Tesla
+  #   icon: fas:car
+  #   lock: group.tesla_sloten
+  #   device: group.tesla_switches
+  #   temperature: group.tesla_temperaturen
+  #   climate: climate.marty_mcfly_hvac_climate_system
+  #   page_entities:
+  #     columns: 2 #optional
+  #     show_title: 'false' #optional
+  #     entities:
+  #       - entity: sensor.marty_mcfly_range_sensor
+  #       - entity: sensor.marty_mcfly_mileage_sensor
+  #       - entity: sensor.marty_mcfly_battery_sensor
+  #       - entity: binary_sensor.marty_mcfly_charger_sensor
+  #       - entity: sensor.marty_mcfly_charging_rate_sensor
+  #       - entity: binary_sensor.marty_mcfly_parking_brake_sensor
+  #       - entity: binary_sensor.marty_mcfly_online_sensor
+  #   more_entities:
+  #     columns: 2 #optional
+  #     entities:
+  #       - entity: switch.marty_mcfly_update_switch
