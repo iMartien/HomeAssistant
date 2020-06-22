@@ -2,7 +2,7 @@
 
 rooms:
   - name: Woonkamer
-    icon: fas:couch
+    icon: mdi:sofa
     light: group.woonkamer_verlichting
 #    temperature: climate.netatmo_woonkamer
     climate: climate.netatmo_woonkamer
@@ -16,19 +16,19 @@ rooms:
         - entity: switch.tv_meubel_tuya
     addons:
       - name: Sonos
-        icon: fas:speaker
+        icon: mdi:speaker
         path: 'dwains-theme/addons/rooms/woonkamer/sonos/page.yaml'
         button_path: 'dwains-theme/addons/rooms/woonkamer/sonos/button.yaml'
         data:
           entity: media_player.tvkamer
       - name: Live TV
-        icon: fas:tv-retro
+        icon: mdi:tv-retro
         path: 'dwains-theme/addons/rooms/woonkamer/tv/page.yaml'
         button_path: 'dwains-theme/addons/rooms/woonkamer/tv/button.yaml'
         data:
           entity: media_player.woonkamer_live_tv
       - name: Grote Plant
-        icon: fas:leaf
+        icon: mdi:leaf
         path: 'dwains-theme/addons/rooms/woonkamer/plant/page.yaml'
         button_path: 'dwains-theme/addons/rooms/woonkamer/plant/button.yaml'
         data:
@@ -36,9 +36,8 @@ rooms:
           plant_species: draceana arborea
 
   - name: Keuken
-    icon: fas:refrigerator
+    icon: mdi:fridge-outline
     light: group.keuken_verlichting
-#    temperature: climate.netatmo_keuken
     climate: climate.netatmo_keuken
     motion: binary_sensor.keuken_motion
     door: binary_sensor.keukendeur
@@ -49,24 +48,31 @@ rooms:
         - entity: binary_sensor.lekkage_gootsteenkastje
     addons:
       - name: Sonos
-        icon: fas:speaker
+        icon: mdi:speaker
         path: 'dwains-theme/addons/rooms/keuken/sonos/page.yaml'
         button_path: 'dwains-theme/addons/rooms/keuken/sonos/button.yaml'
         data:
           entity: media_player.keuken
 
   - name: Kantoor
-    icon: fas:chair-office
+    icon: mdi:desk
+    light: group.kantoor_verlichting
     addons:
       - name: Printer
-        icon: fas:print
+        icon: mdi:printer
         path: 'dwains-theme/addons/rooms/kantoor/printer/page.yaml'
         button_path: 'dwains-theme/addons/rooms/kantoor/printer/button.yaml'
         data:
-          entity: sensor.hp_printer_color_laserjet_status
+          entity: sensor.hp_color_laserjet_pro_m478f_9f
+      - name: Sonos
+        icon: mdi:speaker
+        path: 'dwains-theme/addons/rooms/kantoor/sonos/page.yaml'
+        button_path: 'dwains-theme/addons/rooms/kantoor/sonos/button.yaml'
+        data:
+          entity: media_player.kantoor
 
   - name: Badkamer
-    icon: fas:bath
+    icon: mdi:shower
     light: group.badkamer_spots
     device: switch.badkamerfan_sonoff
     climate: climate.netatmo_badkamer
@@ -78,16 +84,16 @@ rooms:
         - entity: binary_sensor.lekkage_badkamer
     addons:
       - name: Sonos
-        icon: fas:speaker
+        icon: mdi:speaker
         path: 'dwains-theme/addons/rooms/badkamer/sonos/page.yaml'
         button_path: 'dwains-theme/addons/rooms/badkamer/sonos/button.yaml'
         data:
           entity: media_player.badkamer
 
   - name: Gang
-    icon: fas:shoe-prints
+    icon: mdi:shoe-print
     light: switch.ganglicht
-    temperature: sensor.gang_temperature
+    # temperature: sensor.gang_temperature
     climate: climate.gang
     motion: binary_sensor.gang_motion
 #    door: binary_sensor.gangdeur
@@ -106,7 +112,7 @@ rooms:
         - entity: sensor.gangkachel_status
 
   - name: Washok
-    icon: fas:washer
+    icon: mdi:washing-machine
     device: group.washok_apparaten
     page_entities:
       columns: 2 #optional
@@ -123,16 +129,16 @@ rooms:
         - entity: switch.droger_sonoff
 
   - name: Slaapkamer
-    icon: fas:bed
+    icon: mdi:bed-king
     light: group.slaapkamer_spots
-    temperature: sensor.slaapkamer_temperature
+    # temperature: sensor.slaapkamer_temperature
     climate: climate.netatmo_slaapkamer
     window: group.slaapkamer_ramen
 
   - name: Charlie's Kamer
-    icon: fas:dreidel
+    icon: mdi:baby-face-outline
     light: light.babykamer
-    temperature: sensor.babykamer_temperature
+    # temperature: sensor.babykamer_temperature
     climate: climate.netatmo_charlie_s_kamer
     window: binary_sensor.charlies_slaapkamer_raam
     addons:
@@ -143,14 +149,14 @@ rooms:
           entity: camera.charliecam
 
   - name: Overloop
-    icon: fas:level-up
+    icon: mdi:stairs
     light: group.overloop_spots
     motion: binary_sensor.overloop_motion
     device: binary_sensor.rookmelder_overloop
     window: binary_sensor.overloop_raam
 
   - name: WC Boven
-    icon: fas:toilet
+    icon: mdi:paper-roll-outline
     light: group.wc_boven_spots
     window: binary_sensor.wc_boven
     page_entities:
@@ -159,7 +165,7 @@ rooms:
         - entity: binary_sensor.lekkage_wc_boven
 
   - name: Kelder
-    icon: fas:spider-web
+    icon: mdi:rodent
     light: switch.kelderlicht
     page_entities:
       columns: 2 #optional
@@ -174,15 +180,22 @@ rooms:
           entity: camera.muizencam
 
   - name: Veranda & Achtertuin
-    icon: fas:tree
-    temperature: sensor.buiten_temperature
+    icon: mdi:pine-tree
     addons:
       - name: Sonos
-        icon: fas:speaker
+        icon: mdi:speaker
         path: 'dwains-theme/addons/rooms/veranda/sonos/page.yaml'
         button_path: 'dwains-theme/addons/rooms/veranda/sonos/button.yaml'
         data:
-          entity: media_player.badkamer
+          entity: media_player.veranda
+      - name: Grasmaaier
+        icon: mdi:robot-mower-outline
+        path: 'dwains-theme/addons/rooms/veranda/grasmaaier/page.yaml'
+        button_path: 'dwains-theme/addons/rooms/veranda/grasmaaier/button.yaml'
+      - name: Besproeiing
+        icon: mdi:sprinkler
+        path: 'dwains-theme/addons/rooms/veranda/besproeiing/page.yaml'
+        button_path: 'dwains-theme/addons/rooms/veranda/besproeiing/button.yaml'
       - name: Camera
         path: 'dwains-theme/addons/rooms/veranda/camera/page.yaml'
         button_path: 'dwains-theme/addons/rooms/veranda/camera/button.yaml'
@@ -190,7 +203,7 @@ rooms:
           entity: camera.veranda
 
   - name: Oprit & Voortuin
-    icon: fas:car-garage
+    icon: mdi:gate
     lock: lock.inrijpoort
     addons:
       - name: Deurbel
@@ -204,28 +217,31 @@ rooms:
         data:
           entity: camera.oprit
 
-  - name: Technische Ruimte
-    icon: fas:exclamation-triangle
-    device: switch.cv_hoofdschakelaar
+  - name: Tesla
+    icon: mdi:car-electric
+    lock: group.tesla_sloten
+    device: group.tesla_switches
+    temperature: sensor.marty_mcfly_temperature_sensor_inside
+    climate: climate.marty_mcfly_hvac_climate_system
+    page_entities:
+      columns: 2 #optional
+      show_title: 'false' #optional
+      entities:
+        - entity: sensor.marty_mcfly_range_sensor
+        - entity: sensor.marty_mcfly_mileage_sensor
+        - entity: binary_sensor.marty_mcfly_charger_sensor
+        - entity: sensor.marty_mcfly_charging_rate_sensor
+        - entity: binary_sensor.marty_mcfly_parking_brake_sensor
+        - entity: binary_sensor.marty_mcfly_online_sensor
+    more_entities:
+      columns: 2 #optional
+      entities:
+        - entity: switch.marty_mcfly_update_switch
+    addons:
+      - name: Batterij
+        path: 'dwains-theme/addons/rooms/tesla/battery/page.yaml'
+        button_path: 'dwains-theme/addons/rooms/tesla/battery/button.yaml'
 
-  # - name: Tesla
-  #   icon: fas:car
-  #   lock: group.tesla_sloten
-  #   device: group.tesla_switches
-  #   temperature: group.tesla_temperaturen
-  #   climate: climate.marty_mcfly_hvac_climate_system
-  #   page_entities:
-  #     columns: 2 #optional
-  #     show_title: 'false' #optional
-  #     entities:
-  #       - entity: sensor.marty_mcfly_range_sensor
-  #       - entity: sensor.marty_mcfly_mileage_sensor
-  #       - entity: sensor.marty_mcfly_battery_sensor
-  #       - entity: binary_sensor.marty_mcfly_charger_sensor
-  #       - entity: sensor.marty_mcfly_charging_rate_sensor
-  #       - entity: binary_sensor.marty_mcfly_parking_brake_sensor
-  #       - entity: binary_sensor.marty_mcfly_online_sensor
-  #   more_entities:
-  #     columns: 2 #optional
-  #     entities:
-  #       - entity: switch.marty_mcfly_update_switch
+  - name: Technische Ruimte
+    icon: mdi:water-boiler
+    device: switch.cv_hoofdschakelaar

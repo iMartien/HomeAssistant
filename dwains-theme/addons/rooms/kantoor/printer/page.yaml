@@ -13,7 +13,7 @@
           background-color: var(--dwains-theme-primary);
         }
       entities:
-        - entity: sensor.hp_printer_color_laserjet_status
+        - entity: sensor.hp_color_laserjet_pro_m478f_9f
           name: Status
         - entity: sensor.hp_printer_color_laserjet_printer
           icon: mdi:printer

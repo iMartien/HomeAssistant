@@ -171,6 +171,7 @@
 # Power info
     - type: entities
       entities:
+        - entity: sensor.youless_wall_charger
         - entity: sensor.wasmachine_huidig_verbruik
         - entity: sensor.droger_huidig_verbruik
         - entity: sensor.cv_huidig_verbruik

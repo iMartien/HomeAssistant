@@ -38,6 +38,12 @@
       - light.eetkamertafel
       - light.keukenlampie
 
+  Kantoor Verlichting:
+    entities:
+      - light.kantoor_1
+      - light.kantoor_2
+      - light.kantoor_3
+
   Badkamer Spots:
     entities:
       - light.badkamer_1
@@ -84,8 +90,10 @@
 
   Tesla Sloten:
     entities:
-      - lock.marty_mcfly_charger_door_lock
       - lock.marty_mcfly_door_lock
+      - lock.marty_mcfly_frunk_lock
+      - lock.marty_mcfly_trunk_lock
+      - lock.marty_mcfly_charger_door_lock
 
   Tesla Temperaturen:
     entities:

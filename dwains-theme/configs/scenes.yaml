@@ -22,3 +22,4 @@ scenes:
     icon: fas:candle-holder
   - entity: input_boolean.scene_helder
     icon: fas:lightbulb-on
+  - entity: input_boolean.homemode_vacation

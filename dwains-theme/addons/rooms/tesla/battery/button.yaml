@@ -1,0 +1,33 @@
+# dwains_theme
+# Custom button for room addon: Tesla Battery
+type: 'custom:bar-card'
+entities:
+  - entity: sensor.marty_mcfly_battery_sensor
+severity:
+  - value: 10
+    from: '0'
+    to: '10'
+    color: red
+    icon: mdi:battery-10
+  - value: 50
+    from: '11'
+    to: '50'
+    color: orange
+    icon: mdi:battery-50
+  - color: green
+    value: 90
+    from: '51'
+    to: '90'
+    icon: mdi:battery-80
+  - color: green
+    value: 100
+    from: '91'
+    to: '100'
+    icon: mdi:battery
+target: 70
+title_position: inside
+min: '0'
+max: '100'
+positions:
+  icon: outside
+  indicator: inside

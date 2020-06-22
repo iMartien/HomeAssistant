@@ -20,37 +20,37 @@
     - service: input_boolean.turn_on
       entity_id: input_boolean.status_donker
 
-- alias: "Timer - Automatisch HA Thema wanneer alarm uit"
-  trigger:
-    - platform: homeassistant
-      event: start
-    - platform: state
-      entity_id: sun.sun
-  action:
-    - service_template: frontend.set_theme
-      data_template:
-        name: >
-          {% if states.sun.sun.state == "above_horizon" %}
-          synthwave
-          {% else %}
-          synthwave
-          {% endif %}
+# - alias: "Timer - Automatisch HA Thema wanneer alarm uit"
+#   trigger:
+#     - platform: homeassistant
+#       event: start
+#     - platform: state
+#       entity_id: sun.sun
+#   action:
+#     - service_template: frontend.set_theme
+#       data_template:
+#         name: >
+#           {% if states.sun.sun.state == "above_horizon" %}
+#           synthwave
+#           {% else %}
+#           synthwave
+#           {% endif %}
 
-- alias: "Timer - Notify Me when its time to leave for Work"
-  trigger:
-  - platform: state
-    entity_id: sensor.time_to_leave_for_work
-    to: 'True'
-    from: 'False'
-  condition:
-  - condition: state
-    entity_id: binary_sensor.workday_sensor
-    state: 'on'
-  action:
-    - service: notify.notifyall
-      data:
-        message: "Het duurt {{ states.sensor.reistijd_naar_werk.state | int | string }} minuten om naar je werk te rijden. Je moet over 10 minuten vertrekken wil je om 8:30u aankomen. De snelste route is via {{ states.sensor.reistijd_naar_werk.attributes.route }}."
-        title: "Tijd om te vertrekken"
+# - alias: "Timer - Notify Me when its time to leave for Work"
+#   trigger:
+#   - platform: state
+#     entity_id: sensor.time_to_leave_for_work
+#     to: 'True'
+#     from: 'False'
+#   condition:
+#   - condition: state
+#     entity_id: binary_sensor.workday_sensor
+#     state: 'on'
+#   action:
+#     - service: notify.notifyall
+#       data:
+#         message: "Het duurt {{ states.sensor.reistijd_naar_werk.state | int | string }} minuten om naar je werk te rijden. Je moet over 10 minuten vertrekken wil je om 8:30u aankomen. De snelste route is via {{ states.sensor.reistijd_naar_werk.attributes.route }}."
+#         title: "Tijd om te vertrekken"
 
 - alias: "Timer - Notification - Reistijd naar huis"
   trigger:
@@ -63,9 +63,9 @@
         entity_id: binary_sensor.workday_sensor
         state: 'on'
       - condition: template
-        value_template: "{{ not is_state('device_tracker.tesla_model_3_240589_location_tracker','home') }}"
+        value_template: "{{ not is_state('device_tracker.marty_mcfly_location_tracker','home') }}"
   action:
-    - service: notify.notifyall
+    - service: notify.martien
       data:
         message: "Het duurt momenteel {{ states.sensor.reistijd_naar_huis.state | int | string }} minuten om naar huis te rijden. De snelste route is via {{ states.sensor.reistijd_naar_huis.attributes.route }}."
         title: "Reistijd naar huis"
@@ -175,13 +175,13 @@
         data:
           priority: -1
 
-- alias: 'Timer - Start HomeKit'
-  trigger:
-    - platform: homeassistant
-      event: start
-  action:
-    - delay: 00:01  # Waits 1 minute
-    - service: homekit.start
+# - alias: 'Timer - Start HomeKit'
+#   trigger:
+#     - platform: homeassistant
+#       event: start
+#   action:
+#     - delay: 00:01  # Waits 1 minute
+#     - service: homekit.start
 
 - alias: 'Timer - Buitenverlichting aan wanneer donker'
   trigger:
@@ -192,9 +192,6 @@
     - service: switch.turn_on
       entity_id: 
         - switch.veranda_verlichting
-
-
-
 
 - alias: 'Hek openen door drukknop, Tesla of iOS'
   trigger:
@@ -209,13 +206,13 @@
       event_data:
         actionName: OPEN_HEK
   action:
-     - service: switch.turn_on
-       entity_id:
-         - switch.looppoort_deurbel_relay_1
-     - service: tts.google_say
-       entity_id: media_player.google_home_mini
-       data:
-         message: 'Hek wordt geopend'
+    - service: switch.turn_on
+      entity_id:
+        - switch.looppoort_deurbel_relay_1
+    - service: tts.google_say
+      entity_id: media_player.google_home_mini
+      data:
+        message: 'Hek wordt geopend'
 
 - alias: 'Pushbutton - Nachtkastjes - Bedtijd'
   trigger:
@@ -235,9 +232,9 @@
         entity_id: input_boolean.homemode_night
         state: 'off'
   action:
-     - service: input_boolean.turn_on
-       entity_id:
-         - input_boolean.scene_bedtime
+    - service: input_boolean.turn_on
+      entity_id:
+        - input_boolean.scene_bedtime
 
 - alias: 'Pushbutton - Nachtkastjes - Nachtmode'
   trigger:
@@ -257,9 +254,9 @@
         entity_id: input_boolean.homemode_night
         state: 'off'
   action:
-     - service: input_boolean.turn_on
-       entity_id:
-         - input_boolean.homemode_night
+    - service: input_boolean.turn_on
+      entity_id:
+        - input_boolean.homemode_night
 
 - alias: 'Pushbutton - Nachtkastjes - Nachtlampje Aan'
   trigger:
@@ -351,7 +348,7 @@
     - platform: state
       entity_id: updater.updater
   action:
-    - service: notify.notifyall
+    - service: notify.martien
       data:
         message: "Home Assistant versie {{ states.updater.updater.state }} is nu bechikbaar."
         title: "HA Update beschikbaar"
@@ -366,7 +363,7 @@
     - platform: homeassistant
       event: start
   action:
-    - service: notify.notifyall
+    - service: notify.martien
       data:
         message: "Home Assistant is sinds {{(now().strftime('%s') | int | timestamp_custom('%H:%M'))}} weer online."
         title: "HA Online"
@@ -380,7 +377,7 @@
     - platform: homeassistant
       event: shutdown
   action:
-    - service: notify.notifyall
+    - service: notify.martien
       data:
         message: "Waarschuwing: Home Assistant wordt herstart."
         title: "HA Herstart"

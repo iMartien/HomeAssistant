@@ -1,47 +1,47 @@
-  - platform: rfxtrx
-    automatic_add: false
-    devices:
-#      091300063a9af101f470:
-#        name: Alarm Remote - Disarm
-#        fire_event: true
-#      091300153a9af801ef70:
-#        name: Alarm Remote - Arm
-#        fire_event: true
-#      0913001e3a9af401ef70:
-#        name: Alarm Remote - Arm Home
-#        fire_event: true
-#      091300293a9af201ed70:
-#        name: Alarm Remote - SOS
-#        fire_event: true
-      09130029196081021c60:
-        name: Alarm Panel - Disarm
-        fire_event: true
-      09130025196088021b60:
-        name: Alarm Panel - Arm
-        fire_event: true
-      0913002f196084021b60:
-        name: Alarm Panel - Arm Home
-        fire_event: true
-      0913001a196082021960:
-        name: Alarm Panel - SOS
-        fire_event: true
-      0b11000c0067f51201040f50:
-        name: Deurbel
-        fire_event: true
-      0b11000700303cd601010f70:
-        name: kaku_switch_3
-        fire_event: true
-      0b11000e00303cd602010f70:
-        name: kaku_switch_2
-        fire_event: true
-      0b110005009cb1fa01010f50:
-        name: kaku_switch_1
-        fire_event: true
+#   - platform: rfxtrx
+#     automatic_add: false
+#     devices:
+# #      091300063a9af101f470:
+# #        name: Alarm Remote - Disarm
+# #        fire_event: true
+# #      091300153a9af801ef70:
+# #        name: Alarm Remote - Arm
+# #        fire_event: true
+# #      0913001e3a9af401ef70:
+# #        name: Alarm Remote - Arm Home
+# #        fire_event: true
+# #      091300293a9af201ed70:
+# #        name: Alarm Remote - SOS
+# #        fire_event: true
+#       09130029196081021c60:
+#         name: Alarm Panel - Disarm
+#         fire_event: true
+#       09130025196088021b60:
+#         name: Alarm Panel - Arm
+#         fire_event: true
+#       0913002f196084021b60:
+#         name: Alarm Panel - Arm Home
+#         fire_event: true
+#       0913001a196082021960:
+#         name: Alarm Panel - SOS
+#         fire_event: true
+#       0b11000c0067f51201040f50:
+#         name: Deurbel
+#         fire_event: true
+#       0b11000700303cd601010f70:
+#         name: kaku_switch_3
+#         fire_event: true
+#       0b11000e00303cd602010f70:
+#         name: kaku_switch_2
+#         fire_event: true
+#       0b110005009cb1fa01010f50:
+#         name: kaku_switch_1
+#         fire_event: true
 
-  - platform: doorbird
-    switches:
-      - light_on
-      - open_door
+  # - platform: doorbird
+  #   switches:
+  #     - light_on
+  #     - open_door
 
   - platform: broadlink
     host: 192.168.2.40
@@ -142,6 +142,18 @@
     retain: true
 
   - platform: mqtt
+    name: "Tuinpomp"
+    state_topic: "stat/tuinpomp_tuya/POWER"
+    command_topic: "cmnd/tuinpomp_tuya/POWER"
+    availability_topic: "tele/tuinpomp_tuya/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: true
+
+  - platform: mqtt
     name: "Ganglicht"
     state_topic: "shellies/shelly1-22F384/relay/0"
     command_topic: "shellies/shelly1-22F384/relay/0/command"
@@ -160,43 +172,6 @@
     payload_off: "off"
     retain: true
     optimistic: false
-
-  # - platform: mqtt
-  #   name: "Landriod Start"
-  #   state_topic: "worx/status/statusCode"
-  #   command_topic: "worx/set/mow"
-  #   qos: 1
-  #   payload_on: "start"
-  #   payload_off: "stop"
-  #   state_on: "7"
-  #   state_off: "1"
-  #   retain: true
-  #   optimistic: false
-  #   icon: mdi:play
-  # - platform: mqtt
-  #   name: "Landriod Home"
-  #   state_topic: "worx/status/statusCode"
-  #   command_topic: "worx/set/mow"
-  #   qos: 1
-  #   payload_on: "home"
-  #   payload_off: "start"
-  #   state_on: "1"
-  #   state_off: "7"
-  #   retain: true
-  #   optimistic: false
-  #   icon: mdi:home
-  # - platform: mqtt
-  #   name: "Landriod Pause"
-  #   state_topic: "worx/status/statusCode"
-  #   command_topic: "worx/set/mow"
-  #   payload_on: "pause"
-  #   payload_off: "start"
-  #   qos: 1
-  #   state_on: "34"
-  #   state_off: "7"
-  #   retain: true
-  #   optimistic: false
-  #   icon: mdi:pause
 
   # - platform: command_line
   #   scan_interval: 60

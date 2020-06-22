@@ -1,4 +1,41 @@
 #########################################
+# Alarm actions from HA
+#########################################
+- alias: 'Alarm - Disarm from HA'
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.alarm
+      to: 'disarmed'
+  action:
+    - service: mqtt.publish
+      data:
+        payload: '451531'
+        topic: cmnd/sonoff_bridge/RfCode
+
+- alias: 'Alarm - Arm Away from HA'
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.alarm
+      to: 'armed_away'
+  action:
+    - service: mqtt.publish
+      data:
+        payload: '451538'
+        topic: cmnd/sonoff_bridge/RfCode
+
+- alias: 'Alarm - Arm Home from HA'
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.alarm
+      to: 'armed_home'
+  action:
+    - service: mqtt.publish
+      data:
+        payload: '451534'
+        topic: cmnd/sonoff_bridge/RfCode
+
+
+#########################################
 # Alarm WORDT ingeschakeld automations
 #########################################
 
@@ -44,15 +81,10 @@
     - service: script.speak
       data:
         what: 'Alarm is ingeschakeld.'
-    # - service: frontend.set_theme
-    #   data:
-    #     name: dark_red
-    # - service: notify.pushover
-    #   data_template:
-    #     message: "Alarm is ingeschakeld voor thuis"
-    #     title: "Alarm"
-    #     data:
-    #       priority: -1
+    - service: alarm_control_panel.alarm_arm_home
+      data:
+        entity_id: alarm_control_panel.alarm
+        code: !secret alarm_panel_code
     - service: notify.notifyall
       data:
         message: "Alarm is ingeschakeld (Thuismodus)"
@@ -83,19 +115,14 @@
       data:
         entity_id:
           - input_boolean.homemode_away
-    # - service: frontend.set_theme
-    #   data:
-    #     name: dark_red
-    # - service: notify.pushover
-    #   data_template:
-    #     message: "Alarm is ingeschakeld voor afwezig"
-    #     title: "Alarm"
-    #     data:
-    #       priority: -1
     - service: notify.notifyall
       data:
         message: "Alarm is ingeschakeld!"
         title: "Alarm"
+    - service: alarm_control_panel.alarm_arm_away
+      data:      
+        entity_id: alarm_control_panel.alarm
+        code: !secret alarm_panel_code
 
 - alias: 'Alarm - Alarm is ingeschakeld voor afwezig wanneer afwezig'
   trigger:
@@ -110,20 +137,14 @@
     - service: script.speak
       data:
         what: 'Alarm is ingeschakeld.'
-    # - service: frontend.set_theme
-    #   data:
-    #     name: dark_red
-    # - service: notify.pushover
-    #   data_template:
-    #     message: "Alarm is ingeschakeld voor afwezig"
-    #     title: "Alarm"
-    #     data:
-    #       priority: -1
     - service: notify.notifyall
       data:
         message: "Alarm is ingeschakeld!"
         title: "Alarm"
-
+    - service: alarm_control_panel.alarm_arm_away
+      data:
+        entity_id: alarm_control_panel.alarm
+        code: !secret alarm_panel_code
 
 #########################################
 # Alarm WORDT uitgeschakeld automations
@@ -154,19 +175,14 @@
     - service: script.speak
       data:
         what: 'Alarm is uitgeschakeld.'
-    - service: frontend.set_theme
-      data:
-        name: synthwave
-    # - service: notify.pushover
-    #   data_template:
-    #     message: "Alarm is uitgeschakeld"
-    #     title: "Alarm"
-    #     data:
-    #       priority: -1
     - service: notify.notifyall
       data:
         message: "Alarm is uitgeschakeld!"
         title: "Alarm"
+    - service: alarm_control_panel.alarm_disarm
+      data:
+        entity_id: alarm_control_panel.alarm
+        code: !secret alarm_panel_code
 
 #########################################
 # Alarm GAAT AF automations
@@ -192,7 +208,14 @@
       data:
         group_name: "Woonkamer"
         scene_name: "Alarm"
-
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Keuken"
+        scene_name: "Alarm"
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Kantoor"
+        scene_name: "Alarm"
 ############################################################
 # Beweging, ramen en deuren bij ingeschakeld alarm
 ############################################################
@@ -259,89 +282,6 @@
             badge: 0 ## This will remove the badge/app icon number ##
             category: "bewegingniemandthuis"
 
-########################################
-## Legacy Alarm Control
-########################################
-- alias: 'Alarm - Arm Away from HA / Homekit'
-  trigger:
-    - platform: state
-      entity_id: alarm_control_panel.alarm
-      to: 'armed_away'
-  condition:
-    condition: state
-    entity_id: input_boolean.alarm_armfromkeypad
-    state: 'off'
-  action:
-    - service: homeassistant.turn_off
-      data:
-        entity_id: switch.alarm_panel_arm
-    - service: notify.pushover
-      data_template:
-        message: "Arm alarm in away mode from HA / Homekit..."
-        title: "Alarm Armed Away"
-        data:
-          priority: -1
-
-- alias: 'Alarm - Arm Home from HA / Homekit'
-  trigger:
-    - platform: state
-      entity_id: alarm_control_panel.alarm
-      to: 'armed_home'
-  condition:
-    condition: state
-    entity_id: input_boolean.alarm_armfromkeypad
-    state: 'off'
-  action:
-    - service: homeassistant.turn_off
-      data:
-        entity_id: switch.alarm_panel_arm_home
-    - service: notify.pushover
-      data_template:
-        message: "Arm alarm in home mode from HA / Homekit..."
-        title: "Alarm Armed Home"
-        data:
-          priority: -1
-
-- alias: 'Alarm - Arm Night from HA / Homekit'
-  trigger:
-    - platform: state
-      entity_id: alarm_control_panel.alarm
-      to: 'armed_home'
-  condition:
-    condition: state
-    entity_id: input_boolean.alarm_armfromkeypad
-    state: 'off'
-  action:
-    - service: homeassistant.turn_off
-      data:
-        entity_id: switch.alarm_panel_arm_home
-    - service: notify.pushover
-      data_template:
-        message: "Arm alarm in home mode from HA / Homekit..."
-        title: "Alarm Armed Home"
-        data:
-          priority: -1
-
-- alias: 'Alarm - Disarm Alarm HA / Homekit'
-  trigger:
-    - platform: state
-      entity_id: alarm_control_panel.alarm
-      to: 'disarmed'
-  condition:
-    condition: state
-    entity_id: input_boolean.alarm_disarmfromkeypad
-    state: 'off'
-  action:
-    - service: homeassistant.turn_on
-      data:
-        entity_id: switch.alarm_panel_disarm
-    - service: notify.pushover
-      data_template:
-        message: "Disarm Alarm from HA / Homekit..."
-        title: "Disarm Alarm"
-        data:
-          priority: -1
-
 #- alias: 'Alarm - Automatic Alarm'
 #  trigger:
 #    - platform: state
@@ -364,82 +304,5 @@
 #      data:
 #        entity_id: alarm_control_panel.alarm
 #        code: !secret alarm_panel_code
-
-- alias: 'Alarm - Arm Away from Keypad'
-  trigger:
-    - platform: event
-      event_type: button_pressed
-      event_data: {"entity_id": "switch.alarm_panel_arm"}
-  action:
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.alarm_armfromkeypad
-    - service: alarm_control_panel.alarm_arm_away
-      data:
-        entity_id: alarm_control_panel.alarm
-        code: !secret alarm_panel_code
-    - service: notify.pushover
-      data_template:
-        message: "Arm alarm in away mode signal received from keypad"
-        title: "Alarm Armed Away"
-        data:
-          priority: -1
-
-- alias: 'Alarm - Arm Home from Keypad'
-  trigger:
-    - platform: event
-      event_type: button_pressed
-      event_data: {"entity_id": "switch.alarm_panel_arm_home"}
-  action:
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.alarm_armfromkeypad
-    - service: alarm_control_panel.alarm_arm_home
-      data:
-        entity_id: alarm_control_panel.alarm
-        code: !secret alarm_panel_code
-    - service: notify.pushover
-      data_template:
-        message: "Arm alarm in home mode signal received from keypad"
-        title: "Alarm Arm Home"
-        data:
-          priority: -1
-
-- alias: 'Alarm - Disarm from Keypad'
-  trigger:
-    - platform: event
-      event_type: button_pressed
-      event_data: {"entity_id": "switch.alarm_panel_disarm"}
-  action:
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.alarm_disarmfromkeypad
-    - service: alarm_control_panel.alarm_disarm
-      data:
-        entity_id: alarm_control_panel.alarm
-        code: !secret alarm_panel_code
-    - service: notify.pushover
-      data_template:
-        message: "Disarm alarm signal received from keypad"
-        title: "Alarm Disarmed"
-        data:
-          priority: -1
-
-
-- alias: 'Alarm - Reset Arm and Disarm boolean'
-  trigger:
-    - platform: state
-      entity_id: input_boolean.alarm_armfromkeypad
-      to: 'on'
-      for:
-        seconds: 30
-    - platform: state
-      entity_id: input_boolean.alarm_disarmfromkeypad
-      to: 'on'
-      for:
-        seconds: 30
-  action:
-    - service: input_boolean.turn_off
-      data:
-        entity_id:
-          - input_boolean.alarm_armfromkeypad
-          - input_boolean.alarm_disarmfromkeypad
 
 

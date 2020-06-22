@@ -1,0 +1,79 @@
+## Created by Jeroen Klompen
+## Room add-on: Sonos
+## Version: 1.0.0
+# type: entities
+# style: |
+#   ha-card {
+#     border-radius: 5px;
+#     background-color: var(--dwains-theme-primary);
+#   }
+type: 'custom:mini-media-player'
+entity: media_player.kantoor
+group: true
+name: Kantoor
+info: scroll
+artwork: full-cover-fit
+volume_stateless: true
+volume_step: 1
+hide:
+  power: true
+  icon: true
+  source: true
+  icon_state: false
+  power_color: false
+speaker_group:
+  platform: sonos
+  show_group_count: true
+  entities:
+    - entity_id: media_player.tvkamer
+      name: 'TV Kamer'
+    - entity_id: media_player.woonkamer
+      name: 'Woonkamer'
+    - entity_id: media_player.keuken
+      name: 'Keuken'
+    - entity_id: media_player.badkamer
+      name: 'Badkamer'
+    - entity_id: media_player.veranda
+      name: 'Veranda'
+shortcuts:
+  columns: 3
+  hide_when_off: true
+  label: Select Input
+  align_text: center
+  buttons:
+    - name: NPO Radio 2
+      icon: mdi:radio
+      type: source
+      id: "NPO Radio 2 92.9 (Pop)"
+    - name: NPO Radio 3
+      icon: mdi:radio
+      type: source
+      id: "NPO 3FM 96.5 (Top-40-Pop)"
+    - name: Radio 10
+      icon: mdi:radio
+      type: source
+      id: "Radio 10 88.1 (Classic Hits)"
+    - name: Sublime FM
+      icon: mdi:radio
+      type: source
+      id: "Sublime FM"
+    - name: Sky Radio
+      icon: mdi:radio
+      type: source
+      id: "Sky Radio 101 FM 101.2 (Pop)"
+    - name: The Christmas Station
+      icon: mdi:string-lights
+      type: source
+      id: "Sky Radio Christmas"
+    - name: Morning Tea
+      icon: mdi:tea
+      type: source
+      id: "Morning Tea"
+    - name: "It's The Weekend!"
+      icon: mdi:party-popper
+      type: source
+      id: "'Cause it's the Weekeeeeend!"
+    - name: Liedjes voor Charlie
+      icon: mdi:emoticon-happy-outline
+      type: source
+      id: "Liedjes voor Charlie"

@@ -1,0 +1,13 @@
+  slider_besproeiingsduur:
+    name: Besproeiingsduur
+    initial: 30
+    min: 5
+    max: 60
+    step: 5
+
+  slider_maaitijd_vergroot_verklein:
+    name: Maaitijd vergroten/verkleinen
+    initial: 0
+    min: -100
+    max: 100
+    step: 10

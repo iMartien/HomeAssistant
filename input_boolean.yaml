@@ -72,14 +72,6 @@
     name: Sublime FM
     icon: mdi:radio
 
-
-  alarm_armfromkeypad:
-    name: Alarm armed from Keypad
-    icon: mdi:dialpad
-  alarm_disarmfromkeypad:
-    name: Alarm disarmd from keypad
-    icon: mdi:dialpad
-
   gangkachel:
     name: Gangkachel
     icon: mdi:radiator
@@ -92,6 +84,12 @@
     name: Keukenkachel Schema
     icon: mdi:calendar-clock
 
-  standkachel_schema:
-    name: Standkachel Schema
+  tuinbesproeiing_actief:
+    name: Tuinbesproeiing Actief
+    icon: mdi:play-circle
+  tuinbesproeiing_schema:
+    name: Tuinbesproeiing Schema
     icon: mdi:calendar-clock
+  tuinbesproeiing_vandaag:
+    name: Tuinbesproeiing Vandaag
+    icon: mdi:calendar-today

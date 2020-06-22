@@ -1,0 +1,185 @@
+# Tuinpomp gaat aan
+- alias: 'Tuinpomp - Tuinpomp gaat aan'
+  trigger:
+    - platform: state
+      entity_id: switch.tuinpomp
+      to: 'on'
+  action:
+    - service: notify.martien
+      data:
+        message: "Tuinpomp is ingeschakeld"
+        title: "Tuinbesproeiing"
+
+# Tuinpomp uit na 1 uur
+- alias: 'Tuinpomp - Uitschakelen na besproeingsduur'
+  trigger:
+    - platform: state
+      entity_id: switch.tuinpomp
+      to: 'on'
+      for:
+        minutes: "{{ states.input_number.slider_besproeiingsduur.state | int }}"
+  action:
+    - service: homeassistant.turn_off
+      data:
+        entity_id:
+          - switch.tuinpomp
+          - input_boolean.tuinbesproeiing_actief
+
+    - service: notify.martien
+      data:
+        message: "Tuinpomp is automatisch uitgeschakeld"
+        title: "Tuinbesproeiing"
+
+- alias: "Tuin Besproeiing - Start tuinbesproeiingsprogramma"
+  trigger:
+    platform: time
+    at: "22:00:00"
+  condition:
+    condition: state
+    entity_id: input_boolean.tuinbesproeiing_vandaag
+    state: 'on'
+  action:
+    - service: homeassistant.turn_on
+      data:
+        entity_id:
+          - input_boolean.tuinbesproeiing_actief
+
+- alias: "Tuin Besproeiing - Start besproeiingsprogramma grasmaaier naar huis"
+  trigger:
+    - platform: state
+      entity_id: input_boolean.tuinbesproeiing_actief
+      to: 'on'
+  condition:
+    condition: state
+    entity_id: sensor.landroid_landroid_gijs_de_grasmaaier_status
+    state: 'Mowing'
+  action:
+    - service: landroid_cloud.home
+    - service: notify.notifyall
+      data:
+        message: "Tuinbesproeiing wacht tot grasmaaier thuis is..."
+        title: "Tuinbesproeiing"
+    - service: landroid_cloud.config
+      data_template:
+        id: "{{ state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status','id') }}"
+        timeextension: -100
+
+- alias: "Tuin Besproeiing - Start besproeiingsprogramma grasmaaier is al thuis"
+  trigger:
+    - platform: state
+      entity_id: input_boolean.tuinbesproeiing_actief
+      to: 'on'
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: sensor.landroid_landroid_gijs_de_grasmaaier_status
+        state: 'Home'
+      - condition: state
+        entity_id: sensor.landroid_landroid_gijs_de_grasmaaier_status
+        state: 'Idle'
+  action:
+    - service: homeassistant.turn_on
+      data:
+        entity_id:
+          - switch.tuinpomp
+    - service: homeassistant.turn_off
+      data:
+        entity_id:
+          - input_boolean.tuinbesproeiing_vandaag
+    - service: notify.martien
+      data:
+        message: "Tuinbesproeiingsprogramma is gestart..."
+        title: "Tuinbesproeiing"
+    - service: landroid_cloud.config
+      data_template:
+        id: "{{ state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status','id') }}"
+        timeextension: 0
+
+- alias: 'Tuin Besproeiing - Grasmaaier is thuis start sproeien'
+  trigger:
+    - platform: state
+      entity_id: sensor.landroid_landroid_gijs_de_grasmaaier_status
+      to: 'Home'
+  condition:
+    condition: state
+    entity_id: input_boolean.tuinbesproeiing_actief
+    state: 'on'
+  action:
+    - service: homeassistant.turn_on
+      data:
+        entity_id:
+          - switch.tuinpomp
+    - service: homeassistant.turn_off
+      data:
+        entity_id:
+          - input_boolean.tuinbesproeiing_actief
+    - service: notify.martien
+      data:
+        message: "Tuinbesproeiingsprogramma is uitgesteld gestart..."
+        title: "Tuinbesproeiing"
+
+- alias: "Tuin Besproeiing - Stop besproeiingsprogramma"
+  trigger:
+    - platform: state
+      entity_id: input_boolean.tuinbesproeiing_actief
+      to: 'off'
+  action:
+    - service: homeassistant.turn_off
+      data:
+        entity_id:
+          - switch.tuinpomp
+    - service: notify.martien
+      data:
+        message: "Tuinbesproeiingsprogramma is gestopt"
+        title: "Tuinbesproeiing"
+    - service: landroid_cloud.config
+      data_template:
+        id: "{{ state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status','id') }}"
+        timeextension: 0
+
+- alias: "Tuin Besproeiing - Aan voor vandaag"
+  trigger:
+    platform: time
+    at: "00:01:00"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.tuinbesproeiing_schema
+        state: 'on'
+      - condition: template
+        value_template: "{{ not is_state('weather.rotterdam', 'rainy') }}"
+      - condition: template
+        value_template: "{{ not is_state('weather.rotterdam', 'pouring') }}"
+  action:
+    - service: homeassistant.turn_on
+      data:
+        entity_id:
+          - input_boolean.tuinbesproeiing_vandaag
+    - service: notify.martien
+      data:
+        message: "Tuinbesproeiing is voor vandaag ingepland"
+        title: "Tuinbesproeiing"
+
+- alias: 'Tuin Besproeiing - Uitschakelen bij regen'
+  trigger:
+    - platform: state
+      entity_id: weather.rotterdam
+      to: 'rainy'
+    - platform: state
+      entity_id: weather.rotterdam
+      to: 'pouring'
+  condition:
+    condition: state
+    entity_id: input_boolean.tuinbesproeiing_vandaag
+    state: 'on'
+  action:
+    - service: homeassistant.turn_off
+      data:
+        entity_id:
+          - input_boolean.tuinbesproeiing_vandaag
+    - service: notify.martien
+      data:
+        message: "Tuinbesproeiing is voor vandaag uitgezet ivm regen"
+        title: "Tuinbesproeiing"

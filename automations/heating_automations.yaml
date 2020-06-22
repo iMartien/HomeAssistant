@@ -24,7 +24,7 @@
       data:
         entity_id:
           - switch.badkamerfan_sonoff
-    - service: notify.notifyall
+    - service: notify.martien
       data:
         message: "De thermostaat in de badkamer is lager gezet en de ventilator aan omdat het raam is geopend."
         title: "Verwarming lager"

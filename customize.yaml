@@ -69,7 +69,7 @@ binary_sensor.hoogwater_kelder:
 
 plant.grote_woonkamer_plant:
   icon: mdi:sprout
-  name: Grote Woonkamer Plant
+  friendly_name: Grote Woonkamer Plant
 
 #Smoke Sensors
 binary_sensor.rookmelder_overloop:
@@ -217,3 +217,10 @@ person.martien:
   entity_picture: "/local/Martien.png"
 person.deborah:
   entity_picture: "/local/Deborah.png"
+
+
+device_tracker.marty_mcfly_location_tracker:
+  entity_picture: "/local/teslalogo.png"
+
+switch.tuinpomp:
+  icon: mdi:cached

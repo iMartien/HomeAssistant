@@ -5,7 +5,7 @@
     to: 'off'
   condition:
     - condition: state
-      entity_id: light.alle_verlichting
+      entity_id: light.woonkamer_verlichting
       state: 'on'
   action:
     - service: notify.notifyall
@@ -26,7 +26,10 @@
   action:
     - service: homeassistant.turn_off
       entity_id:
-        - light.alle_verlichting
+        - group.woonkamer_verlichting
+        - group.keuken_verlichting
+        - group.overloop_spots
+        - group.slaapkamer_spots
         - switch.ganglicht
 
 - alias: iOS Notifcation Action - ALARM_DISARM

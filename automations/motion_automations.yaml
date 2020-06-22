@@ -28,9 +28,9 @@
       for:
         minutes: 10
   action:
-     - service: switch.turn_off
-       entity_id:
-         - switch.ganglicht
+    - service: switch.turn_off
+      entity_id:
+        - switch.ganglicht
 
 - alias: 'Motion - Keukenlicht naar normaal bij beweging'
   trigger:

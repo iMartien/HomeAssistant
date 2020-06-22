@@ -1,0 +1,20 @@
+- type: custom:dwains-flexbox-card
+  items_classes: 'col-xs-12 col-sm-6 col-sm-6'
+  #padding: true
+  cards:
+    - entity: weather.rotterdam
+      show_forecast: false
+      type: weather-forecast
+    - type: entities
+      entities:
+        - entity: input_boolean.tuinbesproeiing_schema
+        - entity: input_boolean.tuinbesproeiing_vandaag
+        - entity: input_boolean.tuinbesproeiing_actief
+        - entity: switch.tuinpomp
+        - entity: input_datetime.besproeiingstarttijd
+        - entity: input_number.slider_besproeiingsduur
+      show_header_toggle: false
+      title: Tuinbesproeiing
+    - camera_image: camera.buienradar_loop
+      entity: weather.rotterdam
+      type: picture-entity

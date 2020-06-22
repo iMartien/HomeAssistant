@@ -6,7 +6,7 @@
     for:
       minutes: 10
   action:
-    - service: notify.notifyall
+    - service: notify.martien
       data:
         message: "Transmission heeft gepauzeerde downloads!"
         title: "Downloads"

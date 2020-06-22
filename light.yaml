@@ -27,6 +27,9 @@
         - light.wc_boven_1
         - light.wc_boven_2
         - light.wc_boven_3
+        - light.kantoor_1
+        - light.kantoor_2
+        - light.kantoor_3
   
   - platform: group
     name: Woonkamer Verlichting

@@ -86,20 +86,6 @@
     scan_interval: 5
     unit_of_measurement: "kWh"
 
-  - platform: rfxtrx
-    automatic_add: false
-    debug: false
-    devices:
-      0a5207362c0e006e390149:
-        name: Buiten
-      0a52070e700e00bf310149:
-        name: Slaapkamer
-      0a5207085c0e00c3370179:
-        name: Babykamer
-      0a520709c70e00a73e0169:
-        name: Gang
-      0b550311800c000000504139:
-        name: Regen
   - platform: systemmonitor
     resources:
       - type: disk_use_percent
@@ -124,16 +110,16 @@
     zipcode: 3084LA
     housenumber: 471
 
-  - platform: solaredge
-    api_key: RK9LHI2YXWF12HZOE21V1OPI290R5IR3
-    site_id: 567805
-    name: SolarEdge
-    monitored_conditions:
-      - current_power
-      - energy_today
-      - energy_this_month
-      - energy_this_year
-      - lifetime_energy
+  # - platform: solaredge
+  #   api_key: RK9LHI2YXWF12HZOE21V1OPI290R5IR3
+  #   site_id: 567805
+  #   name: SolarEdge
+  #   monitored_conditions:
+  #     - current_power
+  #     - energy_today
+  #     - energy_this_month
+  #     - energy_this_year
+  #     - lifetime_energy
 
 #Crypto related sensors
   - platform: bitcoin
@@ -323,18 +309,18 @@
     command: "cat /sys/class/thermal/thermal_zone2/temp"
     unit_of_measurement: "°C"
     value_template: '{{ value | multiply(0.001) | round(1) }}'
-  - platform: synologydsm
-    host: !secret synology_ip
-    username: !secret synology_username
-    password: !secret synology_password
-    monitored_conditions:
-      - cpu_total_load
-      - memory_real_usage
-      - network_up
-      - network_down
-      - volume_status
-      - volume_percentage_used
-      - volume_size_used
+  # - platform: synologydsm
+  #   host: !secret synology_ip
+  #   username: !secret synology_username
+  #   password: !secret synology_password
+  #   monitored_conditions:
+  #     - cpu_total_load
+  #     - memory_real_usage
+  #     - network_up
+  #     - network_down
+  #     - volume_status
+  #     - volume_percentage_used
+  #     - volume_size_used
 
   - platform: template
     sensors:
@@ -656,46 +642,6 @@
     value_template: '{{ value_json["ENERGY"]["Current"] }}'
     unit_of_measurement: "A"
 
-  - platform: mqtt
-    state_topic: "wallpanel/woonkamerwallpanel/sensor/battery"
-    name: "Wallpanel Batterij"
-    unit_of_measurement: "%"
-    value_template: '{{ value_json.value }}'
-  - platform: mqtt
-    state_topic: "wallpanel/woonkamerwallpanel/sensor/brightness"
-    name: "Wallpanel Brightness"
-    unit_of_measurement: "lx"
-    value_template: '{{ value_json.value }}'
-
-  - platform: mqtt
-    state_topic: "worx/status/statusDescription"
-    name: "Landroid Status"
-  - platform: mqtt
-    state_topic: "worx/status/errorDescription"
-    name: "Landroid Fout"
-  - platform: mqtt
-    state_topic: "worx/status/rainDelay"
-    name: "Landroid Regenuitstel"
-    unit_of_measurement: "Minuten"
-  - platform: mqtt
-    state_topic: "worx/status/batteryLevel"
-    name: "Landroid Batterij"
-    unit_of_measurement: "%"
-  - platform: mqtt
-    state_topic: "worx/status/batteryCharging"
-    name: "Landroid Batterij Opladen"
-  - platform: mqtt
-    state_topic: "worx/status/batteryChargeCycle"
-    name: "Landroid Batterij Laadcyclus"
-  - platform: mqtt
-    state_topic: "worx/status/batteryVoltage"
-    name: "Landroid Batterij Voltage"
-    unit_of_measurement: "V"
-  - platform: mqtt
-    state_topic: "worx/status/batteryTemperature"
-    name: "Landroid Batterij Temperatuur"
-    unit_of_measurement: "Celcius"
-
   - platform: template
     sensors:
       unifi_gateway_wan_cpu:
@@ -732,3 +678,354 @@
         unit_of_measurement: Kbps
         icon_template: "mdi:speedometer"
         value_template: "{{ (states.sensor.unifi_gateway_wan.attributes['rx_bytes-r'] / 1024) | int }}"
+
+  - platform: template
+    sensors:
+
+# Info ############
+      landroid_bat:
+        friendly_name: Battery level
+        value_template: >-
+          {% if is_state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_battery', 'charging', 1) -%}Charging
+          {%- else -%}Discharging
+          {%- endif %}
+        icon_template: >-
+          {% set level = states('sensor.landroid_landroid_gijs_de_grasmaaier_battery') | float -%}
+          {%- if is_state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_battery', 'charging', 1) -%}
+            {%- if level > 99 -%}mdi:battery-charging-100
+            {%- elif level > 89 -%}mdi:battery-charging-90
+            {%- elif level > 79 -%}mdi:battery-charging-80
+            {%- elif level > 69 -%}mdi:battery-charging-70
+            {%- elif level > 59 -%}mdi:battery-charging-60
+            {%- elif level > 49 -%}mdi:battery-charging-50
+            {%- elif level > 39 -%}mdi:battery-charging-40
+            {%- elif level > 29 -%}mdi:battery-charging-30
+            {%- elif level > 19 -%}mdi:battery-charging-20
+            {%- elif level > 9 -%}mdi:battery-charging-10
+            {%- else -%}mdi:battery-charging-outline
+            {%- endif -%}
+          {%- else -%}
+            {%- if level > 99 -%}mdi:battery
+            {%- elif level > 89 -%}mdi:battery-90
+            {%- elif level > 79 -%}mdi:battery-80
+            {%- elif level > 69 -%}mdi:battery-70
+            {%- elif level > 59 -%}mdi:battery-60
+            {%- elif level > 49 -%}mdi:battery-50
+            {%- elif level > 39 -%}mdi:battery-40
+            {%- elif level > 29 -%}mdi:battery-30
+            {%- elif level > 19 -%}mdi:battery-20
+            {%- elif level > 9 -%}mdi:battery-10
+            {%- else -%}mdi:battery-outline
+            {%- endif -%}
+          {%- endif %}
+# Status ##########
+      landroid_bladetime:
+        friendly_name: Landroid Blade Time
+        value_template: "{{ state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'blade_time') }}"
+        attribute_templates:
+          time_formatted: >
+            {% set t = state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'blade_time') | int %}
+            {% if t != 0 %}
+              {{ '%0d d %0.02d h %0.02d min' | format(t // 1440, ((t % 1440) // 60), t % 60) }}
+            {% endif %}
+        icon_template: mdi:fan
+        unit_of_measurement: "min"
+
+      landroid_totaltime:
+        friendly_name: Landroid Total Time
+        value_template: "{{ state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'work_time') }}"
+        attribute_templates:
+          time_formatted: >
+            {% set t = state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'work_time') | int %}
+            {% if t != 0 %}
+              {{ '%0d d %0.02d h %0.02d min' | format(t // 1440, ((t % 1440) // 60), t % 60) }}
+            {% endif %}
+        icon_template: mdi:bus-clock
+        unit_of_measurement: "min"
+
+      landroid_dist:
+        friendly_name: Landroid Distance
+        value_template: "{{ (state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'distance') | float) / 1000 }}"
+        icon_template: mdi:map-marker-distance
+        unit_of_measurement: "km"
+
+      landroid_lastupdate:
+        friendly_name: Landroid last update
+        value_template: "{{ as_timestamp(strptime( state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'last_update'), '%H:%M:%S %d/%m/%Y')) | timestamp_custom('%d.%m.%Y %H:%M:%S') }}"
+        icon_template: mdi:clock
+
+# -55 or higher: 4 bars
+# -56 to -66: 3 bars
+# -67 to -77: 2 bars
+# -78 to -88: 1 bar
+# -89 or lower: 0 bars
+      landroid_wifi:
+        friendly_name: Landroid WIFI Quality
+        value_template: "{{ state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'rssi') }}"
+        icon_template: >-
+          {% set strength = state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'rssi') | float -%}
+          {%- if strength > -56 -%}mdi:wifi-strength-4
+          {% elif strength > -67 -%}mdi:wifi-strength-3
+          {% elif strength > -78 -%}mdi:wifi-strength-2
+          {% elif strength > -89 -%}mdi:wifi-strength-1
+          {%- else -%}mdi:wifi-strength-outline
+          {%- endif %}
+        unit_of_measurement: "dBm"
+
+      landroid_yaw:
+        friendly_name: Landroid Yaw
+        value_template: "{{ state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'yaw') }}"
+        icon_template: mdi:axis-z-rotate-clockwise
+        unit_of_measurement: "°"
+
+      landroid_roll:
+        friendly_name: Landroid Roll
+        value_template: "{{ state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'roll') }}"
+        icon_template: mdi:axis-x-rotate-clockwise
+        unit_of_measurement: "°"
+
+      landroid_pitch:
+        friendly_name: Landroid Pitch
+        value_template: "{{ state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'pitch') }}"
+        icon_template: mdi:seat-flat-angled
+        unit_of_measurement: "°"
+
+
+
+###### Unraid Sensors
+
+  - platform: command_line
+    name: Unraid Version (Stable)
+    command: /usr/bin/curl --insecure "https://s3.amazonaws.com/dnld.lime-technology.com/stable/unRAIDServer.plg" 2>&1 | grep Version |awk '{print $3}'
+
+
+  - platform: template
+    sensors:
+      unraid_array_status:
+        friendly_name: UnRAID Array Status
+        value_template: >
+          {{state_attr("binary_sensor.unraid_server", "arrayStatus")}}
+      unraid_array_protection:
+        friendly_name: UnRAID Array Protection
+        value_template: >
+          {{state_attr("binary_sensor.unraid_server", "arrayProtection")}}
+      unraid_array_space:
+        friendly_name: UnRAID Array Space
+        value_template: >
+          {% set state = state_attr("switch.unraid_array", "diskSpace") %} 
+          {{ Offline if state == None else state | regex_findall_index(".*\((\d+.?\d+) %\)") | float }}
+        unit_of_measurement: '%'
+
+      unraid_array_status_numerical:
+        friendly_name: UnRAID Array Status
+        value_template: >
+          {% if is_state("sensor.unraid_array_status", "Started") %}
+            1
+          {% else %}
+            0
+          {% endif %}
+## UnRaid Array Protection Bar-Card  > 3.1.0 
+      unraid_array_protection:
+        friendly_name: UnRAID Array Protection
+        value_template: >
+          {{state_attr("binary_sensor.unraid_server", "arrayProtection")}}
+      unraid_array_protection_numerical:
+        friendly_name: UnRAID Array Protection
+        value_template: >
+          {% if is_state("sensor.unraid_array_protection", "Parity is valid.") %}
+            1
+          {% else %}
+            0
+          {% endif %}
+
+
+  ## HDD SNMP Temperatures
+
+  - platform: snmp
+    name: 'UnRAID PARITY Temperature'  
+    host: !secret container_host
+    port: 161
+    community: public
+    version: 2c
+    baseoid: .1.3.6.1.4.1.8072.1.3.2.4.1.2.8.100.105.115.107.116.101.109.112.1
+    accept_errors: false
+    value_template: >
+      {{ value.split(':')[1].strip() }}
+    unit_of_measurement: '°C'
+
+  - platform: snmp
+    name: 'UnRAID DISK1 Temperature'
+    host: !secret container_host
+    port: 161
+    community: public
+    version: 2c
+    baseoid: .1.3.6.1.4.1.8072.1.3.2.4.1.2.8.100.105.115.107.116.101.109.112.2
+    accept_errors: false
+    value_template: >
+      {{ value.split(':')[1].strip() }}
+    unit_of_measurement: '°C'
+
+  - platform: snmp
+    name: 'UnRAID DISK2 Temperature'
+    host: !secret container_host
+    port: 161
+    version: 2c
+    community: public
+    baseoid: .1.3.6.1.4.1.8072.1.3.2.4.1.2.8.100.105.115.107.116.101.109.112.3 
+    accept_errors: false
+    value_template: >
+      {{ value.split(':')[1].strip() }}
+    unit_of_measurement: '°C'
+
+  - platform: snmp
+    name: 'UnRAID DISK3 Temperature'
+    host: !secret container_host
+    port: 161
+    version: 2c
+    community: public
+    baseoid: .1.3.6.1.4.1.8072.1.3.2.4.1.2.8.100.105.115.107.116.101.109.112.4
+    accept_errors: false
+    value_template: >
+      {{ value.split(':')[1].strip() }}
+    unit_of_measurement: '°C'
+
+  - platform: snmp
+    name: 'UnRAID DISK4 Temperature'
+    host: !secret container_host
+    port: 161
+    version: 2c
+    community: public
+    baseoid: .1.3.6.1.4.1.8072.1.3.2.4.1.2.8.100.105.115.107.116.101.109.112.5
+    accept_errors: false
+    value_template: >
+      {{ value.split(':')[1].strip() }}
+    unit_of_measurement: '°C'
+
+  - platform: snmp
+    name: 'UnRAID DISK5 Temperature'
+    host: !secret container_host
+    port: 161
+    version: 2c
+    community: public
+    baseoid: .1.3.6.1.4.1.8072.1.3.2.4.1.2.8.100.105.115.107.116.101.109.112.6
+    accept_errors: false
+    value_template: >
+      {{ value.split(':')[1].strip() }}
+    unit_of_measurement: '°C'
+
+  - platform: snmp
+    name: 'UnRAID DISK6 Temperature'
+    host: !secret container_host
+    port: 161
+    version: 2c
+    community: public
+    baseoid: .1.3.6.1.4.1.8072.1.3.2.4.1.2.8.100.105.115.107.116.101.109.112.7
+    accept_errors: false
+    value_template: >
+      {{ value.split(':')[1].strip() }}
+    unit_of_measurement: '°C'
+
+  ## SNMP LAN Upload
+
+  - platform: snmp
+    name: 'UnRAID Upload'
+    host: !secret container_host
+    port: 161
+    community: public
+    baseoid: .1.3.6.1.2.1.2.2.1.16.9
+    accept_errors: false
+    unit_of_measurement: "Kbps"
+    value_template: >
+      {{((value | float ) / 1000000 ) | round(2) }}
+  # - platform: snmp
+  #   name: 'UnRAID LAN1 Upload LAGG0'
+  #   host: !secret container_host
+  #   port: 161
+  #   community: public
+  #   baseoid: .1.3.6.1.2.1.2.2.1.16.8
+  #   accept_errors: false
+  #   unit_of_measurement: "Kbps"
+  #   value_template: >
+  #     {{((value | float ) / 1000000 ) | round(2) }}
+  # - platform: snmp
+  #   name: 'UnRAID LAN2 Upload LAGG0'
+  #   host: !secret container_host
+  #   port: 161
+  #   community: public
+  #   baseoid: .1.3.6.1.2.1.2.2.1.16.14
+  #   accept_errors: false
+  #   unit_of_measurement: "Kbps"
+  #   value_template: >
+  #     {{((value | float ) / 1000000 ) | round(2) }}
+  # - platform: snmp
+  #   name: 'UnRAID LAN3 Upload LAGG0'
+  #   host: !secret container_host
+  #   port: 161
+  #   community: public
+  #   baseoid: .1.3.6.1.2.1.2.2.1.16.15
+  #   accept_errors: false
+  #   unit_of_measurement: "Kbps"
+  #   value_template: >
+  #     {{((value | float ) / 1000000 ) | round(2) }}
+  # - platform: snmp
+  #   name: 'UnRAID LAN4 Upload LAGG0'
+  #   host: !secret container_host
+  #   port: 161
+  #   community: public
+  #   baseoid: .1.3.6.1.2.1.2.2.1.16.16
+  #   accept_errors: false
+  #   unit_of_measurement: "Kbps"
+  #   value_template: >
+  #     {{((value | float ) / 1000000 ) | round(2) }}
+  ## SNMP LAN Download
+
+  - platform: snmp
+    name: 'UnRAID Download'
+    host: !secret container_host
+    port: 161
+    community: public
+    baseoid: .1.3.6.1.2.1.2.2.1.10.9
+    accept_errors: false
+    unit_of_measurement: "Kbps"
+    value_template: >
+      {{((value | float ) / 1000000 ) | round(2) }}
+  # - platform: snmp
+  #   name: 'UnRAID LAN1 Download LAGG0'
+  #   host: !secret container_host
+  #   port: 161
+  #   community: public
+  #   baseoid: .1.3.6.1.2.1.2.2.1.10.13
+  #   accept_errors: false
+  #   unit_of_measurement: "Kbps"
+  #   value_template: >
+  #     {{((value | float ) / 1000000 ) | round(2) }}
+  # - platform: snmp
+  #   name: 'UnRAID LAN2 Download LAGG0'
+  #   host: !secret container_host
+  #   port: 161
+  #   community: public
+  #   baseoid: .1.3.6.1.2.1.2.2.1.10.14
+  #   accept_errors: false
+  #   unit_of_measurement: "Kbps"
+  #   value_template: >
+  #     {{((value | float ) / 1000000 ) | round(2) }}
+  # - platform: snmp
+  #   name: 'UnRAID LAN3 Download LAGG0'
+  #   host: !secret container_host
+  #   port: 161
+  #   community: public
+  #   baseoid: .1.3.6.1.2.1.2.2.1.10.15
+  #   accept_errors: false
+  #   unit_of_measurement: "Kbps"
+  #   value_template: >
+  #     {{((value | float ) / 1000000 ) | round(2) }}
+  # - platform: snmp
+  #   name: 'UnRAID LAN4 Download LAGG0'
+  #   host: !secret container_host
+  #   port: 161
+  #   community: public
+  #   baseoid: .1.3.6.1.2.1.2.2.1.10.16
+  #   accept_errors: false
+  #   unit_of_measurement: "Kbps"
+  #   value_template: >
+  #     {{((value | float ) / 1000000 ) | round(2) }}

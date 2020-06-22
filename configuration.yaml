@@ -1,10 +1,10 @@
 homeassistant:
-  name: Chateau Charlois
-  latitude: !secret homelocation_lat
-  longitude: !secret homelocation_long
-  elevation: 0
-  unit_system: metric
-  time_zone: Europe/Amsterdam
+  # name: Chateau Charlois
+  # latitude: !secret homelocation_lat
+  # longitude: !secret homelocation_long
+  # elevation: 0
+  # unit_system: metric
+  # time_zone: Europe/Amsterdam
   customize: !include customize.yaml
   packages: !include_dir_named packages/ # Comment this whole line if you want to disable Dwains Theme
 
@@ -12,8 +12,8 @@ system_health:
 
 person:
 
-hacs:
-  token: !secret hacs_token
+# hacs:
+#   token: !secret hacs_token
 
 breaking_changes:
 
@@ -32,14 +32,14 @@ logger:
 recorder:
 #  db_url: !secret db_url
   purge_keep_days: 7
-  purge_interval: 1
+  # purge_interval: 1
 
-http:
-  ip_ban_enabled: false
-  login_attempts_threshold: 50
-  ssl_certificate: /ssl/fullchain.pem
-  ssl_key: /ssl/privkey.pem
-  base_url: !secret ha_baseurl
+# http:
+#   ip_ban_enabled: false
+#   login_attempts_threshold: 50
+#   ssl_certificate: /ssl/fullchain.pem
+#   ssl_key: /ssl/privkey.pem
+#   base_url: !secret ha_baseurl
 
 updater:
   include_used_components: true
@@ -62,72 +62,72 @@ fastdotcom:
 
 sun:
 
-rfxtrx:
-   device: /dev/serial/by-id/usb-RFXCOM_RFXtrx433_A1YI1ZVU-if00-port0
-   debug: False
+# rfxtrx:
+#    device: /dev/serial/by-id/usb-RFXCOM_RFXtrx433_A1YI1ZVU-if00-port0
+#    debug: False
 
-homekit:
-  auto_start: False
-  filter:
-    include_domains:
-      - alarm_control_panel
-    include_entities:
-      - climate.gang
-      - climate.tesla_model_3_hvac_climate_system
-      - climate.gang_vloerverwarming
-      - climate.badkamer_vloerverwarming
-      - climate.veranda_kachel
-      - sensor.slaapkamer_temperature
-      - sensor.keuken_temperature
-      - sensor.babykamer_temperature
-      - sensor.buiten_temperature
-      - binary_sensor.woonkamer_motion
-      - binary_sensor.tv_kamer_motion
-      - binary_sensor.keuken_motion
-      - binary_sensor.gang_motion
-      - binary_sensor.overloop_motion
-      - binary_sensor.keukendeur
-      - binary_sensor.badkamerraam
-      - binary_sensor.washok_raam
-      - binary_sensor.slaapkamer_raam
-      - binary_sensor.charlies_slaapkamer_raam
-      - binary_sensor.grote_slaapkamer_raam
-      - binary_sensor.kleine_slaapkamer_raam
-      - binary_sensor.overloop_raam
-      - binary_sensor.wc_boven
-      - binary_sensor.woonkamer_raam_1
-      - binary_sensor.woonkamer_raam_2
-      - binary_sensor.woonkamer_raam_3
-      - script.badkamer_licht_therapie
-      - script.charlies_kamer_loop
-      - switch.kaku_switch_1
-      - switch.kaku_switch_2
-      - switch.kaku_switch_3
-      - switch.kerstverlichting_buiten
-      - switch.keukenkachel
-      - switch.wasmachine_sonoff
-      - switch.badkamerfan_sonoff
-      - switch.gangkachel_sonoff
-      - switch.droger_sonoff
-      - switch.looppoort_deurbel_relay_1
-      - switch.ganglicht
-      - switch.veranda_kachel
-      - switch.veranda_verlichting
-      - input_boolean.homemode_home
-      - input_boolean.homemode_away
-      - input_boolean.homemode_night
-      - input_boolean.homemode_vacation
-      - input_boolean.homemode_bedtime
-      - input_boolean.homemode_guest
-      - input_boolean.scene_goodmorning
-      - input_boolean.scene_jarvis
-      - input_boolean.scene_sfeer
-      - input_boolean.scene_helder
-      - input_boolean.scene_bedtime
-      - input_boolean.gangkachel_schema
-      - input_boolean.keukenkachel_schema
-      - lock.tesla_model_3_charger_door_lock
-      - lock.tesla_model_3_door_lock
+# homekit:
+#   auto_start: False
+#   filter:
+#     include_domains:
+#       - alarm_control_panel
+#     include_entities:
+#       - climate.gang
+#       - climate.tesla_model_3_hvac_climate_system
+#       - climate.gang_vloerverwarming
+#       - climate.badkamer_vloerverwarming
+#       - climate.veranda_kachel
+#       - sensor.slaapkamer_temperature
+#       - sensor.keuken_temperature
+#       - sensor.babykamer_temperature
+#       - sensor.buiten_temperature
+#       - binary_sensor.woonkamer_motion
+#       - binary_sensor.tv_kamer_motion
+#       - binary_sensor.keuken_motion
+#       - binary_sensor.gang_motion
+#       - binary_sensor.overloop_motion
+#       - binary_sensor.keukendeur
+#       - binary_sensor.badkamerraam
+#       - binary_sensor.washok_raam
+#       - binary_sensor.slaapkamer_raam
+#       - binary_sensor.charlies_slaapkamer_raam
+#       - binary_sensor.grote_slaapkamer_raam
+#       - binary_sensor.kleine_slaapkamer_raam
+#       - binary_sensor.overloop_raam
+#       - binary_sensor.wc_boven
+#       - binary_sensor.woonkamer_raam_1
+#       - binary_sensor.woonkamer_raam_2
+#       - binary_sensor.woonkamer_raam_3
+#       - script.badkamer_licht_therapie
+#       - script.charlies_kamer_loop
+#       - switch.kaku_switch_1
+#       - switch.kaku_switch_2
+#       - switch.kaku_switch_3
+#       - switch.kerstverlichting_buiten
+#       - switch.keukenkachel
+#       - switch.wasmachine_sonoff
+#       - switch.badkamerfan_sonoff
+#       - switch.gangkachel_sonoff
+#       - switch.droger_sonoff
+#       - switch.looppoort_deurbel_relay_1
+#       - switch.ganglicht
+#       - switch.veranda_kachel
+#       - switch.veranda_verlichting
+#       - input_boolean.homemode_home
+#       - input_boolean.homemode_away
+#       - input_boolean.homemode_night
+#       - input_boolean.homemode_vacation
+#       - input_boolean.homemode_bedtime
+#       - input_boolean.homemode_guest
+#       - input_boolean.scene_goodmorning
+#       - input_boolean.scene_jarvis
+#       - input_boolean.scene_sfeer
+#       - input_boolean.scene_helder
+#       - input_boolean.scene_bedtime
+#       - input_boolean.gangkachel_schema
+#       - input_boolean.keukenkachel_schema
+#       - lock.tesla_model_3_charger_door_lock
+#       - lock.tesla_model_3_door_lock
   entity_config:
     alarm_control_panel.alarm:
       code: !secret alarm_panel_code
@@ -138,11 +138,11 @@ hue:
       allow_unreachable: true
       allow_hue_groups: false
 
-tuya:
-  username: !secret tuya_username
-  password: !secret tuya_password
-  country_code: 31
-  platform: smart_life
+# tuya:
+#   username: !secret tuya_username
+#   password: !secret tuya_password
+#   country_code: 31
+#   platform: smart_life
 
 apple_tv:
   - host: !secret woonkamer_atv_ip
@@ -161,10 +161,10 @@ remote:
     name: Woonkamer
     host: !secret harmony_ip
 
-transmission:
-  host: !secret transmission_ip
-  username: !secret transmission_username
-  password: !secret transmission_password
+# transmission:
+#   host: !secret transmission_ip
+#   username: !secret transmission_username
+#   password: !secret transmission_password
 
 media_player:
   - platform: channels
@@ -231,10 +231,10 @@ device_tracker:
     interval_seconds: 30
     consider_home: 600
 
-  - platform: bluetooth_tracker
-    track_new_devices: false
-    interval_seconds: 30
-    consider_home: 600
+  # - platform: bluetooth_tracker
+  #   track_new_devices: false
+  #   interval_seconds: 30
+  #   consider_home: 600
 
 zoneminder:
   - host: !secret zoneminder_host
@@ -247,13 +247,13 @@ alarm_control_panel:
   - platform: manual
     name: Alarm
     code: !secret alarm_panel_code
-    pending_time: 5
+    # pending_time: 5
     delay_time: 0
     trigger_time: 4
     disarmed:
       trigger_time: 0
     armed_home:
-      pending_time: 5
+      # pending_time: 5
       delay_time: 0
 
 # Text to speech
@@ -307,6 +307,7 @@ doorbird:
 
 camera:
   - platform: zoneminder
+  - platform: buienradar
 
 lock:
   - platform: template
@@ -321,32 +322,15 @@ lock:
       data:
         entity_id: switch.looppoort_deurbel_relay_1
 
-utility_meter:
-  daily_youless_zonnepanelen:
-    source: sensor.youless_zonnepanelen_meterstand
-    cycle: daily
-  weekly_youless_zonnepanelen:
-    source: sensor.youless_zonnepanelen_meterstand
-    cycle: weekly
-  monthly_youless_zonnepanelen:
-    source: sensor.youless_zonnepanelen_meterstand
-    cycle: monthly
-  yearly_youless_zonnepanelen:
-    source: sensor.youless_zonnepanelen_meterstand
-    cycle: yearly
+calendar:
+  - platform: caldav
+    username: !secret caldav_user
+    password: !secret caldav_password
+    url: !secret caldav_url
 
-  daily_youless_wall_charger:
-    source: sensor.youless_wall_charger_meterstand
-    cycle: daily
-  weekly_youless_wall_charger:
-    source: sensor.youless_wall_charger_meterstand
-    cycle: weekly
-  monthly_youless_wall_charger:
-    source: sensor.youless_wall_charger_meterstand
-    cycle: monthly
-  yearly_youless_wall_charger:
-    source: sensor.youless_wall_charger_meterstand
-    cycle: yearly
+landroid_cloud:
+  - email: !secret landroid_email
+    password: !secret landroid_password
 
 notify:
   - name: Pushover
@@ -358,6 +342,7 @@ notify:
     services:
       - service: mobile_app_martiens_iphone_11_pro
       - service: mobile_app_martiens_ipad_pro
+      - service: mobile_app_iphone_van_deborah
   - name: martien
     platform: group
     services:
@@ -369,11 +354,24 @@ tesla:
   password: !secret tesla_password
   scan_interval: 900
 
+input_datetime:
+  besproeiingstarttijd:
+    name: Besproeiing Starttijd
+    has_date: false
+    has_time: true
+
+input_text:
+  card_containers:
+    initial: Containers
+  software_version:
+    initial: Version
+
 light: !include light.yaml
 zone: !include zones.yaml
 switch: !include switch.yaml
 input_boolean: !include input_boolean.yaml
 input_select: !include input_select.yaml
+input_number: !include input_number.yaml
 binary_sensor: !include binary_sensor.yaml
 sensor: !include sensor.yaml
 automation: !include_dir_merge_list automations/
