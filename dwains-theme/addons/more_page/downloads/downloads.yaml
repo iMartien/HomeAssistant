@@ -3,7 +3,7 @@
   items_classes: 'col-lg-6 col-md-6 col-sm-12 col-xs-12'
   cards:
     - type: custom:upcoming-media-card
-      title: Series onlangs toegevoegd
+      title: Onlangs gedownload
       entity: sensor.plex_recently_added
       image_style: fanart
     - type: custom:upcoming-media-card
@@ -15,7 +15,7 @@
       entity: sensor.radarr_upcoming_media
       image_style: fanart
     - type: entities
-      name: Huidige downloads
+      title: NZBget Monitor
       entities:
         - entity: sensor.nzbget_speed
           name: Huidige snelheid
@@ -29,3 +29,12 @@
           name: Vrije ruimte
         - entity: sensor.nzbget_uptime
           name: NZBget Uptime
+    - type: entities
+      title: qBittorrent Monitor
+      entities:
+        - entity: sensor.qbittorrent_status
+          name: Status
+        - entity: sensor.qbittorrent_down_speed
+          name: Downloadsnelheid
+        - entity: sensor.qbittorrent_up_speed
+          name: Uploadsnelheid

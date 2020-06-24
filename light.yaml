@@ -27,6 +27,12 @@
         - light.wc_boven_1
         - light.wc_boven_2
         - light.wc_boven_3
+        - light.kantoor_filament_1
+        - light.kantoor_filament_2
+        - light.kantoor_filament_3
+        - light.kantoor_filament_4
+        - light.kantoor_filament_5
+        - light.kantoor_filament_6
         - light.kantoor_1
         - light.kantoor_2
         - light.kantoor_3

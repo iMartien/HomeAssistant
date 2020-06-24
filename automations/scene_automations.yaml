@@ -42,11 +42,11 @@
         scene_name: "Ontspannen"
     - service: homeassistant.turn_off
       entity_id:
-        - light.woonkamer_verlichting
-        - light.keuken_verlichting
+        - group.woonkamer_verlichting
+        - group.keuken_verlichting
+        - group.badkamer_spots
+        - group.kantoor_verlichting
         - switch.veranda_verlichting
-        - switch.kaku_switch_3
-        - switch.kaku_switch_1
         - input_boolean.gangkachel_schema
     - service: climate.set_temperature
       data:
@@ -67,14 +67,12 @@
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
+          - media_player.kantoor
+          - media_player.veranda
     - service: zoneminder.set_run_state
       data:
         id: 192.168.1.15:8443
         name: Night
-    - service: input_select.select_option
-      data:
-        entity_id: input_select.current_scene
-        option: "Bedtijd"
 
 - alias: 'Scene - Opstaan aan'
   trigger:
@@ -105,6 +103,8 @@
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
+          - media_player.kantoor
+          - media_player.veranda
     - service: zoneminder.set_run_state
       data:
         id: 192.168.1.15:8443

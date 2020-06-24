@@ -10,6 +10,7 @@
     grid_power_production_entity: sensor.dsmr_reading_electricity_currently_returned
     power_decimals: 3
     solar_power_entity: sensor.youless_zonnepanelen_kw
+    energy_consumption_rate: 
   - type: vertical-stack
     cards:
     - type: horizontal-stack
@@ -146,6 +147,67 @@
                   - color: Green
                     from: 1
                     to: 1.5
+
+  - type: vertical-stack
+    cards:
+      - type: 'custom:bar-card'
+        entity: sensor.dsmr_reading_phase_voltage_l1
+        name: Voltage L1
+        max: 250
+        decimal: 0
+        target: 230
+        positions:
+          icon: 'off'
+          indicator: inside
+        severity:
+        - color: Red
+          from: 0
+          to: 207
+        - color: Orange
+          from: 208
+          to: 220
+        - color: Green
+          from: 221
+          to: 250
+      - type: 'custom:bar-card'
+        entity: sensor.dsmr_reading_phase_voltage_l2
+        name: Voltage L2
+        max: 250
+        decimal: 0
+        target: 230
+        positions:
+          icon: 'off'
+          indicator: inside
+        severity:
+        - color: Red
+          from: 0
+          to: 207
+        - color: Orange
+          from: 208
+          to: 220
+        - color: Green
+          from: 221
+          to: 250
+      - type: 'custom:bar-card'
+        entity: sensor.dsmr_reading_phase_voltage_l3
+        name: Voltage L3
+        max: 250
+        decimal: 0
+        target: 230
+        positions:
+          icon: 'off'
+          indicator: inside
+        severity:
+        - color: Red
+          from: 0
+          to: 207
+        - color: Orange
+          from: 208
+          to: 220
+        - color: Green
+          from: 221
+          to: 250
+
 # Power Graph
   - type: vertical-stack
     cards:

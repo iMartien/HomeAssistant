@@ -267,6 +267,8 @@
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
+          - media_player.kantoor
+          - media_player.veranda
     - service: input_select.select_option
       data:
         entity_id: input_select.current_scene
@@ -313,6 +315,8 @@
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
+          - media_player.kantoor
+          - media_player.veranda
     - service: input_select.select_option
       data:
         entity_id: input_select.current_scene
@@ -356,6 +360,8 @@
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
+          - media_player.kantoor
+          - media_player.veranda
     - service: media_player.volume_set
       data_template:
         volume_level: '0.02'
@@ -364,6 +370,8 @@
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
+          - media_player.kantoor
+          - media_player.veranda
     - service: input_select.select_option
       data:
         entity_id: input_select.current_scene

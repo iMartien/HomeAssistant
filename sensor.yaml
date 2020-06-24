@@ -45,6 +45,11 @@
     regios: 17
     disciplines: 1
 
+  - platform: qbittorrent
+    url: 'http://192.168.1.17:8080'
+    username: !secret qtbit_username
+    password: !secret qtbit_password
+
   # - platform: dsmr
   #   port: /dev/ttyUSB1
   #   dsmr_version: 5

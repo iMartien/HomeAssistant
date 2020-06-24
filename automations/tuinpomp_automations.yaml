@@ -113,7 +113,7 @@
     - service: homeassistant.turn_off
       data:
         entity_id:
-          - input_boolean.tuinbesproeiing_actief
+          - input_boolean.tuinbesproeiing_vandaag
     - service: notify.martien
       data:
         message: "Tuinbesproeiingsprogramma is uitgesteld gestart..."
