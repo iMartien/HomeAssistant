@@ -1,0 +1,10 @@
+- alias: 'Grasmaaier: Foutmelding'
+  trigger:
+    - platform: numeric_state
+      entity_id: landroid.no_of_alarms
+      above: 0
+  action:
+    - service: notify.martien
+      data_template:
+        message: "Warning: The lawnmower is reporting an error."
+        title: "☘️ Grasmaaier"

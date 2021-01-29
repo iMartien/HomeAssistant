@@ -1,0 +1,15 @@
+- name: Afwezig
+  icon: "mdi:run"
+  entities:
+    #klimaat
+    climate.netatmo_woonkamer:
+      state: "on"
+      preset_mode: "away"
+    climate.badkamer_vloerverwarming:
+      state: "off"
+    climate.gang_vloerverwarming:
+      state: "off"
+    #verlichting
+    light.alle_verlichting: "off"
+    switch.kelderlicht: "off"
+    switch.ganglicht: "off"

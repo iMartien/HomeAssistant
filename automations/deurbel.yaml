@@ -1,0 +1,112 @@
+########################################
+## Doorbell Automations
+########################################
+- alias: 'Deurbel: iOS Camera notification'
+  trigger:
+    - platform: event
+      event_type: button_pressed
+      event_data: {"entity_id": "switch.deurbel"}
+    - platform: event
+      event_type: doorbird_deurbel_somebody_pressed_the_button
+  action:
+    - service: notify.notifyall
+      data:
+        message: "Er heeft iemand op de bel gedrukt."
+        title: "🔔 Deurbel"
+        data:
+          push:
+            badge: 0 ## This will remove the badge/app icon number ##
+            category: 'camera'
+          entity_id: camera.deurbel_live
+
+- alias: 'Deurbel: Pause Woonkamer TV on Doorbell'
+  trigger:
+    - platform: event
+      event_type: button_pressed
+      event_data: {"entity_id": "switch.deurbel"}
+    - platform: event
+      event_type: doorbird_deurbel_somebody_pressed_the_button
+  condition:
+    - condition: state
+      entity_id:  media_player.woonkamer_live_tv
+      state: 'playing'
+  action:
+    - service: media_player.media_pause
+      entity_id:  media_player.woonkamer_live_tv
+
+- alias: 'Deurbel: Play doorbell chime via Sonos'
+  trigger:
+    - platform: event
+      event_type: button_pressed
+      event_data: {"entity_id": "switch.deurbel"}
+    - platform: event
+      event_type: doorbird_deurbel_somebody_pressed_the_button
+  condition:
+    condition: state
+    entity_id: group.personen
+    state: 'home'
+  action:
+    - service: sonos.snapshot
+      data_template:
+        with_group: yes
+        entity_id:
+          - media_player.woonkamer
+          - media_player.badkamer
+          - media_player.keuken
+          - media_player.tvkamer
+          - media_player.kantoor
+          - media_player.veranda
+    - service: media_player.media_pause
+      data_template:
+        entity_id:
+          - media_player.woonkamer
+          - media_player.badkamer
+          - media_player.keuken
+          - media_player.tvkamer
+          - media_player.kantoor
+    - service: media_player.volume_set
+      data_template:
+        volume_level: '0.22'
+        entity_id:
+          - media_player.woonkamer
+          - media_player.badkamer
+          - media_player.keuken
+          - media_player.tvkamer
+          - media_player.kantoor
+    - service: media_player.play_media
+      data_template:
+        entity_id:
+          - media_player.kantoor
+          - media_player.keuken
+          - media_player.woonkamer
+          - media_player.tvkamer
+          - media_player.badkamer
+        media_content_id: https://chateaucharlois.duckdns.org/local/doorbell.mp3
+        media_content_type: music
+    - delay: '00:00:09'
+    - service: sonos.restore
+      data_template:
+        entity_id:
+          - media_player.woonkamer
+          - media_player.badkamer
+          - media_player.keuken
+          - media_player.tvkamer
+          - media_player.kantoor
+          - media_player.veranda
+
+- alias: 'Deurbel: Lichten knipperen'
+  trigger:
+    - platform: event
+      event_type: button_pressed
+      event_data: {"entity_id": "switch.deurbel"}
+    - platform: event
+      event_type: doorbird_deurbel_somebody_pressed_the_button
+  condition:
+    condition: state
+    entity_id: group.personen
+    state: 'home'
+  action:
+    - service: light.turn_on
+      entity_id: light.deurbel_knipperen
+      data:
+        flash: short

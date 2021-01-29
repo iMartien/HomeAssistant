@@ -1,0 +1,16 @@
+  wasmachine_status:
+    name: Wasmachine Status
+    options:
+      - "off"
+      - Opwarmen
+      - Wassen
+      - Klaar
+    initial: "off"
+  droger_status:
+    name: Droger Status
+    options:
+      - "off"
+      - Aan
+      - Drogen
+      - Klaar
+    initial: "off"

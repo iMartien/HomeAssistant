@@ -1,0 +1,102 @@
+########################################
+## Presence based automations
+########################################
+- alias: 'Presence - Turn on away mode'
+  trigger:
+    - platform: state
+      entity_id: group.personen
+      to: 'not_home'
+      for:
+        minutes: 60
+  condition:
+    - condition: state
+      entity_id: input_boolean.homemode_guest
+      state: 'off'
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.homemode_away
+
+- alias: 'Presence - Turn on home mode'
+  trigger:
+    - platform: state
+      entity_id: group.personen
+      to: 'home'
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.homemode_home
+
+- alias: 'Presence - Turn on guest mode'
+  trigger:
+    - platform: state
+      entity_id: group.gasten
+      to: 'home'
+  condition:
+    - condition: state
+      entity_id: input_boolean.homemode_night
+      state: 'off'
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.homemode_guest
+
+- alias: 'Presence - Turn off guest mode when someone home'
+  trigger:
+    - platform: state
+      entity_id: group.gasten
+      to: 'not_home'
+      for:
+        minutes: 30 
+  condition:
+    - condition: and
+      conditions:
+      - condition: state
+        state: home
+        entity_id: group.personen
+      - condition: state
+        entity_id: input_boolean.homemode_night
+        state: 'off'
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.homemode_home
+
+- alias: 'Presence - Turn off guest mode when no one home'
+  trigger:
+    - platform: state
+      entity_id: group.gasten
+      to: 'not_home'
+      for:
+        minutes: 480
+  condition:
+    - condition: and
+      conditions:
+      - condition: state
+        entity_id: group.personen
+        state: not_home
+      - condition: state
+        entity_id: input_boolean.homemode_night
+        state: 'off'
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.homemode_away
+
+- alias: "Timer - Notification - Reistijd naar huis"
+  trigger:
+    platform: time
+    at: '17:00:00'
+  condition:
+    - condition: and
+      conditions:
+      - condition: state
+        entity_id: binary_sensor.workday_sensor
+        state: 'on'
+      - condition: template
+        value_template: "{{ not is_state('device_tracker.marty_mcfly_location_tracker','home') }}"
+  action:
+    - service: notify.martien
+      data:
+        message: "Het duurt momenteel {{ states.sensor.reistijd_naar_huis.state | int | string }} minuten om naar huis te rijden. De snelste route is via {{ states.sensor.reistijd_naar_huis.attributes.route }}."
+        title: "Reistijd naar huis"

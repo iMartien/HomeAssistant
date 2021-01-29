@@ -1,0 +1,1009 @@
+  - platform: time_date
+
+  - platform: season
+
+  - platform: darksky
+    api_key: eaeb60c3ef41d7794773842090bdb882
+    language: nl
+    forecast:
+      - 0
+    hourly_forecast:
+      - 0
+      - 1
+    monitored_conditions:
+      - summary
+      - icon
+      - temperature
+
+  - platform: zoneminder
+
+  - platform: unifigateway
+    host: !secret unifi_host
+    username: !secret unifi_user
+    password: !secret unifi_password
+    monitored_conditions:
+      - www
+      - wan
+      - wlan
+      - lan
+      - alerts
+      - firmware
+
+  - platform: p2000
+    name: Politie
+    regios: 17
+    radius: 1000
+    disciplines: 3
+  - platform: p2000
+    name: Ambulance
+    regios: 17
+    radius: 1000
+    disciplines: 2
+  - platform: p2000
+    name: Brandweer
+    regios: 17
+    radius: 1000
+    disciplines: 1
+
+  - platform: qbittorrent
+    url: 'http://192.168.1.17:8080'
+    username: !secret qtbit_username
+    password: !secret qtbit_password
+
+  - platform: dsmr_reader
+
+  - platform: miflora
+    mac: '80:EA:CA:89:22:88'
+
+  - platform: rest
+    resource: http://192.168.1.60/a?f=j
+    value_template: '{{ value_json.ps0 }}'
+    method: GET
+    name: Youless Zonnepanelen
+    scan_interval: 5
+    unit_of_measurement: "W"
+
+  - platform: rest
+    resource: http://192.168.1.60/a?f=j
+    value_template: '{{ value_json.cs0 }}'
+    method: GET
+    name: Youless Zonnepanelen Meterstand
+    scan_interval: 5
+    unit_of_measurement: "kWh"
+
+  - platform: rest
+    resource: http://192.168.1.61/a?f=j
+    value_template: '{{ value_json.ps0 }}'
+    method: GET
+    name: Youless Wall Charger
+    scan_interval: 5
+    unit_of_measurement: "W"
+
+  - platform: rest
+    resource: http://192.168.1.61/a?f=j
+    value_template: '{{ value_json.cs0 }}'
+    method: GET
+    name: Youless Wall Charger Meterstand
+    scan_interval: 5
+    unit_of_measurement: "kWh"
+
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /
+      - type: disk_free
+        arg: /
+      - type: memory_use
+      - type: memory_free
+      - type: processor_use
+      - type: last_boot
+      - type: network_in
+        arg: eno1
+      - type: network_out
+        arg: eno1
+      - type: throughput_network_in
+        arg: eno1
+      - type: throughput_network_out
+        arg: eno1
+
+  - platform: afvalwijzer
+    provider: mijnafvalwijzer
+    postal_code: 3084LA
+    street_number: 471
+
+  # - platform: solaredge
+  #   api_key: RK9LHI2YXWF12HZOE21V1OPI290R5IR3
+  #   site_id: 567805
+  #   name: SolarEdge
+  #   monitored_conditions:
+  #     - current_power
+  #     - energy_today
+  #     - energy_this_month
+  #     - energy_this_year
+  #     - lifetime_energy
+
+#Crypto related sensors
+  - platform: bitcoin
+    currency: EUR
+    display_options:
+      - exchangerate
+#  - platform: etherscan
+#    name: Ledger ETH Wallet
+#    address: '0x3A3CD1458c7686B3a2b231b95e06Afe4dE67aBF8'
+#  - platform: etherscan
+#    name: Jaxx ETH Wallet
+#    address: '0xba372441a528be1903e76ea9a2cf385cc30cdfb6'
+#  - platform: sochain
+#    name: Jaxx BTC Wallet
+#    network: BTC
+#    address: '19h2ufbBJVQr6DNSLm7RwB8Kk7Gy4pgM6t'
+  # - platform: sochain
+  #   name: Ledger BTC Wallet
+  #   network: BTC
+  #   address: 'bc1qtat4nhn082hs8028nzwuaske45tn8u4qn92ucn'
+
+  # - platform: plex
+  #   host: 192.168.1.5
+
+  - platform: plex_recently_added
+    token: ifDYViM4ZDEsKW2VCiH5
+    host: !secret plex_host
+    port: 32400
+    ssl: true
+    ssl_cert: false
+    download_images: true
+    max: 5
+    section_types:
+    - movie
+    - show
+
+  - platform: sonarr_upcoming_media
+    api_key: !secret sonarr_api
+    host: !secret container_host
+    port: 8989
+    days: 14
+    ssl: false
+    max: 5
+
+  - platform: radarr_upcoming_media
+    api_key: !secret radarr_api
+    host: !secret container_host
+    port: 7878
+    days: 120
+    ssl: false
+    theaters: true
+    max: 5
+
+  - platform: moon
+
+# Tracking entity to entity
+  - platform: waze_travel_time
+    name: "Reistijd naar huis"
+    origin: device_tracker.iphone_van_martien
+    destination: zone.home
+    region: 'EU'
+  - platform: waze_travel_time
+    name: "Reistijd naar Fujitsu"
+    origin: device_tracker.iphone_van_martien
+    destination: zone.fujitsu_maarssen
+    region: 'EU'
+  - platform: pvoutput
+    system_id: 55147
+    api_key: !secret pv_output_apikey
+    scan_interval: 120
+  - platform: template
+    sensors:
+      power_consumption_pvoutput:
+        value_template: '{% if is_state_attr("sensor.pvoutput", "power_consumption", "NaN") %}0{% else %}{{ states.sensor.pvoutput.attributes.power_consumption }}{% endif %}'
+        friendly_name: 'Using'
+        unit_of_measurement: 'W'
+      energy_consumption:
+        value_template: '{{ "%0.1f"|format(states.sensor.pvoutput.attributes.energy_consumption|float/1000) }}'
+        friendly_name: 'Used'
+        unit_of_measurement: 'kWh'
+      power_generation:
+        value_template: '{% if is_state_attr("sensor.pvoutput", "power_generation", "NaN") %}0{% else %}{{ states.sensor.pvoutput.attributes.power_generation }}{% endif %}'
+        friendly_name: 'Generating'
+        unit_of_measurement: 'W'
+      energy_generation:
+        value_template: '{% if is_state_attr("sensor.pvoutput", "energy_generation", "NaN") %}0{% else %}{{ "%0.2f"|format(states.sensor.pvoutput.attributes.energy_generation|float/1000) }}{% endif %}'
+        friendly_name: 'Generated'
+        unit_of_measurement: 'kWh'
+      current_net_power_usage:
+        friendly_name: 'Current Net. Power Usage'
+        unit_of_measurement: 'W'
+        value_template: >-
+          {{ (1000 * (states("sensor.power_consumption") | float -
+                      states("sensor.power_generation") | float)) | int }}
+      time_to_leave_for_work:
+        value_template: >
+          {% set t = strptime(states.sensor.time.state,'%H:%M') %}
+          {{ ( t.hour + t.minute / 60 ) > ( 8.33 - states.sensor.reistijd_naar_fujitsu.state | int / 60) }}
+        friendly_name: 'Tijd om naar werk te vertrekken'
+      
+      current_lights_on:
+        friendly_name: 'Lichten momenteel aan'
+        unit_of_measurement: 'Aan'
+        value_template: >
+          {% set lights = [
+          states.light.keuken_1,
+          states.light.keuken_2,
+          states.light.keuken_3,
+          states.light.keuken_4,
+          states.light.keuken_5,
+          states.light.keukenlampie,
+          states.light.slaapkamer_spot_1,
+          states.light.slaapkamer_spot_2,
+          states.light.badkamer_1,
+          states.light.badkamer_2,
+          states.light.badkamer_3,
+          states.light.badkamer_4,
+          states.light.badkamer_5,
+          states.light.overloop_1,
+          states.light.overloop_2,
+          states.light.rieten_lamp,
+          states.light.glazenbol,
+          states.light.hue_bloom,
+          states.light.bol_lamp,
+          states.light.woonkamer_spot,
+          states.light.glazen_lamp,
+          states.light.koperen_lamp,
+          states.light.babykamer,
+          states.light.kantoor_1,
+          states.light.kantoor_2,
+          states.light.kantoor_3,
+          states.light.kantoor_filament_1,
+          states.light.kantoor_filament_2,
+          states.light.kantoor_filament_3,
+          states.light.kantoor_filament_4,
+          states.light.kantoor_filament_5,
+          states.light.kantoor_filament_6,
+          states.switch.ganglicht,
+          states.switch.kelderlicht,
+          states.switch.kerstverlichting_dakgoot,
+          states.switch.veranda_lampjes,
+          ] %}
+          {{ lights | selectattr('state','eq','on') | list | count }}
+
+      current_devices_offline:
+        friendly_name: 'Apparaten momenteel offline'
+        unit_of_measurement: 'Offline'
+        value_template: >
+          {% set devices = [
+          states.binary_sensor.charlies_camera,
+          states.binary_sensor.veranda_camera,
+          states.binary_sensor.oprit_camera,
+          states.binary_sensor.hdhomerun,
+          states.binary_sensor.hue_hub,
+          states.binary_sensor.netatmo_thermostaat,
+          states.binary_sensor.router,
+          states.binary_sensor.solaredge,
+          states.binary_sensor.youless_zonnepanelen,
+          states.binary_sensor.youless_wallcharger,
+          ] %}
+          {{ devices | selectattr('state','eq','off') | list | count }}
+
+      current_doors_open:
+        friendly_name: 'Deuren momenteel open'
+        unit_of_measurement: 'Open'
+        value_template: >
+          {% set devices = [
+          states.binary_sensor.keukendeur,
+          ] %}
+          {{ devices | selectattr('state','eq','on') | list | count }}
+
+      current_windows_open:
+        friendly_name: 'Ramen momenteel open'
+        unit_of_measurement: 'Open'
+        value_template: >
+          {% set devices = [
+          states.binary_sensor.badkamerraam,
+          states.binary_sensor.charlies_slaapkamer_raam,
+          states.binary_sensor.grote_slaapkamer_raam,
+          states.binary_sensor.kleine_slaapkamer_raam,
+          states.binary_sensor.overloop_raam,
+          states.binary_sensor.washok_raam,
+          states.binary_sensor.woonkamer_raam_1,
+          states.binary_sensor.woonkamer_raam_2,
+          states.binary_sensor.woonkamer_raam_3,
+          ] %}
+          {{ devices | selectattr('state','eq','on') | list | count }}
+
+      current_motion_detected:
+        friendly_name: 'Bewegingssensoren actief'
+        unit_of_measurement: 'Aan'
+        value_template: >
+          {% set devices = [
+          states.binary_sensor.gang_motion,
+          states.binary_sensor.kantoor_motion,
+          states.binary_sensor.keuken_motion,
+          states.binary_sensor.overloop_motion,
+          states.binary_sensor.woonkamer_motion,
+          states.binary_sensor.tv_kamer_motion,
+          states.binary_sensor.hue_motion_sensor_1_motion,
+          ] %}
+          {{ devices | selectattr('state','eq','on') | list | count }}
+
+      current_appliances_on:
+        friendly_name: 'Apparaten momenteel aan'
+        unit_of_measurement: 'aan'
+        value_template: >
+          {% set appliances = [
+          states.sensor.wasmachine_status,
+          states.sensor.droger_status,
+          states.switch.badkamerfan_sonoff,
+          states.switch.kelderpomp,
+          states.switch.marty_mcfly_charger_switch,
+          states.switch.bureau_martien,
+          ] %}
+          {{ appliances | selectattr('state','!=','off') | list | count }}
+
+      current_media_players_playing:
+        friendly_name: 'Mediaspelers aan'
+        unit_of_measurement: 'Aan'
+        value_template: >
+          {% set mediaplayers = [
+          states.media_player.woonkamer_plex,
+          states.media_player.woonkamer_live_tv,
+          states.media_player.slaapkamer_live_tv,
+          states.media_player.tvkamer,
+          states.media_player.woonkamer,
+          states.media_player.keuken,
+          states.media_player.badkamer,
+          states.media_player.veranda,
+          states.media_player.kantoor,
+          ] %}
+          {{ mediaplayers | selectattr('state','eq','playing') | list | count }}
+
+      netatmo_woonkamer_status:
+        friendly_name: Woonkamer Thermostaat Status
+        value_template: "{{ state_attr('climate.netatmo_woonkamer', 'hvac_action') }}"
+
+      netatmo_keuken_status:
+        friendly_name: Keuken Radiator Status
+        value_template: "{{ state_attr('climate.netatmo_keuken', 'hvac_action') }}"
+
+      netatmo_badkamer_status:
+        friendly_name: Badkamer Radiator Status
+        value_template: "{{ state_attr('climate.netatmo_badkamer', 'hvac_action') }}"
+
+      netatmo_slaapkamer_status:
+        friendly_name: Slaapkamer Radiator Status
+        value_template: "{{ state_attr('climate.netatmo_slaapkamer', 'hvac_action') }}"
+      
+      netatmo_charlie_s_kamer_status:
+        friendly_name: Charlies Radiator Status
+        value_template: "{{ state_attr('climate.netatmo_charlie_s_kamer', 'hvac_action') }}"
+
+      netatmo_kantoor_status:
+        friendly_name: Kantoor Radiator Status
+        value_template: "{{ state_attr('climate.netatmo_kantoor', 'hvac_action') }}"
+
+      netatmo_gang_status:
+        friendly_name: Gang Radiator Status
+        value_template: "{{ state_attr('climate.netatmo_gang', 'hvac_action') }}"
+
+      current_climate_devices_heating:
+        friendly_name: 'Verwarming aan'
+        unit_of_measurement: 'Aan'
+        value_template: >
+          {% set verwarming = [
+          states.sensor.netatmo_woonkamer_status,
+          states.sensor.netatmo_badkamer_status,
+          states.sensor.netatmo_keuken_status,
+          states.sensor.netatmo_slaapkamer_status,
+          states.sensor.netatmo_charlie_s_kamer_status,
+          states.sensor.netatmo_kantoor_status,
+          states.sensor.netatmo_gang_status,
+          ] %}
+          {{ verwarming | selectattr('state','eq','heating') | list | count }}
+
+
+
+
+  - platform: command_line
+    name: CPU Temperature
+    command: "cat /sys/class/thermal/thermal_zone2/temp"
+    unit_of_measurement: "°C"
+    value_template: '{{ value | multiply(0.001) | round(1) }}'
+  # - platform: synologydsm
+  #   host: !secret synology_ip
+  #   username: !secret synology_username
+  #   password: !secret synology_password
+  #   monitored_conditions:
+  #     - cpu_total_load
+  #     - memory_real_usage
+  #     - network_up
+  #     - network_down
+  #     - volume_status
+  #     - volume_percentage_used
+  #     - volume_size_used
+
+  - platform: template
+    sensors:
+      youless_zonnepanelen_kw:
+        value_template: >
+          {{ (float(states.sensor.youless_zonnepanelen.state) / 1000) | round(3) }}
+        unit_of_measurement: 'kW'
+
+  - platform: template
+    sensors:
+      wasmachine_status:
+        value_template: '{{ states.input_select.wasmachine_status.state}}'
+        friendly_name: 'Wasmachine Status'
+      droger_status:
+        value_template: '{{ states.input_select.droger_status.state}}'
+        friendly_name: 'Droger Status'
+      gangkachel_status:
+        value_template: '{{ states.input_select.gangkachel_status.state}}'
+        friendly_name: 'Gangkachel Status'
+
+  - platform: mqtt
+    name: "Badkamer Fan Verbruik Vandaag"
+    state_topic: "tele/sonoff_badkamerfan/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Today"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Badkamer Fan Verbruik Gister"
+    state_topic: "tele/sonoff_badkamerfan/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Yesterday"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Badkamer Fan Verbruik Totaal"
+    state_topic: "tele/sonoff_badkamerfan/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Total"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Badkamer Fan Huidig Verbruik"
+    state_topic: "tele/sonoff_badkamerfan/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Power"] }}'
+    unit_of_measurement: "W"
+  - platform: mqtt
+    name: "Badkamer Fan Voltage"
+    state_topic: "tele/sonoff_badkamerfan/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
+    unit_of_measurement: "V"
+  - platform: mqtt
+    name: "Badkamer Fan Stroom"
+    state_topic: "tele/sonoff_badkamerfan/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Current"] }}'
+    unit_of_measurement: "A"
+
+  - platform: mqtt
+    name: "Gangkachel Verbruik Vandaag"
+    state_topic: "tele/sonoff_gangkachel/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Today"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Gangkachel Verbruik Gister"
+    state_topic: "tele/sonoff_gangkachel/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Yesterday"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Gangkachel Verbruik Totaal"
+    state_topic: "tele/sonoff_gangkachel/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Total"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Gangkachel Huidig Verbruik"
+    state_topic: "tele/sonoff_gangkachel/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Power"] }}'
+    unit_of_measurement: "W"
+  - platform: mqtt
+    name: "Gangkachel Voltage"
+    state_topic: "tele/sonoff_gangkachel/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
+    unit_of_measurement: "V"
+  - platform: mqtt
+    name: "Gangkachel Stroom"
+    state_topic: "tele/sonoff_gangkachel/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Current"] }}'
+    unit_of_measurement: "A"
+
+  - platform: mqtt
+    name: "Wasmachine Verbruik Vandaag"
+    state_topic: "tele/sonoff_wasmachine/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Today"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Wasmachine Verbruik Gister"
+    state_topic: "tele/sonoff_wasmachine/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Yesterday"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Wasmachine Verbruik Totaal"
+    state_topic: "tele/sonoff_wasmachine/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Total"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Wasmachine Huidig Verbruik"
+    state_topic: "tele/sonoff_wasmachine/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Power"] }}'
+    unit_of_measurement: "W"
+  - platform: mqtt
+    name: "Wasmachine Voltage"
+    state_topic: "tele/sonoff_wasmachine/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
+    unit_of_measurement: "V"
+  - platform: mqtt
+    name: "Wasmachine Stroom"
+    state_topic: "tele/sonoff_wasmachine/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Current"] }}'
+    unit_of_measurement: "A"
+
+  - platform: mqtt
+    name: "Verandalampjes Verbruik Vandaag"
+    state_topic: "tele/sonoff_veranda/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Today"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Verandalampjes Verbruik Gister"
+    state_topic: "tele/sonoff_veranda/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Yesterday"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Verandalampjes Verbruik Totaal"
+    state_topic: "tele/sonoff_veranda/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Total"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Verandalampjes Huidig Verbruik"
+    state_topic: "tele/sonoff_veranda/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Power"] }}'
+    unit_of_measurement: "W"
+  - platform: mqtt
+    name: "Verandalampjes Voltage"
+    state_topic: "tele/sonoff_veranda/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
+    unit_of_measurement: "V"
+  - platform: mqtt
+    name: "Verandalampjes Stroom"
+    state_topic: "tele/sonoff_veranda/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Current"] }}'
+    unit_of_measurement: "A"
+
+  - platform: mqtt
+    name: "Bureau Martien verbruik Vandaag"
+    state_topic: "tele/tuya_bureau_martien/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Today"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Bureau Martien verbruik Gister"
+    state_topic: "tele/tuya_bureau_martien/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Yesterday"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Bureau Martien verbruik Totaal"
+    state_topic: "tele/tuya_bureau_martien/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Total"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Bureau Martien Huidig Verbruik"
+    state_topic: "tele/tuya_bureau_martien/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Power"] }}'
+    unit_of_measurement: "W"
+  - platform: mqtt
+    name: "Bureau Martien Voltage"
+    state_topic: "tele/tuya_bureau_martien/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
+    unit_of_measurement: "V"
+  - platform: mqtt
+    name: "Bureau Martien Stroom"
+    state_topic: "tele/tuya_bureau_martien/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Current"] }}'
+    unit_of_measurement: "A"
+
+  - platform: mqtt
+    name: "CV Verbruik Vandaag"
+    state_topic: "tele/tuya_cv/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Today"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "CV Verbruik Gister"
+    state_topic: "tele/tuya_cv/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Yesterday"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "CV Verbruik Totaal"
+    state_topic: "tele/tuya_cv/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Total"] }}'
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "CV Huidig Verbruik"
+    state_topic: "tele/tuya_cv/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Power"] }}'
+    unit_of_measurement: "W"
+  - platform: mqtt
+    name: "CV Voltage"
+    state_topic: "tele/tuya_cv/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
+    unit_of_measurement: "V"
+  - platform: mqtt
+    name: "CV Stroom"
+    state_topic: "tele/tuya_cv/SENSOR"
+    value_template: '{{ value_json["ENERGY"]["Current"] }}'
+    unit_of_measurement: "A"
+
+  - platform: template
+    sensors:
+      unifi_gateway_wan_cpu:
+        friendly_name: "CPU"
+        unit_of_measurement: "%"
+        value_template: "{{ states.sensor.unifi_gateway_wan.attributes['gw_system-stats']['cpu'] }}"
+      unifi_gateway_wan_mem:
+        friendly_name: "Memory"
+        unit_of_measurement: "%"
+        value_template: "{{ states.sensor.unifi_gateway_wan.attributes['gw_system-stats']['mem'] }}"
+      unifi_gateway_www_xput_down:
+        friendly_name: "USG Speedtest Download"
+        unit_of_measurement: Mbps
+        icon_template: "mdi:progress-download"
+        value_template: "{{ states.sensor.unifi_gateway_www.attributes.xput_down }}"
+      unifi_gateway_www_xput_up:
+        friendly_name: "USG Speedtest Upload"
+        unit_of_measurement: Mbps
+        icon_template: "mdi:progress-upload"
+        value_template: "{{ states.sensor.unifi_gateway_www.attributes.xput_up }}"
+      unifi_gateway_www_speedtest_ping:
+        friendly_name: "USG Speedtest Ping"
+        unit_of_measurement: ms
+        icon_template: "mdi:progress-clock"
+        value_template: "{{ states.sensor.unifi_gateway_www.attributes.speedtest_ping }}"
+      unifi_gateway_wlan_num_user:
+        friendly_name: 'Users'
+        value_template: '{{ states.sensor.unifi_gateway_wlan.attributes.num_user }}'
+      unifi_gateway_lan_num_user:
+        friendly_name: 'Users Lan'
+        value_template: '{{ states.sensor.unifi_gateway_lan.attributes.num_user }}'
+      unifi_gateway_wan_download:
+        friendly_name: 'WAN Download'
+        unit_of_measurement: Kbps
+        icon_template: "mdi:speedometer"
+        value_template: "{{ (states.sensor.unifi_gateway_wan.attributes['rx_bytes-r'] / 1024) | int }}"
+
+  - platform: template
+    sensors:
+
+# Info ############
+      landroid_bat:
+        friendly_name: Battery level
+        value_template: >-
+          {% if is_state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_battery', 'charging', 1) -%}Charging
+          {%- else -%}Discharging
+          {%- endif %}
+        icon_template: >-
+          {% set level = states('sensor.landroid_landroid_gijs_de_grasmaaier_battery') | float -%}
+          {%- if is_state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_battery', 'charging', 1) -%}
+            {%- if level > 99 -%}mdi:battery-charging-100
+            {%- elif level > 89 -%}mdi:battery-charging-90
+            {%- elif level > 79 -%}mdi:battery-charging-80
+            {%- elif level > 69 -%}mdi:battery-charging-70
+            {%- elif level > 59 -%}mdi:battery-charging-60
+            {%- elif level > 49 -%}mdi:battery-charging-50
+            {%- elif level > 39 -%}mdi:battery-charging-40
+            {%- elif level > 29 -%}mdi:battery-charging-30
+            {%- elif level > 19 -%}mdi:battery-charging-20
+            {%- elif level > 9 -%}mdi:battery-charging-10
+            {%- else -%}mdi:battery-charging-outline
+            {%- endif -%}
+          {%- else -%}
+            {%- if level > 99 -%}mdi:battery
+            {%- elif level > 89 -%}mdi:battery-90
+            {%- elif level > 79 -%}mdi:battery-80
+            {%- elif level > 69 -%}mdi:battery-70
+            {%- elif level > 59 -%}mdi:battery-60
+            {%- elif level > 49 -%}mdi:battery-50
+            {%- elif level > 39 -%}mdi:battery-40
+            {%- elif level > 29 -%}mdi:battery-30
+            {%- elif level > 19 -%}mdi:battery-20
+            {%- elif level > 9 -%}mdi:battery-10
+            {%- else -%}mdi:battery-outline
+            {%- endif -%}
+          {%- endif %}
+# Status ##########
+      landroid_bladetime:
+        friendly_name: Landroid Blade Time
+        value_template: "{{ state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'blade_time') }}"
+        attribute_templates:
+          time_formatted: >
+            {% set t = state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'blade_time') | int %}
+            {% if t != 0 %}
+              {{ '%0d d %0.02d h %0.02d min' | format(t // 1440, ((t % 1440) // 60), t % 60) }}
+            {% endif %}
+        icon_template: mdi:fan
+        unit_of_measurement: "min"
+
+      landroid_totaltime:
+        friendly_name: Landroid Total Time
+        value_template: "{{ state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'work_time') }}"
+        attribute_templates:
+          time_formatted: >
+            {% set t = state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'work_time') | int %}
+            {% if t != 0 %}
+              {{ '%0d d %0.02d h %0.02d min' | format(t // 1440, ((t % 1440) // 60), t % 60) }}
+            {% endif %}
+        icon_template: mdi:bus-clock
+        unit_of_measurement: "min"
+
+      landroid_dist:
+        friendly_name: Landroid Distance
+        value_template: "{{ (state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'distance') | float) / 1000 }}"
+        icon_template: mdi:map-marker-distance
+        unit_of_measurement: "km"
+
+      landroid_lastupdate:
+        friendly_name: Landroid last update
+        value_template: "{{ as_timestamp(strptime( state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'last_update'), '%H:%M:%S %d/%m/%Y')) | timestamp_custom('%d.%m.%Y %H:%M:%S') }}"
+        icon_template: mdi:clock
+
+# -55 or higher: 4 bars
+# -56 to -66: 3 bars
+# -67 to -77: 2 bars
+# -78 to -88: 1 bar
+# -89 or lower: 0 bars
+      landroid_wifi:
+        friendly_name: Landroid WIFI Quality
+        value_template: "{{ state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'rssi') }}"
+        icon_template: >-
+          {% set strength = state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'rssi') | float -%}
+          {%- if strength > -56 -%}mdi:wifi-strength-4
+          {% elif strength > -67 -%}mdi:wifi-strength-3
+          {% elif strength > -78 -%}mdi:wifi-strength-2
+          {% elif strength > -89 -%}mdi:wifi-strength-1
+          {%- else -%}mdi:wifi-strength-outline
+          {%- endif %}
+        unit_of_measurement: "dBm"
+
+      landroid_yaw:
+        friendly_name: Landroid Yaw
+        value_template: "{{ state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'yaw') }}"
+        icon_template: mdi:axis-z-rotate-clockwise
+        unit_of_measurement: "°"
+
+      landroid_roll:
+        friendly_name: Landroid Roll
+        value_template: "{{ state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'roll') }}"
+        icon_template: mdi:axis-x-rotate-clockwise
+        unit_of_measurement: "°"
+
+      landroid_pitch:
+        friendly_name: Landroid Pitch
+        value_template: "{{ state_attr('sensor.landroid_landroid_gijs_de_grasmaaier_status', 'pitch') }}"
+        icon_template: mdi:seat-flat-angled
+        unit_of_measurement: "°"
+
+
+
+###### Unraid Sensors
+
+  - platform: command_line
+    name: Unraid Version (Stable)
+    command: /usr/bin/curl --insecure "https://s3.amazonaws.com/dnld.lime-technology.com/stable/unRAIDServer.plg" 2>&1 | grep Version |awk '{print $3}'
+
+
+  - platform: template
+    sensors:
+      unraid_array_status:
+        friendly_name: UnRAID Array Status
+        value_template: >
+          {{state_attr("binary_sensor.unraid_server", "arrayStatus")}}
+      unraid_array_space:
+        friendly_name: UnRAID Array Space
+        value_template: >
+          {% set state = state_attr("switch.unraid_array", "diskSpace") %} 
+          {{ Offline if state == None else state | regex_findall_index(".*\((\d+.?\d+) %\)") | float }}
+        unit_of_measurement: '%'
+
+      unraid_array_status_numerical:
+        friendly_name: UnRAID Array Status
+        value_template: >
+          {% if is_state("sensor.unraid_array_status", "Started") %}
+            1
+          {% else %}
+            0
+          {% endif %}
+## UnRaid Array Protection Bar-Card  > 3.1.0 
+      unraid_array_protection:
+        friendly_name: UnRAID Array Protection
+        value_template: >
+          {{state_attr("binary_sensor.unraid_server", "arrayProtection")}}
+      unraid_array_protection_numerical:
+        friendly_name: UnRAID Array Protection
+        value_template: >
+          {% if is_state("sensor.unraid_array_protection", "Parity is valid.") %}
+            1
+          {% else %}
+            0
+          {% endif %}
+
+
+  ## HDD SNMP Temperatures
+
+  - platform: snmp
+    name: 'UnRAID PARITY Temperature'  
+    host: !secret container_host
+    port: 161
+    community: public
+    version: 2c
+    baseoid: .1.3.6.1.4.1.8072.1.3.2.4.1.2.8.100.105.115.107.116.101.109.112.1
+    accept_errors: false
+    value_template: >
+      {{ value.split(':')[1].strip() }}
+    unit_of_measurement: '°C'
+
+  - platform: snmp
+    name: 'UnRAID DISK1 Temperature'
+    host: !secret container_host
+    port: 161
+    community: public
+    version: 2c
+    baseoid: .1.3.6.1.4.1.8072.1.3.2.4.1.2.8.100.105.115.107.116.101.109.112.2
+    accept_errors: false
+    value_template: >
+      {{ value.split(':')[1].strip() }}
+    unit_of_measurement: '°C'
+
+  - platform: snmp
+    name: 'UnRAID DISK2 Temperature'
+    host: !secret container_host
+    port: 161
+    version: 2c
+    community: public
+    baseoid: .1.3.6.1.4.1.8072.1.3.2.4.1.2.8.100.105.115.107.116.101.109.112.3 
+    accept_errors: false
+    value_template: >
+      {{ value.split(':')[1].strip() }}
+    unit_of_measurement: '°C'
+
+  - platform: snmp
+    name: 'UnRAID DISK3 Temperature'
+    host: !secret container_host
+    port: 161
+    version: 2c
+    community: public
+    baseoid: .1.3.6.1.4.1.8072.1.3.2.4.1.2.8.100.105.115.107.116.101.109.112.4
+    accept_errors: false
+    value_template: >
+      {{ value.split(':')[1].strip() }}
+    unit_of_measurement: '°C'
+
+  - platform: snmp
+    name: 'UnRAID DISK4 Temperature'
+    host: !secret container_host
+    port: 161
+    version: 2c
+    community: public
+    baseoid: .1.3.6.1.4.1.8072.1.3.2.4.1.2.8.100.105.115.107.116.101.109.112.5
+    accept_errors: false
+    value_template: >
+      {{ value.split(':')[1].strip() }}
+    unit_of_measurement: '°C'
+
+  - platform: snmp
+    name: 'UnRAID DISK5 Temperature'
+    host: !secret container_host
+    port: 161
+    version: 2c
+    community: public
+    baseoid: .1.3.6.1.4.1.8072.1.3.2.4.1.2.8.100.105.115.107.116.101.109.112.6
+    accept_errors: false
+    value_template: >
+      {{ value.split(':')[1].strip() }}
+    unit_of_measurement: '°C'
+
+  - platform: snmp
+    name: 'UnRAID DISK6 Temperature'
+    host: !secret container_host
+    port: 161
+    version: 2c
+    community: public
+    baseoid: .1.3.6.1.4.1.8072.1.3.2.4.1.2.8.100.105.115.107.116.101.109.112.7
+    accept_errors: false
+    value_template: >
+      {{ value.split(':')[1].strip() }}
+    unit_of_measurement: '°C'
+
+  ## SNMP LAN Upload
+
+  - platform: snmp
+    name: 'UnRAID Upload'
+    host: !secret container_host
+    port: 161
+    community: public
+    baseoid: .1.3.6.1.2.1.2.2.1.16.9
+    accept_errors: false
+    unit_of_measurement: "Kbps"
+    value_template: >
+      {{((value | float ) / 1000000 ) | round(2) }}
+  # - platform: snmp
+  #   name: 'UnRAID LAN1 Upload LAGG0'
+  #   host: !secret container_host
+  #   port: 161
+  #   community: public
+  #   baseoid: .1.3.6.1.2.1.2.2.1.16.8
+  #   accept_errors: false
+  #   unit_of_measurement: "Kbps"
+  #   value_template: >
+  #     {{((value | float ) / 1000000 ) | round(2) }}
+  # - platform: snmp
+  #   name: 'UnRAID LAN2 Upload LAGG0'
+  #   host: !secret container_host
+  #   port: 161
+  #   community: public
+  #   baseoid: .1.3.6.1.2.1.2.2.1.16.14
+  #   accept_errors: false
+  #   unit_of_measurement: "Kbps"
+  #   value_template: >
+  #     {{((value | float ) / 1000000 ) | round(2) }}
+  # - platform: snmp
+  #   name: 'UnRAID LAN3 Upload LAGG0'
+  #   host: !secret container_host
+  #   port: 161
+  #   community: public
+  #   baseoid: .1.3.6.1.2.1.2.2.1.16.15
+  #   accept_errors: false
+  #   unit_of_measurement: "Kbps"
+  #   value_template: >
+  #     {{((value | float ) / 1000000 ) | round(2) }}
+  # - platform: snmp
+  #   name: 'UnRAID LAN4 Upload LAGG0'
+  #   host: !secret container_host
+  #   port: 161
+  #   community: public
+  #   baseoid: .1.3.6.1.2.1.2.2.1.16.16
+  #   accept_errors: false
+  #   unit_of_measurement: "Kbps"
+  #   value_template: >
+  #     {{((value | float ) / 1000000 ) | round(2) }}
+  ## SNMP LAN Download
+
+  - platform: snmp
+    name: 'UnRAID Download'
+    host: !secret container_host
+    port: 161
+    community: public
+    baseoid: .1.3.6.1.2.1.2.2.1.10.9
+    accept_errors: false
+    unit_of_measurement: "Kbps"
+    value_template: >
+      {{((value | float ) / 1000000 ) | round(2) }}
+  # - platform: snmp
+  #   name: 'UnRAID LAN1 Download LAGG0'
+  #   host: !secret container_host
+  #   port: 161
+  #   community: public
+  #   baseoid: .1.3.6.1.2.1.2.2.1.10.13
+  #   accept_errors: false
+  #   unit_of_measurement: "Kbps"
+  #   value_template: >
+  #     {{((value | float ) / 1000000 ) | round(2) }}
+  # - platform: snmp
+  #   name: 'UnRAID LAN2 Download LAGG0'
+  #   host: !secret container_host
+  #   port: 161
+  #   community: public
+  #   baseoid: .1.3.6.1.2.1.2.2.1.10.14
+  #   accept_errors: false
+  #   unit_of_measurement: "Kbps"
+  #   value_template: >
+  #     {{((value | float ) / 1000000 ) | round(2) }}
+  # - platform: snmp
+  #   name: 'UnRAID LAN3 Download LAGG0'
+  #   host: !secret container_host
+  #   port: 161
+  #   community: public
+  #   baseoid: .1.3.6.1.2.1.2.2.1.10.15
+  #   accept_errors: false
+  #   unit_of_measurement: "Kbps"
+  #   value_template: >
+  #     {{((value | float ) / 1000000 ) | round(2) }}
+  # - platform: snmp
+  #   name: 'UnRAID LAN4 Download LAGG0'
+  #   host: !secret container_host
+  #   port: 161
+  #   community: public
+  #   baseoid: .1.3.6.1.2.1.2.2.1.10.16
+  #   accept_errors: false
+  #   unit_of_measurement: "Kbps"
+  #   value_template: >
+  #     {{((value | float ) / 1000000 ) | round(2) }}

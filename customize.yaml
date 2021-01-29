@@ -74,6 +74,10 @@ plant.grote_woonkamer_plant:
 #Smoke Sensors
 binary_sensor.rookmelder_overloop:
   icon: mdi:fire
+binary_sensor.rookmelder_keuken:
+  icon: mdi:fire
+binary_sensor.rookmelder_woonkamer:
+  icon: mdi:fire
 
 #Motion Sensors
 binary_sensor.tv_kamer_motion:
@@ -224,3 +228,15 @@ device_tracker.marty_mcfly_location_tracker:
 
 switch.tuinpomp:
   icon: mdi:cached
+
+sensor.current_media_players_playing:
+  icon: mdi:radio
+
+sensor.current_lights_on:
+  icon: mdi:lightbulb-outline
+
+sensor.current_devices_offline:
+  icon: mdi:alert-outline
+
+sensor.current_climate_devices_heating:
+  icon: mdi:radiator

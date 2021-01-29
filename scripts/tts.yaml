@@ -12,6 +12,7 @@ speak:
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
+          - media_player.kantoor
     - service: sonos.unjoin
       data_template:
         entity_id:
@@ -19,6 +20,7 @@ speak:
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
+          - media_player.kantoor
     - service: media_player.volume_set
       data_template:
         volume_level: '0.22'
@@ -27,6 +29,7 @@ speak:
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
+          - media_player.kantoor
     - service: tts.google_say
       data_template:
         entity_id:
@@ -34,6 +37,7 @@ speak:
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
+          - media_player.kantoor
         message: "{{ what }}"
     - delay:
         seconds: 1
@@ -60,3 +64,4 @@ speak:
           - media_player.badkamer
           - media_player.keuken
           - media_player.tvkamer
+          - media_player.kantoor

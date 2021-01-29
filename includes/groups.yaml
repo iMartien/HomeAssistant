@@ -1,0 +1,119 @@
+  Woonkamer Verlichting:
+    entities:
+        - light.rieten_lamp
+        - light.glazenbol
+        - light.hue_bloom
+        - light.koperen_lamp
+        - light.glazen_lamp
+        - light.bol_lamp
+        - light.woonkamer_spot
+
+  Woonkamer Media Players:
+    entities:
+      - media_player.tvkamer
+      - media_player.woonkamer_live_tv
+      - media_player.woonkamer_plex
+      - media_player.woonkamer
+      - media_player.tvkamer
+
+  Woonkamer Ramen:
+    entities:
+      - binary_sensor.woonkamer_raam_1
+      - binary_sensor.woonkamer_raam_2
+      - binary_sensor.woonkamer_raam_3
+
+  Woonkamer Motion:
+    entities:
+      - binary_sensor.woonkamer_motion
+      - binary_sensor.tv_kamer_motion
+      - binary_sensor.hue_motion_sensor_1_motion
+
+  Keuken Verlichting:
+    entities:
+      - light.keuken_1
+      - light.keuken_2
+      - light.keuken_3
+      - light.keuken_4
+      - light.keuken_5
+      - light.eetkamertafel
+      - light.keukenlampie
+
+  Kantoor Verlichting:
+    entities:
+      - light.kantoor_filament_1
+      - light.kantoor_filament_2
+      - light.kantoor_filament_3
+      - light.kantoor_filament_4
+      - light.kantoor_filament_5
+      - light.kantoor_filament_6
+      - light.kantoor_1
+      - light.kantoor_2
+      - light.kantoor_3
+
+  Badkamer Spots:
+    entities:
+      - light.badkamer_1
+      - light.badkamer_2
+      - light.badkamer_3
+      - light.badkamer_4
+      - light.badkamer_5
+
+  Washok Apparaten:
+    entities:
+      - sensor.wasmachine_status
+      - sensor.droger_status
+
+  Slaapkamer Spots:
+    entities:
+    - light.slaapkamer_spot_1
+    - light.slaapkamer_spot_2
+
+  Slaapkamer Ramen:
+    entities:
+      - binary_sensor.grote_slaapkamer_raam
+      - binary_sensor.kleine_slaapkamer_raam
+
+  Overloop Spots:
+    entities:
+      - light.overloop_1
+      - light.overloop_2
+
+  WC Boven Spots:
+    entities:
+    - light.wc_boven_1
+    - light.wc_boven_2
+    - light.wc_boven_3
+
+  Personen:
+    entities:
+      - person.martien
+      - person.deborah
+
+  Gasten:
+    entities:
+      - person.bertus
+      - person.ria
+
+  Tesla Sloten:
+    entities:
+      - lock.marty_mcfly_door_lock
+      - lock.marty_mcfly_frunk_lock
+      - lock.marty_mcfly_trunk_lock
+      - lock.marty_mcfly_charger_door_lock
+
+  Tesla Temperaturen:
+    entities:
+      - sensor.marty_mcfly_temperature_sensor_inside
+      - sensor.marty_mcfly_temperature_sensor_outside
+
+  Tesla Switches:
+    entities:
+      - switch.marty_mcfly_charger_switch
+      - switch.marty_mcfly_maxrange_switch
+
+  Server Rack Temperaturen:
+    entities:
+      - sensor.glances_core_0_temp
+      - sensor.glances_core_1_temp
+      - sensor.glances_core_2_temp
+      - sensor.glances_core_3_temp

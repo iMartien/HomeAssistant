@@ -1,0 +1,254 @@
+    project_id: home-assistant-2019-fb49f
+    report_state: true
+    service_account: !include service_account.json
+    expose_by_default: false
+    entity_config:
+      #Woonkamer
+      climate.netatmo_woonkamer:
+        expose: true
+        room: Woonkamer
+        name: Woonkamer Thermostaat
+        aliases:
+          - Verwarming
+      alarm_control_panel.alarm:
+        expose: true
+        room: Woonkamer
+      light.rieten_lamp:
+        expose: true
+        room: Woonkamer
+      light.glazenbol:
+        expose: true
+        room: Woonkamer
+      light.hue_bloom:
+        expose: true
+        room: Woonkamer 
+      light.koperen_lamp:
+        expose: true
+        room: Woonkamer  
+      light.glazen_lamp:
+        expose: true
+        room: Woonkamer 
+      light.bol_lamp:
+        expose: true
+        room: Woonkamer 
+      light.woonkamer_spot:
+        expose: true
+        room: Woonkamer
+      binary_sensor.woonkamer_raam_1:
+        expose: true
+        room: Woonkamer
+      binary_sensor.woonkamer_raam_2:
+        expose: true
+        room: Woonkamer
+      binary_sensor.woonkamer_raam_3:
+        expose: true
+        room: Woonkamer
+      binary_sensor.woonkamer_motion:
+        expose: true
+        room: Woonkamer
+      #Keuken
+      climate.netatmo_keuken:
+        expose: true
+        room: Keuken
+        name: Keuken Radiatorkraan
+        aliases: 
+          - Verwarming
+          - Radiator
+      light.keuken_1:
+        expose: true
+        room: Keuken
+      light.keuken_2:
+        expose: true
+        room: Keuken
+      light.keuken_3:
+        expose: true
+        room: Keuken
+      light.keuken_4:
+        expose: true
+        room: Keuken
+      light.keuken_5:
+        expose: true
+        room: Keuken
+      light.eetkamertafel:
+        expose: true
+        room: Keuken
+        name: Eetkamertafel
+      light.keukenlampie:
+        expose: true
+        room: Keuken
+        name: Keukenlampie
+      binary_sensor.lekkage_gootsteenkastje:
+        expose: true
+        room: Keuken
+      #Badkamer
+      climate.netatmo_badkamer:
+        expose: true
+        room: Badkamer 
+        name: Badkamer Radiatorkraan
+        aliases:
+          - Verwarming
+          - Radiator
+      climate.badkamer_vloerverwarming:
+        expose: true
+        room: Badkamer 
+        name: Badkamer Vloerverwarming
+        aliases:
+          - Vloerverwarming
+      light.badkamer_1:
+        expose: true
+        room: Badkamer
+      light.badkamer_2:
+        expose: true
+        room: Badkamer
+      light.badkamer_3:
+        expose: true
+        room: Badkamer
+      light.badkamer_4:
+        expose: true
+        room: Badkamer
+      light.badkamer_5:
+        expose: true
+        room: Badkamer
+      switch.badkamerfan_sonoff:
+        expose: true
+        room: Badkamer
+        name: Ventilator
+      #Gang
+      climate.gang:
+        expose: true
+        room: Gang
+        name: Gang Kachel
+        aliases:
+          - Kachel
+      climate.gang_vloerverwarming:
+        expose: true
+        room: Gang
+        name: Gang Vloerverwarming
+        aliases:
+          - Vloerverwarming
+      switch.ganglicht:
+        expose: true
+        room: Gang
+      #Kantoor
+      light.kantoor_1:
+        expose: true
+        room: Kantoor
+      light.kantoor_2:
+        expose: true
+        room: Kantoor
+      light.kantoor_3:
+        expose: true
+        room: Kantoor
+      light.kantoor_filament_1:
+        expose: true
+        room: Kantoor
+      light.kantoor_filament_2:
+        expose: true
+        room: Kantoor
+      light.kantoor_filament_3:
+        expose: true
+        room: Kantoor
+      light.kantoor_filament_4:
+        expose: true
+        room: Kantoor
+      light.kantoor_filament_5:
+        expose: true
+        room: Kantoor
+      light.kantoor_filament_6:
+        expose: true
+        room: Kantoor
+      #Oprit      
+      lock.inrijpoort:
+        expose: true
+        name: Inrijpoort
+        room: Oprit
+        aliases:
+          - Hek
+          - Poort
+      camera.oprit:
+        expose: true
+        room: Oprit
+      #Voortuin
+      camera.deurbel:
+        expose: true  
+        room: Voortuin
+        aliases:
+          - Deurbel
+      #Veranda
+      camera.veranda:
+        expose: true
+        room: Veranda
+      #Achtertuin
+      switch.tuinpomp:
+        expose: true
+        room: Achtertuin
+      input_boolean.tuinbesproeiing:
+        expose: true
+        room: Achtertuin
+      #Slaapkamer
+      climate.netatmo_slaapkamer:
+        expose: true
+        room: Slaapkamer
+        name: Slaapkamer Radiator
+        aliases:
+          - Verwarming
+          - Radiator
+      light.slaapkamer_spot_1:
+        expose: true
+        room: Slaapkamer
+      light.slaapkamer_spot_2:
+        expose: true
+        room: Slaapkamer
+      binary_sensor.grote_slaapkamer_raam:
+        expose: true
+        room: Slaapkamer
+      binary_sensor.kleine_slaapkamer_raam:
+        expose: true
+        room: Slaapkamer
+      #Overloop
+      light.overloop_1:
+        expose: true
+        room: Overloop
+      light.overloop_2:
+        expose: true
+        room: Overloop
+      binary_sensor.rookmelder_overloop:
+        expose: true
+        room: Overloop
+      binary_sensor.overloop_raam:
+        expose: true
+        room: Overloop
+      binary_sensor.overloop_motion:
+        expose: true
+        room: Overloop
+      #Tesla
+      lock.marty_mcfly_door_lock:
+        expose: true
+        room: Tesla
+        name: Autodeuren
+        aliases:
+          - Autodeur
+          - Tesla deuren
+          - Autosloten
+          - Portiersloten
+      sensor.marty_mcfly_battery_sensor:
+        expose: true
+        room: Tesla
+        aliases:
+          - accu
+      switch.marty_mcfly_charger_switch:
+        expose: true
+        room: Tesla
+      switch.marty_mcfly_sentry_mode_switch:
+        expose: true
+        room: Tesla
+      switch.marty_mcfly_maxrange_switch:
+        expose: true
+        room: Tesla
+      #Technische Ruimte
+      switch.unraid_docker_plexmediaserver:
+        expose: true
+        name: Plex Server
+        room: Technische Ruimte
+        aliases:
+          - Plex Media Server

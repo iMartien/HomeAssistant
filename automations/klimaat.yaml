@@ -1,0 +1,177 @@
+########################################
+## Automatisch Klimaat
+########################################
+- alias: "Klimaat: Thermostaat programma aan wanneer onderweg naar huis"
+  trigger:
+    platform: numeric_state
+    entity_id: proximity.home
+    below: 10
+    above: 1
+  condition:
+    - condition: state
+      entity_id: input_boolean.homemode_away
+      state: "on"
+    - "{{ is_state_attr('proximity.home', 'dir_of_travel', 'towards') }}"
+  action:
+    - service: climate.set_hvac_mode
+      data:
+        entity_id: climate.netatmo_woonkamer
+        hvac_mode: 'auto'
+    - service: climate.set_hvac_mode
+      data:
+        entity_id: climate.gang_vloerverwarming
+        hvac_mode: 'auto'
+    - service: climate.set_hvac_mode
+      data:
+        entity_id: climate.badkamer_vloerverwarming
+        hvac_mode: 'auto'
+    - service: notify.martien
+      data:
+        title: "🌡 Klimaat"
+        message: "De verwarming is automatisch ingeschakeld."
+
+- alias: "Klimaat: Verwarming uit bij openen badkamerraam"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.badkamerraam
+      to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_home
+        state: 'on'
+      - condition: numeric_state
+        entity_id: sensor.dark_sky_temperature
+        below: 17
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.netatmo_badkamer
+        temperature: 14
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.netatmo_gang
+        temperature: 14
+    - service: homeassistant.turn_on
+      data:
+        entity_id:
+          - switch.badkamerfan_sonoff
+    - service: notify.martien
+      data:
+        message: "De thermostaat in de badkamer en gang is lager gezet en de ventilator aan omdat het raam is geopend."
+        title: "🌡 Klimaat"
+
+- alias: "Klimaat: Vorstvrij bij vakantie"
+  trigger:
+    - platform: state
+      entity_id: input_boolean.homemode_vacation
+      to: 'on'
+  action:
+    - service: climate.set_preset_mode
+      data:
+        entity_id: climate.netatmo_woonkamer
+        preset_mode: "Frost Guard"
+
+- alias: 'Klimaat: Scene Opstaan'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.scene_goodmorning
+      to: 'on'
+  condition:
+  - condition: template
+    value_template: "{{ states.climate.netatmo_woonkamer.attributes['temperature'] | int < 17 }}"
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.netatmo_woonkamer
+        temperature: 17
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.netatmo_keuken
+        temperature: 17
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.netatmo_badkamer
+        temperature: 18
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.netatmo_gang
+        temperature: 17
+            
+- alias: 'Klimaat: Scene Naar Bed'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.scene_bedtime
+      to: 'on'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.netatmo_woonkamer
+        temperature: 14
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.netatmo_keuken
+        temperature: 14
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.netatmo_badkamer
+        temperature: 14
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.netatmo_gang
+        temperature: 14
+
+
+########################################
+## Badkamer ventilatie
+########################################
+- alias: 'Klimaat: Turn off Badkamerfan after 60min.'
+  trigger:
+    - platform: state
+      entity_id: switch.badkamerfan_sonoff
+      to: 'on'
+      for:
+        minutes: 60
+  action:
+    - service: homeassistant.turn_off
+      data:
+        entity_id:
+          - switch.badkamerfan_sonoff
+
+- alias: 'Klimaat: Turn on Badkamerfan after 7min.'
+  trigger:
+    - platform: state
+      entity_id: group.badkamer_spots
+      to: 'on'
+      for:
+        minutes: 7
+  action:
+    - service: homeassistant.turn_on
+      data:
+        entity_id:
+          - switch.badkamerfan_sonoff
+
+- alias: 'Klimaat: Turn off Badkamerfan after lights off for 30min.'
+  trigger:
+    - platform: state
+      entity_id: group.badkamer_spots
+      to: 'off'
+      for:
+        minutes: 30
+  action:
+    - service: homeassistant.turn_off
+      data:
+        entity_id:
+          - switch.badkamerfan_sonoff
+
+- alias: "Klimaat: MeteoAlarm meldingen"
+  trigger:
+    platform: state
+    entity_id: binary_sensor.meteoalarm
+    to: 'on'
+  action:
+    - service: notify.notifyall
+      data_template:
+        title: "{{state_attr('binary_sensor.meteoalarm', 'headline')}}"
+        message: "{{state_attr('binary_sensor.meteoalarm', 'description')}}"

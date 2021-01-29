@@ -1,0 +1,171 @@
+actions:
+  - name: Scenes
+    background_color: "#000000"
+    label:
+      text: Scenes
+      color: "#ff0000"
+    icon:
+      icon: palette-outline
+      color: "#ffffff"
+
+  - name: Verlichting
+    background_color: "#000000"
+    label:
+      text: Verlichting
+      color: "#ff0000"
+    icon:
+      icon: lightbulb-outline
+      color: "#ffffff"
+
+  - name: Verwarming
+    background_color: "#000000"
+    label:
+      text: Verwarming
+      color: "#ff0000"
+    icon:
+      icon: thermometer
+      color: "#ffffff"
+
+  - name: Apparaten
+    background_color: "#000000"
+    label:
+      text: Apparaten
+      color: "#ff0000"
+    icon:
+      icon: light-switch
+      color: "#ffffff"
+  
+  - name: Temperatuur Overzicht
+    background_color: "#000000"
+    label:
+      text: Temperaturen
+      color: "#ff0000"
+    icon:
+      icon: temperature-celsius
+      color: "#ffffff"
+
+push:
+  categories:
+    - name: deurbel
+      identifier: 'camera'
+      actions:
+        - identifier: 'OPEN_HEK'
+          title: 'Hek Openen'
+          activationMode: 'background'
+          authenticationRequired: true
+          destructive: true
+
+    - name: alarmgaataf
+      identifier: 'alarm_gaat_af'
+      actions:
+        - identifier: 'ALARM_DISARM'
+          title: 'Alarm Uitschakelen'
+          activationMode: 'background'
+          authenticationRequired: true
+          destructive: true
+
+    - name: bewegingniemandthuis
+      identifier: 'beweging_niemand_thuis'
+      actions:
+        - identifier: 'ALARM_SOS'
+          title: 'Alarm SOS!'
+          activationMode: 'background'
+          authenticationRequired: true
+          destructive: true
+
+    - name: verlichtingnogaan
+      identifier: 'verlichting_nog_aan'
+      actions:
+        - identifier: 'ALLE_LICHTEN_UIT'
+          title: 'Uitschakelen'
+          activationMode: 'background'
+          authenticationRequired: true
+          destructive: true
+
+    - name: Selecteer scene
+      identifier: selecteer_scene
+      actions:
+        - identifier: SFEER
+          title: Sfeer
+          activationMode: 'background'
+        - identifier: NORMAAL
+          title: Normaal
+          activationMode: 'background'
+        - identifier: OPSTAAN
+          title: Opstaan
+          activationMode: 'background'
+        - identifier: THUISWERK
+          title: Thuiswerken
+          activationMode: 'background'
+        - identifier: BEDTIJD
+          title: Bedtijd
+          activationMode: 'background'
+        - identifier: SLAPEN
+          title: Slapen
+          activationMode: 'background'
+        - identifier: AANTAFEL
+          title: Aan tafel
+          activationMode: 'background'
+
+    - name: Selecteer kamer
+      identifier: selecteer_kamer
+      actions:
+        - identifier: WOONKAMER
+          title: Woonkamer
+          activationMode: 'background'
+        - identifier: KEUKEN
+          title: Keuken
+          activationMode: 'background'
+        - identifier: KANTOOR
+          title: Kantoor
+          activationMode: 'background'
+        - identifier: BADKAMER
+          title: Badkamer
+          activationMode: 'background'
+        - identifier: SLAAPKAMER
+          title: Slaapkamer
+          activationMode: 'background'
+        - identifier: CHARLIESKAMER
+          title: Charlies Kamer
+          activationMode: 'background'
+        - identifier: OVERLOOP
+          title: Overloop
+          activationMode: 'background'
+        - identifier: KELDER
+          title: Kelder
+          activationMode: 'background'
+
+    - name: Selecteer temperatuur
+      identifier: selecteer_temperatuur
+      actions:
+        - identifier: T15
+          title: 15 ℃
+          activationMode: 'background'
+        - identifier: T16
+          title: 16 ℃
+          activationMode: 'background'
+        - identifier: T17
+          title: 17 ℃
+          activationMode: 'background'
+        - identifier: T18
+          title: 18 ℃
+          activationMode: 'background'
+        - identifier: T19
+          title: 19 ℃
+          activationMode: 'background'
+        - identifier: T20
+          title: 20 ℃
+          activationMode: 'background'
+        - identifier: T21
+          title: 21 ℃
+          activationMode: 'background'
+
+    - name: Selecteer apparaat
+      identifier: selecteer_apparaat
+      actions:
+        - identifier: INRIJPOORT
+          title: Inrijpoort
+        - identifier: BADKAMERFAN
+          title: Badkamerfan
+        - identifier: KELDERPOMP
+          title: Kelderpomp

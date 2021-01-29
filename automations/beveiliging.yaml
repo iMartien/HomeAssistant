@@ -1,0 +1,410 @@
+#########################################
+# Alarm actions from HA
+#########################################
+# - alias: 'Beveiliging: Disarm from HA'
+#   trigger:
+#     - platform: state
+#       entity_id: alarm_control_panel.alarm
+#       to: 'disarmed'
+#   condition:
+#     - condition: state
+#       entity_id:  input_boolean.disable_send_alarm_rfkey
+#       state: 'off'
+#   action:
+#     - service: mqtt.publish
+#       data:
+#         topic: cmnd/sonoff_bridge/RfKey1
+
+# - alias: 'Beveiliging: Arm Away from HA'
+#   trigger:
+#     - platform: state
+#       entity_id: alarm_control_panel.alarm
+#       to: 'armed_away'
+#   condition:
+#     - condition: state
+#       entity_id:  input_boolean.disable_send_alarm_rfkey
+#       state: 'off'
+#   action:
+#     - service: mqtt.publish
+#       data:
+#         topic: cmnd/sonoff_bridge/RfKey3
+
+# - alias: 'Beveiliging: Arm Home from HA'
+#   trigger:
+#     - platform: state
+#       entity_id: alarm_control_panel.alarm
+#       to: 'armed_home'
+#   condition:
+#     - condition: state
+#       entity_id:  input_boolean.disable_send_alarm_rfkey
+#       state: 'off'
+#   action:
+#     - service: mqtt.publish
+#       data:
+#         topic: cmnd/sonoff_bridge/RfKey2
+
+
+#########################################
+# Alarm WORDT ingeschakeld automations
+#########################################
+- alias: 'Beveiliging: Alarm wordt ingeschakeld voor afwezig'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.alarm_panel_keuken_arm_away
+      to: 'on'
+  action:
+    - service: script.speak
+      data:
+        what: 'Alarm wordt ingeschakeld.'
+    - service: notify.pushover
+      data_template:
+        message: "Alarm wordt ingeschakeld voor afwezig..."
+        title: "Alarm"
+        data:
+          priority: -1
+
+- alias: 'Beveiliging: Alarm wordt ingeschakeld voor thuis'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.alarm_panel_keuken_arm_home
+      to: 'on'
+  action:
+    - service: notify.pushover
+      data_template:
+        message: "Alarm wordt ingeschakeld voor thuis..."
+        title: "Alarm"
+        data:
+          priority: -1
+
+#########################################
+# Alarm IS ingeschakeld automations
+#########################################
+- alias: 'Beveiliging: Alarm is ingeschakeld voor thuis'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.alarm_status_armed_home
+      to: 'on'
+  action:
+    - service: script.speak
+      data:
+        what: 'Alarm is ingeschakeld.'
+    - service: alarm_control_panel.alarm_arm_home
+      data:
+        entity_id: alarm_control_panel.alarm
+        code: !secret alarm_panel_code
+    - service: notify.notifyall
+      data:
+        message: "Alarm is ingeschakeld (Thuismodus)"
+        title: "✅ Alarm"
+
+- alias: 'Beveiliging: Alarm is ingeschakeld voor afwezig wanneer thuis'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.alarm_status_armed_away
+      to: 'on'
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_home
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.homemode_guest
+        state: 'on'
+  action:
+    - service: script.speak
+      data:
+        what: 'Alarm is ingeschakeld.'
+    - service: homeassistant.turn_on
+      data:
+        entity_id: switch.deurbel_relay_1
+    - service: input_boolean.turn_on
+      data:
+        entity_id:
+          - input_boolean.homemode_away
+    - service: notify.notifyall
+      data: 
+        message: "Alarm is ingeschakeld."
+        title: "✅ Alarm"
+    - service: alarm_control_panel.alarm_arm_away
+      data:      
+        entity_id: alarm_control_panel.alarm
+        code: !secret alarm_panel_code
+
+- alias: 'Beveiliging: Alarm is ingeschakeld voor afwezig wanneer afwezig'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.alarm_status_armed_away
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.homemode_away
+      state: 'on'
+  action:
+    - service: script.speak
+      data:
+        what: 'Alarm is ingeschakeld.'
+    - service: notify.notifyall
+      data:
+        message: "Alarm is ingeschakeld."
+        title: "✅ Alarm"
+    - service: alarm_control_panel.alarm_arm_away
+      data:
+        entity_id: alarm_control_panel.alarm
+        code: !secret alarm_panel_code
+
+#########################################
+# Alarm WORDT uitgeschakeld automations
+#########################################
+
+- alias: 'Beveiliging: Alarm wordt uitgeschakeld'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.alarm_panel_keuken_disarm
+      to: 'on'
+  action:
+    - service: notify.pushover
+      data_template:
+        message: "Alarm wordt uitgeschakeld..."
+        title: "Alarm"
+        data:
+          priority: -1
+
+#########################################
+# Alarm IS uitgeschakeld automations
+#########################################
+- alias: 'Beveiliging: Alarm is uitgeschakeld'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.alarm_status_disarmed
+      to: 'on'
+  action:
+    - service: script.speak
+      data:
+        what: 'Alarm is uitgeschakeld.'
+    - service: notify.notifyall
+      data:
+        message: "Alarm is uitgeschakeld."
+        title: "❌ Alarm"
+    - service: alarm_control_panel.alarm_disarm
+      data:
+        entity_id: alarm_control_panel.alarm
+        code: !secret alarm_panel_code
+
+#########################################
+# Alarm GAAT AF automations
+#########################################
+- alias: 'Beveiliging - Alarm gaat af'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.alarm_status_sos
+      to: 'on'
+  action:
+    - service: notify.notifyall
+      data:
+        message: "Het alarm gaat af!!"
+        title: "🚨🚨 Alarm 🚨🚨"
+        data:
+          push:
+            badge: 0 ## This will remove the badge/app icon number ##
+            category: "alarm_gaat_af"
+    - service: light.turn_on
+      entity_id: all
+      data:
+        flash: long
+        color_name: red
+
+- alias: "Beveiliging: iOS Action - ALARM_DISARM" 
+  trigger:
+    platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: ALARM_DISARM
+  action:
+    - service: alarm_control_panel.alarm_disarm
+      data: {"entity_id":"alarm_control_panel.ha_alarm","code":"8284"}
+
+############################################################
+# Beweging, ramen en deuren bij ingeschakeld alarm
+############################################################
+- alias: 'Beveiliging: Notificaties bij beweging indien afwezig'
+  trigger:
+    platform: state
+    entity_id:
+      - binary_sensor.gang_motion
+      - binary_sensor.keuken_motion
+      - binary_sensor.tv_kamer_motion
+      - binary_sensor.woonkamer_motion
+      - binary_sensor.overloop_motion
+      - binary_sensor.kantoor_motion
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_away
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.homemode_guest
+        state: 'off'
+  action:
+    - service: notify.notifyall
+      data:
+        data_template:
+          title: "🚨 Beveiliging"
+          message: "Beweging gedetecteerd door {{ trigger.to_state.attributes.friendly_name }} sensor maar er is niemand thuis!"
+          data:
+            push:
+              badge: 0 ## This will remove the badge/app icon number ##
+              category: "bewegingniemandthuis"
+
+- alias: 'Beveiliging: Notificaties bij raam of deur open indien afwezig'
+  trigger:
+    platform: state
+    entity_id:
+      - binary_sensor.keukendeur
+      - binary_sensor.badkamerraam
+      - binary_sensor.washok_raam
+      - binary_sensor.kleine_slaapkamer_raam
+      - binary_sensor.grote_slaapkamer_raam
+      - binary_sensor.overloop_raam
+      - binary_sensor.charlies_slaapkamer_raam
+      - binary_sensor.wc_boven
+      - binary_sensor.woonkamer_raam_1
+      - binary_sensor.woonkamer_raam_2
+      - binary_sensor.woonkamer_raam_3
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_away
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.homemode_guest
+        state: 'off'
+  action:
+    - service: notify.notifyall
+      data_template:
+        title: "🚨 Beveiliging"
+        message: "{{ trigger.to_state.attributes.friendly_name }} is geopend en er is niemand thuis!"
+        data:
+          push:
+            badge: 0 ## This will remove the badge/app icon number ##
+            category: "bewegingniemandthuis"
+
+- alias: "Beveiliging: iOS Action - ALARM_SOS" 
+  trigger:
+    platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: ALARM_SOS
+  action:
+    - service: mqtt.publish
+      data:
+        topic: cmnd/sonoff_bridge/RfKey4
+
+############################################################
+# Energie
+############################################################
+- alias: "Beveiliging: hoge energieverbruik bij afwezigheid"
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.dsmr_reading_electricity_currently_delivered
+    above: 1
+    for: "00:10:00"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_away
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.homemode_guest
+        state: 'off'
+  action:
+    service: notify.martien
+    data:
+      title: "Beveiliging"
+      message: >
+        No one is home and we are using a lot of energy
+        ({{ states('sensor.dsmr_reading_electricity_currently_delivered') }} kW now)!
+
+############################################################
+# Rookmelders
+############################################################
+- alias: 'Beveiliging: Rook gedetecteerd op overloop'
+  trigger:
+    platform: state
+    entity_id: 
+      - binary_sensor.rookmelder_overloop
+      - binary_sensor.rookmelder_woonkamer
+      - binary_sensor.rookmelder_keuken
+    to: 'on'
+  action:
+    - service: notify.notifyall
+      data_template:
+        message: "Sensor {{ trigger.to_state.attributes.friendly_name }} heeft rook gedetecteerd!!"
+        title: "🔥 Brand Alarm!"
+    - service: script.speak
+      data:
+        what: 'Waarschuwing! Er is rook gedetecteerd!'
+
+############################################################
+# Water en lekkage
+############################################################
+- alias: 'Beveiliging: Water lekkage gedetecteerd in WC Boven'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.lekkage_wc_boven
+    to: 'on'
+  action:
+    - service: notify.notifyall
+      data_template:
+        message: "{{ trigger.to_state.attributes.friendly_name }} gedetecteerd!!"
+        title: "💦 Lekkage!"
+    - service: script.speak
+      data:
+        what: 'Waarschuwing! Er is water lekkage gedetecteerd in de WC boven!'
+      
+- alias: 'Beveiliging: Water lekkage gedetecteerd in badkamer'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.lekkage_badkamer
+    to: 'on'
+  action:
+    - service: notify.notifyall
+      data_template:
+        message: "{{ trigger.to_state.attributes.friendly_name }} gedetecteerd!!"
+        title: "💦 Lekkage!"
+    - service: script.speak
+      data:
+        what: 'Waarschuwing! Er is water lekkage gedetecteerd in de badkamer!'
+
+- alias: 'Beveiliging: Water lekkage gedetecteerd in keuken'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.lekkage_gootsteenkastje
+    to: 'on'
+  action:
+    - service: notify.notifyall
+      data_template:
+        message: "{{ trigger.to_state.attributes.friendly_name }} gedetecteerd!!"
+        title: "💦 Lekkage!"
+    - service: script.speak
+      data:
+        what: 'Waarschuwing! Er is water lekkage gedetecteerd in de keuken!'
+
+- alias: 'Beveiliging: Hoogwater in de kelder'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.hoogwater_kelder
+    to: 'on'
+  action:
+    - service: notify.notifyall
+      data_template:
+        message: "Sensor {{ trigger.to_state.attributes.friendly_name }} heeft hoogwater gedecteerd in de kelder!"
+        title: "🌊 Hoogwater"
+    - service: script.speak
+      data:
+        what: 'Waarschuwing! Er staat veel water in de kelder!'

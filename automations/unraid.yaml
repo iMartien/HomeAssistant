@@ -1,0 +1,21 @@
+- alias: "Unraid: Plex media server docker is gestopt"
+  trigger:
+    platform: state
+    entity_id: switch.unraid_docker_plexmediaserver
+    to: 'off'
+  action:
+    - service: notify.martien
+      data:
+        message: "Plex Media Server docker is gestopt."
+        title: "🛑 Unraid Docker"
+
+- alias: "Unraid: Plex media server docker is gestart"
+  trigger:
+    platform: state
+    entity_id: switch.unraid_docker_plexmediaserver
+    to: 'on'
+  action:
+    - service: notify.martien
+      data:
+        message: "Plex Media Server docker is gestart."
+        title: "🟢 Unraid Docker"

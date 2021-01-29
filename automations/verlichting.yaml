@@ -1,0 +1,309 @@
+- alias: 'Verlichting: Lichten uit nadat status donker uit is gegaan'
+  trigger:
+    platform: state
+    entity_id: input_boolean.status_donker
+    to: 'off'
+  condition:
+    - condition: state
+      entity_id: light.woonkamer_verlichting
+      state: 'on'
+  action:
+    - service: homeassistant.turn_off
+      entity_id:
+        - light.woonkamer_verlichting
+        - light.keuken_verlichting
+        - light.overloop_spotjes
+        - light.slaapkamer_spotjes
+        - switch.kerstverlichting_dakgoot
+        - switch.veranda_lampjes
+
+- alias: 'Verlichting: Kerstverlichting buiten aan om 16u'
+  trigger:
+    platform: time
+    at: '16:00:00'
+  action:
+    - service: switch.turn_on
+      entity_id: 
+        - switch.kerstverlichting_dakgoot
+        - switch.veranda_lampjes
+        - switch.smart_plug_6 #kerstboom
+
+- alias: "Verlichting: Sfeerverlichting in woonkamer bij TV kijken"
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.tv_meubel_power
+    above: 70
+    for:
+      minutes: 5
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: light.hue_play_all
+        state: 'on'
+      - condition: time
+        after: '20:00:00'
+        before: '00:00:00'
+  action:
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Woonkamer"
+        scene_name: "Sfeerverlichting"
+
+########################################
+## Nachtlampje Charlie automatisch uit
+########################################
+- alias: "Verlichting: Nachtlampje Charlie automatisch uit"
+  trigger:
+    platform: state
+    entity_id: light.babykamer
+    to: 'on'
+    for:
+      minutes: 120
+  condition:
+    - condition: numeric_state
+      entity_id: light.babykamer
+      value_template: '{% if states.light.babykamer.state == "on"  %}{{ states.light.babykamer.brightness }}{% else %}0{% endif %}'
+      below: 26
+  action:
+    service: light.turn_off
+    entity_id: light.babykamer
+        
+########################################
+## Verlichting bij Donker
+########################################
+- alias: 'Verlichting: Woonkamerverlichting aan wanneer donker en iemand thuis'
+  trigger:
+    platform: state
+    entity_id: input_boolean.status_donker
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_home
+        state: 'on'
+      - condition: state
+        entity_id: light.woonkamer_verlichting
+        state: 'off'
+  action:
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Woonkamer"
+        scene_name: "Normaal"
+    - service: switch.turn_on
+      entity_id:
+        - switch.smart_plug_6 #kerstboom
+
+- alias: 'Verlichting: Keukenverlichting aan wanneer donker en iemand thuis'
+  trigger:
+    platform: state
+    entity_id: input_boolean.status_donker
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_home
+        state: 'on'
+      - condition: state
+        entity_id: light.keuken_verlichting
+        state: 'off'
+  action:
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Keuken"
+        scene_name: "Normaal"
+
+- alias: 'Verlichting: Kantoorverlichting aan wanneer donker en iemand thuis'
+  trigger:
+    platform: state
+    entity_id: input_boolean.status_donker
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_home
+        state: 'on'
+      - condition: state
+        entity_id: light.alle_kantoor_verlichting
+        state: 'off'
+  action:
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Kantoor"
+        scene_name: "Sfeerverlichting"
+
+- alias: 'Verlichting: Licht aan wanneer donker en niemand thuis'
+  trigger:
+    platform: state
+    entity_id: input_boolean.status_donker
+    to: 'on'
+    for:
+      minutes: 30
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_away
+        state: 'on'
+  action:
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Woonkamer"
+        scene_name: "Sfeerverlichting"
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Keuken"
+        scene_name: "Sfeerverlichting"
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Kantoor"
+        scene_name: "Sfeerverlichting"
+    - service: homeassistant.turn_on
+      entity_id:
+        - switch.kerstverlichting_dakgoot
+        - switch.veranda_lampjes
+        - switch.smart_plug_6 #kerstboom
+
+- alias: 'Verlichting: Licht uit om 23:30 when wanneer er niemand thuis is'
+  trigger:
+    platform: time
+    at: '23:30:00'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_away
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.homemode_guest
+        state: 'off'
+  action:
+    - service: homeassistant.turn_off
+      entity_id:
+        - light.alle_verlichting
+        - switch.kelderlicht
+        - switch.ganglicht
+        - switch.kerstverlichting_dakgoot
+        - switch.veranda_lampjes
+        - switch.smart_plug_6 #kerstboom
+
+########################################
+## Verlichting bij beweging
+########################################
+
+- alias: 'Verlichting: Ganglight aan bij Beweging'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.gang_motion
+      to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_home
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.status_donker
+        state: 'on'
+  action:
+    - service: switch.turn_on
+      entity_id: switch.ganglicht
+
+- alias: 'Verlichting: Ganglight uit bij geen beweging'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.gang_motion
+      to: 'off'
+      for:
+        minutes: 10
+  action:
+    - service: switch.turn_off
+      entity_id:
+        - switch.ganglicht
+
+- alias: 'Verlichting: Keukenlicht naar normaal bij beweging'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.keuken_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.keukendeur
+      to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_home
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.status_donker
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.nacht
+        state: 'off'
+      - condition: state
+        entity_id: light.keuken_5
+        state: 'on'
+      - condition: state
+        entity_id: light.keuken_4
+        state: 'on'
+      - condition: state
+        entity_id: light.keuken_3
+        state: 'off'
+      - condition: state
+        entity_id: light.keuken_2
+        state: 'off'
+      - condition: state
+        entity_id: light.keuken_1
+        state: 'off'
+  action:
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Keuken"
+        scene_name: "Normaal"
+
+- alias: 'Verlichting: Keukenlicht naar sfeer bij geen beweging'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.keuken_motion
+      to: 'off'
+      for:
+        minutes: 15
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_home
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.status_donker
+        state: 'on'
+      - condition: time
+        after: '20:00:00'
+        before: '00:00:00'
+      - condition: state
+        entity_id: light.keuken_5
+        state: 'on'
+      - condition: state
+        entity_id: light.keuken_4
+        state: 'on'
+      - condition: state
+        entity_id: light.keuken_3
+        state: 'on'
+      - condition: state
+        entity_id: light.keuken_2
+        state: 'on'
+      - condition: state
+        entity_id: light.keuken_1
+        state: 'on'
+      - condition: state
+        entity_id: light.eetkamertafel
+        state: 'off'
+  action:
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Keuken"
+        scene_name: "Sfeerverlichting"

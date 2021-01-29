@@ -1,0 +1,206 @@
+- alias: "iOS: Temperatuur Overzicht"
+  mode: parallel
+  trigger:
+    platform: event
+    event_type: ios.action_fired
+    event_data:
+      actionName: Temperatuur Overzicht
+  action:
+    - variables:
+        iphone: "notify.mobile_app_{{ trigger.event.data.sourceDeviceName.replace(' ', '_') }}"
+    - service: "{{ iphone }}"
+      data:
+        title: "Temperaturen"
+        message: >
+          Woonkamer: {{ state_attr('climate.netatmo_woonkamer', 'temperature') }}°C
+          Badkamer: {{ state_attr('climate.netatmo_badkamer', 'temperature') }}°C
+          Slaapkamer: {{ state_attr('climate.netatmo_slaapkamer', 'temperature') }}°C
+          Charlies kamer: {{ state_attr('climate.netatmo_charlie_s_kamer', 'temperature') }}°C
+          Buiten: {{ state_attr('weather.rotterdam', 'temperature') }}°C en het is {{ states('weather.rotterdam') }}
+
+- alias: "iOS: Bedtijd"
+  mode: parallel
+  trigger:
+    platform: event
+    event_type: ios.action_fired
+    event_data:
+      actionName: Bedtijd
+  action:
+    - service: homeassistant.turn_on
+      entity_id: 
+        - input_boolean.scene_bedtime
+
+- alias: "iOS: Slapen"
+  mode: parallel
+  trigger:
+    platform: event
+    event_type: ios.action_fired
+    event_data:
+      actionName: Slapen
+  action:
+    - service: homeassistant.turn_on
+      entity_id: 
+        - input_boolean.homemode_night
+
+- alias: "iOS: Temperatuur Instellen"
+  mode: parallel
+  trigger:
+    platform: event
+    event_type: ios.action_fired
+    event_data:
+      actionName: Verwarming
+  action:
+    - variables:
+        iphone: "notify.mobile_app_{{ trigger.event.data.sourceDeviceName.replace(' ', '_') }}"
+    - service: "{{ iphone }}"
+      data:
+        message: "🏠 Selecteer kamer:"
+        data:
+          push:
+            category: selecteer_kamer
+    - wait_for_trigger:
+        platform: event
+        event_type: ios.notification_action_fired
+        event_data:
+          categoryName: selecteer_kamer
+      timeout: "00:00:20"
+      continue_on_timeout: false
+    - variables:
+        kamer: >
+          {{
+            {'WOONKAMER': 'climate.netatmo_woonkamer',
+            'KEUKEN': 'climate.netatmo_keuken',
+            'BADKAMER': 'climate.netatmo_badkamer',
+            'SLAAPKAMER': 'climate.netatmo_slaapkamer',
+            'CHARLIESKAMER': 'climate.netatmo_charlie_s_kamer',
+            }[wait.trigger.event.data.actionName] }}
+    - service: "{{ iphone }}"
+      data:
+        message: "🌡 Selecteer temperatuur:"
+        data:
+          push:
+            category: selecteer_temperatuur
+    - wait_for_trigger:
+        platform: event
+        event_type: ios.notification_action_fired
+        event_data:
+          categoryName: selecteer_temperatuur
+      timeout: "00:00:20"
+      continue_on_timeout: false
+    - variables:
+        temperature: "{{ wait.trigger.event.data.actionName.split('T')[1] | int }}"
+    - service: climate.set_temperature
+      data:
+        entity_id: "{{ kamer }}"
+        temperature: "{{ temperature }}"
+
+- alias: "iOS: Scene Selecteren"
+  mode: parallel
+  trigger:
+    platform: event
+    event_type: ios.action_fired
+    event_data:
+      actionName: Scenes
+  action:
+    - variables:
+        iphone: "notify.mobile_app_{{ trigger.event.data.sourceDeviceName.replace(' ', '_') }}"
+    - service: "{{ iphone }}"
+      data:
+        message: "🎨 Selecteer scene:"
+        data:
+          push:
+            category: selecteer_scene
+    - wait_for_trigger:
+        platform: event
+        event_type: ios.notification_action_fired
+        event_data:
+          categoryName: selecteer_scene
+      timeout: "00:00:20"
+      continue_on_timeout: false
+    - variables:
+        scene: >
+          {{
+            {'SFEER': 'input_boolean.scene_sfeer',
+            'NORMAAL': 'input_boolean.scene_normaal',
+            'OPSTAAN': 'input_boolean.scene_goodmorning',
+            'BEDTIJD': 'input_boolean.scene_bedtime',
+            'SLAPEN': 'input_boolean.homemode_night',
+            'AANTAFEL': 'input_boolean.scene_aantafel',
+            'THUISWERK': 'input_boolean.scene_thuiswerken',
+            }[wait.trigger.event.data.actionName] }}
+    - service: homeassistant.turn_on
+      data:
+        entity_id: "{{ scene }}"
+
+- alias: "iOS: Verlichting"
+  mode: parallel
+  trigger:
+    platform: event
+    event_type: ios.action_fired
+    event_data:
+      actionName: Verlichting
+  action:
+    - variables:
+        iphone: "notify.mobile_app_{{ trigger.event.data.sourceDeviceName.replace(' ', '_') }}"
+    - service: "{{ iphone }}"
+      data:
+        message: "💡 Selecteer kamer:"
+        data:
+          push:
+            category: selecteer_kamer
+    - wait_for_trigger:
+        platform: event
+        event_type: ios.notification_action_fired
+        event_data:
+          categoryName: selecteer_kamer
+      timeout: "00:00:20"
+      continue_on_timeout: false
+    - variables:
+        verlichting: >
+          {{
+            {'WOONKAMER': 'light.woonkamer_verlichting',
+            'KEUKEN': 'light.keuken_verlichting',
+            'BADKAMER': 'light.badkamer_spotjes',
+            'SLAAPKAMER': 'light.slaapkamer_spotjes',
+            'OVERLOOP': 'light.overloop_spotjes',
+            'CHARLIESKAMER': 'light.babykamer',
+            'KANTOOR': 'light.alle_kantoor_verlichting',
+            'KELDER': 'switch.kelderlicht',
+            }[wait.trigger.event.data.actionName] }}
+    - service: homeassistant.toggle
+      data:
+        entity_id: "{{ verlichting }}"
+
+- alias: "iOS: Apparaten"
+  mode: parallel
+  trigger:
+    platform: event
+    event_type: ios.action_fired
+    event_data:
+      actionName: Apparaten
+  action:
+    - variables:
+        iphone: "notify.mobile_app_{{ trigger.event.data.sourceDeviceName.replace(' ', '_') }}"
+    - service: "{{ iphone }}"
+      data:
+        message: "💡 Selecteer apparaat:"
+        data:
+          push:
+            category: selecteer_apparaat
+    - wait_for_trigger:
+        platform: event
+        event_type: ios.notification_action_fired
+        event_data:
+          categoryName: selecteer_apparaat
+      timeout: "00:00:20"
+      continue_on_timeout: false
+    - variables:
+        apparaat: >
+          {{
+            {'INRIJPOORT': 'switch.deurbel_relay_1',
+             'BADKAMERFAN': 'switch.badkamerfan_sonoff',
+             'KELDERPOMP': 'switch.kelderpomp',
+            }[wait.trigger.event.data.actionName] }}
+    - service: homeassistant.toggle
+      data:
+        entity_id: "{{ apparaat }}"

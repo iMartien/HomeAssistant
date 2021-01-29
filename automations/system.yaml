@@ -1,0 +1,69 @@
+- alias: "System: Home Assistant Startup"
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    - service: notify.martien
+      data:
+        message: "Home Assistant is sinds {{(now().strftime('%s') | int | timestamp_custom('%H:%M'))}} weer online."
+        title: "HA Online"
+    - service: persistent_notification.create
+      data:
+        message: "Home Assistant is sinds {{(now().strftime('%s') | int | timestamp_custom('%H:%M'))}} weer online."
+        title: "HA Online"
+
+- alias: "System: Home Assistant Shutdown"
+  trigger:
+    - platform: homeassistant
+      event: shutdown
+  action:
+    - service: notify.martien
+      data:
+        message: "Waarschuwing: Home Assistant wordt herstart."
+        title: "HA Herstart"
+    - service: persistent_notification.create
+      data:
+        message: "Waarschuwing: Home Assistant wordt herstart."
+        title: "HA Herstart"
+
+- alias: 'System: Status donker uit gebasseerd op Philips lux sensor'
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.hue_motion_sensor_1_light_level
+    above: 40
+    for:
+      minutes: 15
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.status_donker
+
+- alias: 'System: Status donker aan gebasseerd op Philips lux sensor'
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.hue_motion_sensor_1_light_level
+    below: 35
+    for:
+      minutes: 15
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.status_donker
+
+- alias: 'System: Automatisch HA thema bij donker'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.status_donker
+      to: 'on'
+  action:
+    - service: frontend.set_theme
+      data:
+        name: 'Caule Black Orange Glass'
+
+- alias: 'System: Automatisch HA thema bij licht'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.status_donker
+      to: 'off'
+  action:
+    - service: frontend.set_theme
+      data:
+        name: 'Caule Light Orange'

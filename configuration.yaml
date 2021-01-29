@@ -6,7 +6,9 @@ homeassistant:
   # unit_system: metric
   # time_zone: Europe/Amsterdam
   customize: !include customize.yaml
-  packages: !include_dir_named packages/ # Comment this whole line if you want to disable Dwains Theme
+
+frontend:
+  themes: !include_dir_merge_named themes
 
 system_health:
 
@@ -14,8 +16,6 @@ person:
 
 # hacs:
 #   token: !secret hacs_token
-
-breaking_changes:
 
 config:
 
@@ -128,21 +128,15 @@ sun:
 #       - input_boolean.keukenkachel_schema
 #       - lock.tesla_model_3_charger_door_lock
 #       - lock.tesla_model_3_door_lock
-  entity_config:
-    alarm_control_panel.alarm:
-      code: !secret alarm_panel_code
+  # entity_config:
+  #   alarm_control_panel.alarm:
+  #     code: !secret alarm_panel_code
 
 hue:
   bridges:
     - host: !secret hue_bridge_ip
       allow_unreachable: true
       allow_hue_groups: false
-
-# tuya:
-#   username: !secret tuya_username
-#   password: !secret tuya_password
-#   country_code: 31
-#   platform: smart_life
 
 apple_tv:
   - host: !secret woonkamer_atv_ip
@@ -156,15 +150,10 @@ apple_tv:
     start_off: true
     credentials: !secret slaapkamer_atv_credentials
 
-remote:
-  - platform: harmony
-    name: Woonkamer
-    host: !secret harmony_ip
-
-# transmission:
-#   host: !secret transmission_ip
-#   username: !secret transmission_username
-#   password: !secret transmission_password
+# remote:
+#   - platform: harmony
+#     name: Woonkamer
+#     host: !secret harmony_ip
 
 media_player:
   - platform: channels
@@ -174,41 +163,9 @@ media_player:
     name: Slaapkamer Live TV
     host: !secret slaapkamer_atv_ip
 
-ios:
-  push:
-    categories:
-      - name: deurbel
-        identifier: 'camera'
-        actions:
-          - identifier: 'OPEN_HEK'
-            title: 'Hek Openen'
-            activationMode: 'background'
-            authenticationRequired: true
-            destructive: true
-      - name: alarmgaataf
-        identifier: 'alarm_gaat_af'
-        actions:
-          - identifier: 'ALARM_DISARM'
-            title: 'Alarm Uitschakelen'
-            activationMode: 'background'
-            authenticationRequired: true
-            destructive: true
-      - name: bewegingniemandthuis
-        identifier: 'beweging_niemand_thuis'
-        actions:
-          - identifier: 'ALARM_SOS'
-            title: 'Alarm SOS!'
-            activationMode: 'background'
-            authenticationRequired: true
-            destructive: true
-      - name: verlichtingnogaan
-        identifier: 'verlichting_nog_aan'
-        actions:
-          - identifier: 'ALLE_LICHTEN_UIT'
-            title: 'Uitschakelen'
-            activationMode: 'background'
-            authenticationRequired: true
-            destructive: true
+spotify:
+  client_id: !secret spotify_client_id
+  client_secret: !secret spotify_client_secret
 
 map:
 
@@ -231,6 +188,14 @@ device_tracker:
     interval_seconds: 30
     consider_home: 600
 
+proximity:
+  home:
+    devices:
+      - device_tracker.iphone_van_deborah
+      - device_tracker.iphone_van_martien
+    tolerance: 50
+    unit_of_measurement: km
+
   # - platform: bluetooth_tracker
   #   track_new_devices: false
   #   interval_seconds: 30
@@ -247,14 +212,9 @@ alarm_control_panel:
   - platform: manual
     name: Alarm
     code: !secret alarm_panel_code
-    # pending_time: 5
     delay_time: 0
-    trigger_time: 4
-    disarmed:
-      trigger_time: 0
-    armed_home:
-      # pending_time: 5
-      delay_time: 0
+    arming_time: 0
+
 
 # Text to speech
 tts:
@@ -297,13 +257,16 @@ nzbget:
   username: !secret nzbget_user
   password: !secret nzbget_password
 
-doorbird:
-  devices:
-    - host: !secret doorbird_ip
-      username: !secret doorbird_username
-      password: !secret doorbird_password
-      name: Looppoort Deurbel
-      token: !secret doorbird_token
+# doorbird:
+#   devices:
+#     - host: !secret doorbird_ip
+#       username: !secret doorbird_username
+#       password: !secret doorbird_password
+#       name: Deurbel
+#       token: !secret doorbird_token
+#       events:
+#         - somebody_pressed_the_button
+#         - relay_unlocked
 
 camera:
   - platform: zoneminder
@@ -312,15 +275,15 @@ camera:
 lock:
   - platform: template
     name: Inrijpoort
-    value_template: "{{ is_state('switch.looppoort_deurbel_relay_1', 'off') }}"
+    value_template: "{{ is_state('switch.deurbel_relay_1', 'off') }}"
     lock:
       service: switch.turn_on
       data:
-        entity_id: switch.looppoort_deurbel_relay_1
+        entity_id: switch.deurbel_relay_1
     unlock:
       service: switch.turn_on
       data:
-        entity_id: switch.looppoort_deurbel_relay_1
+        entity_id: switch.deurbel_relay_1
 
 calendar:
   - platform: caldav
@@ -340,13 +303,13 @@ notify:
   - name: NotifyAll
     platform: group
     services:
-      - service: mobile_app_martiens_iphone_11_pro
+      - service: mobile_app_iphone_van_martien
       - service: mobile_app_martiens_ipad_pro
       - service: mobile_app_iphone_van_deborah
   - name: martien
     platform: group
     services:
-      - service: mobile_app_martiens_iphone_11_pro
+      - service: mobile_app_iphone_van_martien
       - service: mobile_app_martiens_ipad_pro
 
 tesla:
@@ -366,14 +329,18 @@ input_text:
   software_version:
     initial: Version
 
-light: !include light.yaml
-zone: !include zones.yaml
-switch: !include switch.yaml
-input_boolean: !include input_boolean.yaml
-input_select: !include input_select.yaml
-input_number: !include input_number.yaml
-binary_sensor: !include binary_sensor.yaml
-sensor: !include sensor.yaml
+panel_iframe: !include includes/panel_iframe.yaml    
+ios: !include includes/ios.yaml
+google_assistant: !include includes/google_assistant.yaml
+light: !include includes/light.yaml
+zone: !include includes/zones.yaml
+switch: !include includes/switch.yaml
+input_boolean: !include includes/input_boolean.yaml
+input_select: !include includes/input_select.yaml
+input_number: !include includes/input_number.yaml
+binary_sensor: !include includes/binary_sensor.yaml
+sensor: !include includes/sensor.yaml
+group: !include includes/groups.yaml
 automation: !include_dir_merge_list automations/
+scene: !include_dir_merge_list scenes/
 script: !include_dir_merge_named scripts/
-group: !include groups.yaml

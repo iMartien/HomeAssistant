@@ -1,0 +1,12 @@
+- alias: "Notification - Container moet morgen naar buiten"
+  trigger:
+    platform: time
+    at: '20:00:00'
+  condition:
+    - condition: template
+      value_template: "{{ not is_state('sensor.afvalwijzer_tomorrow','Geen') }}"
+  action:
+    - service: notify.notifyall
+      data:
+        message: "Morgen wordt de {{ states.sensor.afvalwijzer_tomorrow.state }} container opgehaald, vergeet hem niet buiten te zetten."
+        title: "♻️ Afvalwijzer"
