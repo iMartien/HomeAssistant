@@ -293,9 +293,6 @@ notify:
       - service: mobile_app_iphone_van_martien
       - service: mobile_app_martiens_ipad_pro
       - service: mobile_app_macbook_pro_van_martien
-  - name: discord
-    platform: discord
-    token: ODM1MTU3NTczMTI4NDIxNDE2.YILXGQ.NDosMjsHwNQ0fRMXggJI6mQVHF4
 
 tesla:
   username: !secret tesla_username
