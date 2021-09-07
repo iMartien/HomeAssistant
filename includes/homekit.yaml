@@ -1,0 +1,95 @@
+  - filter:
+      include_entity_globs:
+        - binary_sensor.*_raam*
+        - climate.netatmo_*
+        - lock.marty_mcfly*
+      include_entities:
+        - alarm_control_panel.alarm
+        - lock.inrijpoort
+        - light.rieten_lamp
+        - light.glazenbol
+        - light.hue_bloom
+        - light.koperen_lamp
+        - light.glazen_lamp
+        - light.bol_lamp
+        - light.woonkamer_spot
+        - light.hue_play_links
+        - light.hue_play_midden
+        - light.hue_play_rechts
+        - light.keuken_1
+        - light.keuken_2
+        - light.keuken_3
+        - light.keuken_4
+        - light.keuken_5
+        - light.eetkamertafel
+        - light.keukenlampie
+        - light.kantoor_filament_1
+        - light.kantoor_filament_2
+        - light.kantoor_filament_3
+        - light.kantoor_filament_4
+        - light.kantoor_filament_5
+        - light.kantoor_filament_6
+        - light.kantoor_1
+        - light.kantoor_2
+        - light.kantoor_3
+        - light.badkamer_1
+        - light.badkamer_2
+        - light.badkamer_3
+        - light.badkamer_4
+        - light.badkamer_5
+        - light.slaapkamer_spot_1
+        - light.slaapkamer_spot_2
+        - light.overloop_1
+        - light.overloop_2
+        - climate.marty_mcfly_hvac_climate_system
+        - climate.gang_vloerverwarming
+        - climate.badkamer_vloerverwarming
+        - climate.veranda_kachel
+        - sensor.temperature_slaapkamer
+        - sensor.temperature_gang
+        - sensor.temperature_keuken
+        - sensor.temperature_gang
+        - sensor.temperature_babykamer
+        - sensor.temperature_charlies_kamer
+        - sensor.temperature_kantoor
+        - sensor.temperature_kelder
+        - sensor.marty_mcfly_temperature_sensor_inside
+        - sensor.marty_mcfly_temperature_sensor_outside
+        - binary_sensor.woonkamer_motion
+        - binary_sensor.tv_kamer_motion
+        - binary_sensor.keuken_motion
+        - binary_sensor.kantoor_motion
+        - binary_sensor.gang_motion
+        - binary_sensor.overloop_motion
+        - binary_sensor.keukendeur
+        - binary_sensor.rookmelder_overloop
+        - binary_sensor.rookmelder_woonkamer
+        - binary_sensor.rookmelder_keuken
+        - switch.ganglicht
+        - switch.veranda_lampjes
+        - switch.achtertuin_lampjes
+        - switch.badkamerfan_sonoff
+        - switch.serverkast
+        - switch.bureau_martien
+        - switch.droger
+        - switch.washmachine
+        - switch.koffiezetapparaat
+        - switch.waterkoker
+        - switch.kelderlicht
+        - switch.tv_meubel
+        - switch.marty_mcfly_charger_switch
+        - switch.marty_mcfly_sentry_mode_switch
+        - switch.marty_mcfly_maxrange_switch
+        - camera.deurbel
+        - camera.opritcamera
+        - camera.veranda
+        - camera.charliescam
+    entity_config:
+      alarm_control_panel.home:
+        code: !secret alarm_panel_code
+      camera.veranda:
+        linked_motion_sensor: binary_sensor.veranda_person_motion
+      camera.opritcamera:
+        linked_motion_sensor: binary_sensor.opritcamera_person_motion
+      camera.deurbel: 
+        linked_motion_sensor: binary_sensor.deurbel_person_motion

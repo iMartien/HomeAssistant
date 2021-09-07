@@ -1,0 +1,78 @@
+- alias: "Tesla: Laadkabel is niet aangesloten"
+  trigger:
+    platform: time
+    at: '20:00:00'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: device_tracker.marty_mcfly_location_tracker
+        state: 'home'
+      - condition: state
+        entity_id: binary_sensor.marty_mcfly_charger_sensor
+        state: 'off'
+      - condition: numeric_state
+        entity_id: sensor.marty_mcfly_battery_sensor
+        below: 70
+  action:
+    service: notify.notifyall
+    data:
+      title: "⛽️ Tesla"
+      message: "Laadkabel van de auto is niet aangesloten. Batterij is momenteel {{ states.sensor.marty_mcfly_battery_sensor.state }}% opgeladen. Maximale bereik is {{ states.sensor.marty_mcfly_range_sensor.state }} km."
+
+
+# - alias: "Tesla: Auto geladen tot 70%"
+#   trigger:
+#     platform: numeric_state
+#     entity_id: sensor.marty_mcfly_battery_sensor
+#     above: 69
+#   condition:
+#     condition: and
+#     conditions:
+#       - condition: state
+#         entity_id: device_tracker.marty_mcfly_location_tracker
+#         state: 'home'
+#       - condition: state
+#         entity_id: switch.marty_mcfly_charger_switch
+#         state: 'on'
+#       - condition: state
+#         entity_id: switch.marty_mcfly_maxrange_switch
+#         state: 'off'
+#   action:
+#     - service: switch.turn_off
+#       entity_id: switch.marty_mcfly_charger_switch
+#     - service: notify.martien
+#       data:
+#         title: "⛽️ Tesla"
+#         message: "Laden is automatisch gestopt. Batterij is momenteel {{ states.sensor.marty_mcfly_battery_sensor.state }}% opgeladen. Maximale bereik is {{ states.sensor.marty_mcfly_range_sensor.state }} km."
+
+# - alias: "Tesla: Auto opladen met zonnepanelen overschot"
+#   trigger:
+#     platform: numeric_state
+#     entity_id: sensor.extra_usage_zonnepanelen
+#     above: 3000
+#   condition:
+#     condition: and
+#     conditions:
+#       - condition: state
+#         entity_id: device_tracker.marty_mcfly_location_tracker
+#         state: 'home'
+#       - condition: state
+#         entity_id: switch.marty_mcfly_charger_switch
+#         state: 'off'
+#       - condition: state
+#         entity_id: binary_sensor.marty_mcfly_charger_sensor
+#         state: 'on'
+#       - condition: numeric_state #estimate production boven 15kwh
+#         entity_id: sensor.energy_production_today
+#         above: 15
+#       - condition: numeric_state
+#         entity_id: sensor.marty_mcfly_battery_sensor
+#         below: 90
+#   action:
+#     - service: switch.turn_on
+#       entity_id: switch.marty_mcfly_charger_switch
+#     - service: notify.martien
+#       data:
+#         title: "⛽️ Tesla"
+#         message: "Auto wordt momenteel bijgeladen met zonnestroom! Batterij is momenteel {{ states.sensor.marty_mcfly_battery_sensor.state }}% opgeladen. Maximale bereik is {{ states.sensor.marty_mcfly_range_sensor.state }} km."

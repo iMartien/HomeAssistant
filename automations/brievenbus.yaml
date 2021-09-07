@@ -1,0 +1,23 @@
+- alias: 'Brievenbus: Post afgeleverd'
+  trigger: 
+    platform: state
+    entity_id: binary_sensor.brievenbus
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_night
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.homemode_vacation
+        state: 'off'
+  action:
+    service: notify.martien
+    data:
+      title: "📫 Brievenbus"
+      message: "Er is post afgeleverd."
+      data:    
+        push:
+          category: camera
+        entity_id: camera.deurbel_person

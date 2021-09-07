@@ -25,6 +25,7 @@
         - light.badkamer_5
         - light.slaapkamer_spot_1
         - light.slaapkamer_spot_2
+        - light.charlieskamer
         - light.overloop_1
         - light.overloop_2
         - light.wc_boven_1
@@ -39,6 +40,9 @@
         - light.kantoor_1
         - light.kantoor_2
         - light.kantoor_3
+        - light.washok_1
+        - light.washok_2
+        - light.wc_beneden
   
   - platform: group
     name: Woonkamer Verlichting
@@ -157,3 +161,9 @@
       - light.badkamer_3
       - light.badkamer_4
       - light.badkamer_5
+
+  - platform: group
+    name: Washok Spots
+    entities:
+      - light.washok_1
+      - light.washok_2

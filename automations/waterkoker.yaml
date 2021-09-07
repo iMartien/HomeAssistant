@@ -1,0 +1,34 @@
+- alias: "Waterkoker: Status naar opwarmen"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.waterkoker_power
+      above: 500
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.waterkoker_status
+        option: Opwarmen
+
+- alias: "Waterkoker: Status naar warm"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.waterkoker_power
+      below: 50
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.waterkoker_status
+        option: Warm
+
+- alias: "Waterkoker: Status naar uit"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.waterkoker_power
+      below: 50
+      for:
+        minutes: 15
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.waterkoker_status
+        option: "off"

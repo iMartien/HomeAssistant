@@ -1,3 +1,148 @@
+- alias: 'Beveiliging: Persoon op de oprit'
+  trigger: 
+    platform: state
+    entity_id: binary_sensor.oprit_person_motion
+    to: "on"
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_away
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.homemode_night
+        state: 'on'
+  action:
+    service: notify.martien
+    data:
+      title: "🚨 Beveiliging"
+      message: "Persoon gedetecteerd op de oprit"
+      data:    
+        push:
+          category: camera
+        entity_id: camera.opritcamera_person
+
+- alias: 'Beveiliging: Persoon in de voortuin'
+  trigger: 
+    platform: state
+    entity_id: binary_sensor.voortuin_person_motion
+    to: "on"
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_away
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.homemode_night
+        state: 'on'
+  action:
+    service: notify.martien
+    data:
+      title: "🚨 Beveiliging"
+      message: "Persoon gedetecteerd in de voortuin"
+      data:    
+        push:
+          category: camera
+        entity_id: camera.deurbel_person
+
+- alias: 'Beveiliging: Persoon op veranda push notificatie'
+  trigger: 
+    platform: state
+    entity_id: binary_sensor.veranda_person_motion
+    to: "on"
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_away
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.homemode_night
+        state: 'on'
+  action:
+    service: notify.martien
+    data:
+      title: "🚨 Beveiliging"
+      message: "Persoon gedetecteerd op de veranda"
+      data:    
+        push:
+          category: camera
+        entity_id: camera.veranda_person
+
+- alias: 'Beveiliging: Persoon op veranda - ganglicht'
+  trigger: 
+    platform: state
+    entity_id: binary_sensor.veranda_person_motion
+    to: "on"
+  condition:
+    - condition: state
+      entity_id: input_boolean.homemode_night
+      state: 'on'
+  action:
+    - service: switch.turn_on
+      data:
+        entity_id: switch.ganglicht
+    - delay: 00:02:00
+    - service: switch.turn_off
+      data:
+        entity_id: switch.ganglicht
+
+- alias: 'Beveiliging: Kat op veranda'
+  trigger: 
+    platform: state
+    entity_id: binary_sensor.veranda_cat_motion
+    to: "on"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_home
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.homemode_night
+        state: 'off'
+  action:
+    service: notify.martien
+    data:
+      title: "😹 Kat Alert!"
+      message: "Kat gedetecteerd op de veranda!"
+      data:    
+        push:
+          category: camera4
+        entity_id: camera.veranda_cat
+
+#########################################
+# Sentrymode aan en uit acties
+#########################################
+- alias: 'Beveiliging: Tesla Sentry mode aan wanneer nacht en auto thuis'
+  trigger:
+    platform: state
+    entity_id: input_boolean.homemode_night
+    to: "on"
+  condition:
+    - condition: state
+      entity_id: device_tracker.marty_mcfly_location_tracker
+      state: 'home'
+  action:
+    - service: homeassistant.turn_on
+      entity_id:
+        - switch.marty_mcfly_sentry_mode_switch
+
+- alias: 'Beveiliging: Tesla Sentry mode uit wanneer overdag en auto thuis'
+  trigger:
+    platform: state
+    entity_id: input_boolean.homemode_home
+    to: "on"
+  condition:
+    - condition: state
+      entity_id: device_tracker.marty_mcfly_location_tracker
+      state: 'home'
+  action:
+    - service: homeassistant.turn_off
+      entity_id:
+        - switch.marty_mcfly_sentry_mode_switch
+
 #########################################
 # Alarm actions from HA
 #########################################
@@ -47,34 +192,34 @@
 #########################################
 # Alarm WORDT ingeschakeld automations
 #########################################
-- alias: 'Beveiliging: Alarm wordt ingeschakeld voor afwezig'
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.alarm_panel_keuken_arm_away
-      to: 'on'
-  action:
-    - service: script.speak
-      data:
-        what: 'Alarm wordt ingeschakeld.'
-    - service: notify.pushover
-      data_template:
-        message: "Alarm wordt ingeschakeld voor afwezig..."
-        title: "Alarm"
-        data:
-          priority: -1
+# - alias: 'Beveiliging: Alarm wordt ingeschakeld voor afwezig'
+#   trigger:
+#     - platform: state
+#       entity_id: binary_sensor.alarm_panel_keuken_arm_away
+#       to: 'on'
+#   action:
+#     - service: script.speak
+#       data:
+#         what: 'Alarm wordt ingeschakeld.'
+#     - service: notify.pushover
+#       data_template:
+#         message: "Alarm wordt ingeschakeld voor afwezig..."
+#         title: "Alarm"
+#         data:
+#           priority: -1
 
-- alias: 'Beveiliging: Alarm wordt ingeschakeld voor thuis'
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.alarm_panel_keuken_arm_home
-      to: 'on'
-  action:
-    - service: notify.pushover
-      data_template:
-        message: "Alarm wordt ingeschakeld voor thuis..."
-        title: "Alarm"
-        data:
-          priority: -1
+# - alias: 'Beveiliging: Alarm wordt ingeschakeld voor thuis'
+#   trigger:
+#     - platform: state
+#       entity_id: binary_sensor.alarm_panel_keuken_arm_home
+#       to: 'on'
+#   action:
+#     - service: notify.pushover
+#       data_template:
+#         message: "Alarm wordt ingeschakeld voor thuis..."
+#         title: "Alarm"
+#         data:
+#           priority: -1
 
 #########################################
 # Alarm IS ingeschakeld automations
@@ -112,12 +257,12 @@
         entity_id: input_boolean.homemode_guest
         state: 'on'
   action:
-    - service: script.speak
-      data:
-        what: 'Alarm is ingeschakeld.'
     - service: homeassistant.turn_on
       data:
         entity_id: switch.deurbel_relay_1
+    - service: script.speak
+      data:
+        what: 'Alarm is ingeschakeld.'
     - service: input_boolean.turn_on
       data:
         entity_id:
@@ -157,18 +302,18 @@
 # Alarm WORDT uitgeschakeld automations
 #########################################
 
-- alias: 'Beveiliging: Alarm wordt uitgeschakeld'
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.alarm_panel_keuken_disarm
-      to: 'on'
-  action:
-    - service: notify.pushover
-      data_template:
-        message: "Alarm wordt uitgeschakeld..."
-        title: "Alarm"
-        data:
-          priority: -1
+# - alias: 'Beveiliging: Alarm wordt uitgeschakeld'
+#   trigger:
+#     - platform: state
+#       entity_id: binary_sensor.alarm_panel_keuken_disarm
+#       to: 'on'
+#   action:
+#     - service: notify.pushover
+#       data_template:
+#         message: "Alarm wordt uitgeschakeld..."
+#         title: "Alarm"
+#         data:
+#           priority: -1
 
 #########################################
 # Alarm IS uitgeschakeld automations
@@ -208,6 +353,10 @@
           push:
             badge: 0 ## This will remove the badge/app icon number ##
             category: "alarm_gaat_af"
+            sound:
+              name: default
+              critical: 1
+              volume: 1.0
     - service: light.turn_on
       entity_id: all
       data:
@@ -257,6 +406,10 @@
             push:
               badge: 0 ## This will remove the badge/app icon number ##
               category: "bewegingniemandthuis"
+              sound:
+                name: default
+                critical: 1
+                volume: 1.0
 
 - alias: 'Beveiliging: Notificaties bij raam of deur open indien afwezig'
   trigger:
@@ -264,6 +417,7 @@
     entity_id:
       - binary_sensor.keukendeur
       - binary_sensor.badkamerraam
+      - binary_sensor.veranda_buitendeur
       - binary_sensor.washok_raam
       - binary_sensor.kleine_slaapkamer_raam
       - binary_sensor.grote_slaapkamer_raam
@@ -273,6 +427,7 @@
       - binary_sensor.woonkamer_raam_1
       - binary_sensor.woonkamer_raam_2
       - binary_sensor.woonkamer_raam_3
+      - binary_sensor.kantoor_raam
     to: 'on'
   condition:
     condition: and
@@ -292,17 +447,76 @@
           push:
             badge: 0 ## This will remove the badge/app icon number ##
             category: "bewegingniemandthuis"
+            sound:
+              name: default
+              critical: 1
+              volume: 1.0
 
-- alias: "Beveiliging: iOS Action - ALARM_SOS" 
+############################################################
+# Beweging, ramen en deuren bij nacht
+############################################################
+- alias: 'Beveiliging: Beweging ramen en deuren bij nacht'
   trigger:
-    platform: event
-    event_type: ios.notification_action_fired
-    event_data:
-      actionName: ALARM_SOS
+    platform: state
+    entity_id:
+      #- binary_sensor.gang_motion
+      #- binary_sensor.keuken_motion
+      #- binary_sensor.tv_kamer_motion
+      - binary_sensor.kantoor_raam
+      - binary_sensor.keukendeur
+      - binary_sensor.veranda_buitendeur
+      - binary_sensor.badkamerraam
+      - binary_sensor.washok_raam
+      - binary_sensor.woonkamer_raam_1
+      - binary_sensor.woonkamer_raam_2
+      - binary_sensor.woonkamer_raam_3
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_night
+        state: 'on'
+      - condition: state
+        entity_id: group.personen
+        state: home
   action:
-    - service: mqtt.publish
+    - service: notify.martien
+      data_template:
+        title: "🚨 Beveiliging"
+        message: "Beweging, raam of deur detectie door {{ trigger.to_state.attributes.friendly_name }}!"
+        data:
+          push:
+            sound:
+              name: default
+              critical: 1
+              volume: 1.0
+
+############################################################
+# Raam of deur nog open bij bedtijd of nacht
+############################################################
+- alias: 'Beveiliging: Kantoorraam nog open bij bedtijd of nacht'
+  trigger:
+    platform: state
+    entity_id:
+      - input_boolean.scene_bedtime
+      - input_boolean.scene_night
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.kantoor_raam
+        state: 'on'
+      - condition: state
+        entity_id: group.personen
+        state: home
+  action:
+    - service: notify.martien
       data:
-        topic: cmnd/sonoff_bridge/RfKey4
+        title: "🚨 Beveiliging"
+        message: "Het raampje in het kantoor staat mogelijk nog open!"
+
 
 ############################################################
 # Energie
@@ -346,6 +560,12 @@
       data_template:
         message: "Sensor {{ trigger.to_state.attributes.friendly_name }} heeft rook gedetecteerd!!"
         title: "🔥 Brand Alarm!"
+        data:
+          push:
+            sound:
+              name: default
+              critical: 1
+              volume: 1.0
     - service: script.speak
       data:
         what: 'Waarschuwing! Er is rook gedetecteerd!'
@@ -363,6 +583,12 @@
       data_template:
         message: "{{ trigger.to_state.attributes.friendly_name }} gedetecteerd!!"
         title: "💦 Lekkage!"
+        data:
+          push:
+            sound:
+              name: default
+              critical: 1
+              volume: 1.0
     - service: script.speak
       data:
         what: 'Waarschuwing! Er is water lekkage gedetecteerd in de WC boven!'
@@ -391,6 +617,12 @@
       data_template:
         message: "{{ trigger.to_state.attributes.friendly_name }} gedetecteerd!!"
         title: "💦 Lekkage!"
+        data:
+          push:
+            sound:
+              name: default
+              critical: 1
+              volume: 1.0
     - service: script.speak
       data:
         what: 'Waarschuwing! Er is water lekkage gedetecteerd in de keuken!'

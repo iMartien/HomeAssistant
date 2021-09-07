@@ -5,46 +5,48 @@ homeassistant:
   # elevation: 0
   # unit_system: metric
   # time_zone: Europe/Amsterdam
+  customize_glob:
+    sensor.*_verbruik_totaal:
+      last_reset: '1970-01-01T00:00:00+00:00'
+      device_class: energy
+      state_class: measurement
+    sensor.youless_*_meterstand:
+      last_reset: '1970-01-01T00:00:00+00:00'
+      device_class: energy
+      state_class: measurement
   customize: !include customize.yaml
 
 frontend:
   themes: !include_dir_merge_named themes
 
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 127.0.0.1
+    - 172.17.0.0/24
+    - ::1
+
 system_health:
 
 person:
 
-# hacs:
-#   token: !secret hacs_token
-
 config:
 
-mobile_app:
+energy:
 
-# mqtt:
-#   broker: !secret mqtt_broker
-#   username: !secret mqtt_username
-#   password: !secret mqtt_password
+mobile_app:
 
 logger:
   default: warning
 
 recorder:
-#  db_url: !secret db_url
-  purge_keep_days: 7
-  # purge_interval: 1
-
-# http:
-#   ip_ban_enabled: false
-#   login_attempts_threshold: 50
-#   ssl_certificate: /ssl/fullchain.pem
-#   ssl_key: /ssl/privkey.pem
-#   base_url: !secret ha_baseurl
+  db_url: !secret db_url
+  purge_keep_days: 30
 
 updater:
   include_used_components: true
 
-browser_mod:
+media_source:
 
 discovery:
   ignore:
@@ -201,13 +203,6 @@ proximity:
   #   interval_seconds: 30
   #   consider_home: 600
 
-zoneminder:
-  - host: !secret zoneminder_host
-    username: !secret zoneminder_username
-    password: !secret zoneminder_password
-    ssl: true
-    verify_ssl: false
-
 alarm_control_panel:
   - platform: manual
     name: Alarm
@@ -244,11 +239,11 @@ climate:
 plant:
   grote_woonkamer_plant:
     sensors:
-      moisture: sensor.mi_flora_moisture
-      battery: sensor.mi_flora_battery
-      temperature: sensor.mi_flora_temperature
-      conductivity: sensor.mi_flora_conductivity
-      brightness: sensor.mi_flora_light_intensity
+      moisture: sensor.grote_woonkamer_plant_moisture
+      battery: sensor.grote_woonkamer_plant_battery
+      temperature: sensor.grote_woonkamer_plant_temperature
+      conductivity: sensor.grote_woonkamer_plant_conductivity
+      brightness: sensor.grote_woonkamer_plant_brightness
     min_moisture: 20
     min_conductivity: 100
 
@@ -256,21 +251,6 @@ nzbget:
   host: !secret nzbget_host
   username: !secret nzbget_user
   password: !secret nzbget_password
-
-# doorbird:
-#   devices:
-#     - host: !secret doorbird_ip
-#       username: !secret doorbird_username
-#       password: !secret doorbird_password
-#       name: Deurbel
-#       token: !secret doorbird_token
-#       events:
-#         - somebody_pressed_the_button
-#         - relay_unlocked
-
-camera:
-  - platform: zoneminder
-  - platform: buienradar
 
 lock:
   - platform: template
@@ -305,12 +285,17 @@ notify:
     services:
       - service: mobile_app_iphone_van_martien
       - service: mobile_app_martiens_ipad_pro
+      - service: mobile_app_macbook_pro_van_martien
       - service: mobile_app_iphone_van_deborah
   - name: martien
     platform: group
     services:
       - service: mobile_app_iphone_van_martien
       - service: mobile_app_martiens_ipad_pro
+      - service: mobile_app_macbook_pro_van_martien
+  - name: discord
+    platform: discord
+    token: ODM1MTU3NTczMTI4NDIxNDE2.YILXGQ.NDosMjsHwNQ0fRMXggJI6mQVHF4
 
 tesla:
   username: !secret tesla_username
@@ -329,9 +314,13 @@ input_text:
   software_version:
     initial: Version
 
-panel_iframe: !include includes/panel_iframe.yaml    
+lovelace:
+  mode: storage
+
+#panel_iframe: !include includes/panel_iframe.yaml    
 ios: !include includes/ios.yaml
 google_assistant: !include includes/google_assistant.yaml
+homekit: !include includes/homekit.yaml
 light: !include includes/light.yaml
 zone: !include includes/zones.yaml
 switch: !include includes/switch.yaml
@@ -340,6 +329,8 @@ input_select: !include includes/input_select.yaml
 input_number: !include includes/input_number.yaml
 binary_sensor: !include includes/binary_sensor.yaml
 sensor: !include includes/sensor.yaml
+utility_meter: !include includes/utility_meter.yaml
+counter: !include includes/counters.yaml
 group: !include includes/groups.yaml
 automation: !include_dir_merge_list automations/
 scene: !include_dir_merge_list scenes/

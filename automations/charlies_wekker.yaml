@@ -1,0 +1,90 @@
+- alias: 'Charlies Wekker Stoplicht: Rood om 6u in de ochtend'
+  trigger:
+    platform: time
+    at: '6:00:00'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.charlies_wekker_stoplicht
+        state: 'on'
+      - condition: state
+        entity_id: group.personen
+        state: 'home'
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.charlieskamer
+      data:
+        brightness: 1
+        color_name: red
+          
+- alias: 'Charlies Wekker Stoplicht: Groen om 7:30 in de ochtend op werkdagen'
+  trigger:
+    platform: time
+    at: '7:30:00'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.charlies_wekker_stoplicht
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.workday_sensor
+        state: 'on'
+      - condition: state
+        entity_id: group.personen
+        state: 'home'
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.charlieskamer
+      data:
+        brightness: 1
+        color_name: green
+
+- alias: 'Charlies Wekker Stoplicht: Groen om 8:00 in de ochtend op vrije dagen'
+  trigger:
+    platform: time
+    at: '8:00:00'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.charlies_wekker_stoplicht
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.workday_sensor
+        state: 'off'
+      - condition: state
+        entity_id: group.personen
+        state: 'home'
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.charlieskamer
+      data:
+        brightness: 1
+        color_name: green
+        
+
+- alias: 'Charlies Wekker Stoplicht: Lamp uit om 9:30 uur'
+  trigger:
+    platform: time
+    at: '9:30:00'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.charlies_wekker_stoplicht
+        state: 'on'
+      - condition: state
+        entity_id: light.charlieskamer
+        state: 'on'
+      - condition: state
+        entity_id: group.personen
+        state: 'home'
+  action:
+    - service: light.turn_off
+      target:
+        entity_id: light.charlieskamer

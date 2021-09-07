@@ -14,19 +14,20 @@
         - light.keuken_verlichting
         - light.overloop_spotjes
         - light.slaapkamer_spotjes
-        - switch.kerstverlichting_dakgoot
+#        - switch.kerstverlichting_dakgoot
         - switch.veranda_lampjes
+        - switch.achtertuin_lampjes
 
-- alias: 'Verlichting: Kerstverlichting buiten aan om 16u'
-  trigger:
-    platform: time
-    at: '16:00:00'
-  action:
-    - service: switch.turn_on
-      entity_id: 
-        - switch.kerstverlichting_dakgoot
-        - switch.veranda_lampjes
-        - switch.smart_plug_6 #kerstboom
+# - alias: 'Verlichting: Kerstverlichting buiten aan om 16u'
+#   trigger:
+#     platform: time
+#     at: '16:00:00'
+#   action:
+#     - service: switch.turn_on
+#       entity_id: 
+#         - switch.kerstverlichting_dakgoot
+#         - switch.veranda_lampjes
+#         - switch.smart_plug_6 #kerstboom
 
 - alias: "Verlichting: Sfeerverlichting in woonkamer bij TV kijken"
   trigger:
@@ -51,24 +52,32 @@
         scene_name: "Sfeerverlichting"
 
 ########################################
-## Nachtlampje Charlie automatisch uit
+## Buitenverlichting
 ########################################
-- alias: "Verlichting: Nachtlampje Charlie automatisch uit"
+- alias: 'Verlichting: Buitenverlichting aan wanneer donker'
   trigger:
     platform: state
-    entity_id: light.babykamer
+    entity_id: input_boolean.status_donker
     to: 'on'
-    for:
-      minutes: 120
-  condition:
-    - condition: numeric_state
-      entity_id: light.babykamer
-      value_template: '{% if states.light.babykamer.state == "on"  %}{{ states.light.babykamer.brightness }}{% else %}0{% endif %}'
-      below: 26
   action:
-    service: light.turn_off
-    entity_id: light.babykamer
-        
+    - service: switch.turn_on
+      entity_id:
+#        - switch.kerstverlichting_dakgoot
+        - switch.veranda_lampjes
+        - switch.achtertuin_lampjes
+
+- alias: 'Verlichting: Buitenverlichting uit wanneer licht'
+  trigger:
+    platform: state
+    entity_id: input_boolean.status_donker
+    to: 'off'
+  action:
+    - service: switch.turn_off
+      entity_id:
+#        - switch.kerstverlichting_dakgoot
+        - switch.veranda_lampjes
+        - switch.achtertuin_lampjes
+
 ########################################
 ## Verlichting bij Donker
 ########################################
@@ -91,9 +100,6 @@
       data:
         group_name: "Woonkamer"
         scene_name: "Normaal"
-    - service: switch.turn_on
-      entity_id:
-        - switch.smart_plug_6 #kerstboom
 
 - alias: 'Verlichting: Keukenverlichting aan wanneer donker en iemand thuis'
   trigger:
@@ -135,6 +141,44 @@
         group_name: "Kantoor"
         scene_name: "Sfeerverlichting"
 
+- alias: 'Verlichting: CV-ruimte verlichting aan bij deur open'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.cv_ruimte_deur
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_home
+        state: 'on'
+      - condition: state
+        entity_id: light.cv_ruimte
+        state: 'off'
+  action:
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "CV-Ruimte"
+        scene_name: "Helder"
+
+- alias: 'Verlichting: CV-ruimte verlichting uit bij deur dicht'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.cv_ruimte_deur
+    to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_home
+        state: 'on'
+      - condition: state
+        entity_id: light.cv_ruimte
+        state: 'on'
+  action:
+    - service: homeassistant.turn_off
+      entity_id: light.cv_ruimte
+
 - alias: 'Verlichting: Licht aan wanneer donker en niemand thuis'
   trigger:
     platform: state
@@ -163,9 +207,9 @@
         scene_name: "Sfeerverlichting"
     - service: homeassistant.turn_on
       entity_id:
-        - switch.kerstverlichting_dakgoot
+#        - switch.kerstverlichting_dakgoot
         - switch.veranda_lampjes
-        - switch.smart_plug_6 #kerstboom
+        - switch.achtertuin_lampjes
 
 - alias: 'Verlichting: Licht uit om 23:30 when wanneer er niemand thuis is'
   trigger:
@@ -186,9 +230,9 @@
         - light.alle_verlichting
         - switch.kelderlicht
         - switch.ganglicht
-        - switch.kerstverlichting_dakgoot
+#        - switch.kerstverlichting_dakgoot
         - switch.veranda_lampjes
-        - switch.smart_plug_6 #kerstboom
+        - switch.achtertuin_lampjes
 
 ########################################
 ## Verlichting bij beweging

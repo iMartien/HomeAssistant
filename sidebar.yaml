@@ -1,0 +1,95 @@
+- platform: template
+  sensors:
+    placeholder:
+      value_template: ' '
+    sidebar_greeting:
+      value_template: >
+        {% set time = now().hour %}
+        {% if time <= 1 %} Goede nacht {{'\U0001F611'}}
+        {% elif time <= 3 %} Goede nacht {{'\U0001F62A'}}
+        {% elif time <= 5 %} Goede nacht {{'\U0001F634'}}
+        {% elif time <= 7 %} Goedemorgen {{'\U0001F4A9'}}
+        {% elif time <= 9 %} Goedemorgen {{'\u2615\uFE0F'}}
+        {% elif time <= 10 %} Goedemorgen {{'\U0001F642'}}
+        {% elif time <= 13 %} Goedendag {{'\U0001F60A'}}
+        {% elif time <= 15 %} Goedendag {{'\U0001F60E'}}
+        {% elif time <= 17 %} Goedendag {{'\U0001F44B\U0001F3FB'}}
+        {% elif time <= 19 %} Goedenavond {{'\U0001F44B\U0001F3FB'}}
+        {% elif time <= 22 %} Goedenavond {{'\U0001F60C'}}
+        {% elif time <= 23 %} Goedenavond {{'\U0001F974'}}
+        {% else %} Goedenavond {{'\U0001F974'}}
+        {% endif %}
+    sidebar_weather:
+      value_template: >
+        {% set temperature = states('sensor.dark_sky_temperature') %}
+        {% set apparent = states('sensor.dark_sky_apparent_temperature') | round %}
+        {% set precip = states('sensor.dark_sky_precip_probability') | round %}
+        {% if not is_state('sensor.dark_sky_temperature', 'unknown') %}
+          {% if temperature | float <= 0.0 %}
+            Voelt als {{ apparent }}° met 
+            {{ precip }}% kans op sneeuw {{'\u2744\uFE0F'}}
+          {% elif temperature | float > 0.0 %} 
+            Voelt als {{ apparent}}° met 
+            {{ precip }}% kans op regen {{ '\u2614\uFE0F' if precip > 30 }}
+          {% endif %}
+        {% else %}
+          Kan weersinformatie niet laden ...
+        {% endif %}
+    sidebar_day:
+      icon_template: mdi:calendar
+      value_template: >
+        {% set days = ['Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag', 'Zondag'] %}
+        {{ days[now().weekday()] }}
+    sidebar_date:
+      icon_template: mdi:calendar
+      value_template: >
+        {% set months = ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 
+        'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'] %}
+        {{ strptime(states('sensor.date'), '%Y-%m-%d').day }} {{ months[now().month-1] }}
+    sidebar_active:
+      value_template: >
+        {% set lights = [states.light.hue_go_woonkamer,
+        states.light.woonkamer_color_floor,
+        states.light.keuken_spot_1,
+        states.light.keuken_spot_2,
+        states.light.keuken_spot_3,
+        states.light.eetkamer_edison_1,
+        states.light.eetkamer_filament_groot_1,
+        states.light.eetkamer_edison_2,
+        states.light.eetkamer_filament_groot_2,
+        states.light.wc_spot,
+        states.light.gang_lamp,
+        states.light.overloop_lamp,
+        states.light.douche,
+        states.light.kantoor,
+        states.light.lightstrip_kantoor,
+        states.light.douche,
+        states.light.slaapkamer,
+        states.light.mandie_nachtkastje,
+        states.light.dion_nachtkastje,
+        states.light.luke_ventilator,
+        states.light.luke_nachtlampje,] %}
+        {% set lights_on = lights | selectattr('state','eq','on') | list %}
+        {% set lights_name = lights | selectattr('state','eq','on') | map(attribute='name') | join(', ') %}
+        {% set switches = [states.binary_sensor.dishwasher_machine,
+        states.binary_sensor.washing_machine,
+        states.binary_sensor.dryer_machine] %}
+        {% set switches_on = switches | selectattr('state','eq','on') | list %} 
+        {% set switches_name = switches | selectattr('state','eq','on') | map(attribute='name') | join(', ') %}
+        {% if (lights_on | length == 0) and (switches_on | length > 0) %} 
+        {{ switches_name | regex_replace(',([^,]*)$',' en\\1') }} Staat aan
+        {% elif (lights_on | length == 1) and (switches_on | length == 1) %}
+        {{ lights_name }} en {{switches_name }} Staat aan
+        {% elif (lights_on | length == 1) and (switches_on | length > 1) %}
+        {{ lights_name }}, {{ switches_name | regex_replace(',([^,]*)$',' en\\1') }} Staan aan
+        {% elif (lights_on | length > 1) and (switches_on | length == 1) %}
+        {{ lights_on | length }} lampen en {{ switches_name }} Staan aan
+        {% elif (lights_on | length > 1) and (switches_on | length > 1) %}
+        {{ lights_on | length }} lampen, {{ switches_name | regex_replace(',([^,]*)$',' en\\1') }} Staan aan
+        {% elif (lights_on | length == 1) and (switches_on | length == 0) %}
+        {{ lights_name }} Staat aan
+        {% elif (lights_on | length > 1) and (switches_on | length == 0) %}
+        {{ lights_on | length}} lampen staan aan
+        {% else %} 
+        <font color='#6a7377'>Alles is uitgeschakeld</font> 
+        {% endif %}

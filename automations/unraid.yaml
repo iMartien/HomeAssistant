@@ -19,3 +19,25 @@
       data:
         message: "Plex Media Server docker is gestart."
         title: "🟢 Unraid Docker"
+
+- alias: "Unraid: Frigate docker is gestopt"
+  trigger:
+    platform: state
+    entity_id: switch.unraid_docker_frigate
+    to: 'off'
+  action:
+    - service: notify.martien
+      data:
+        message: "Frigate docker is gestopt!"
+        title: "🛑 Unraid Docker"
+
+- alias: "Unraid: Frigate docker is gestart"
+  trigger:
+    platform: state
+    entity_id: switch.unraid_docker_frigate
+    to: 'on'
+  action:
+    - service: notify.martien
+      data:
+        message: "Frigate docker is gestart."
+        title: "🟢 Unraid Docker"

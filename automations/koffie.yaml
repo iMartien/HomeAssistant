@@ -1,0 +1,170 @@
+- alias: Koffiezetapparaat - Reset daily counter
+  trigger:
+    - platform: time
+      at: "00:00:01"
+  action:
+    - service: counter.reset
+      data:
+       entity_id: counter.coffee_today
+
+- alias: Koffiezetapparaat - Reset weekly counter
+  trigger:
+    - platform: time
+      at: "00:00:01"
+  condition:
+    - condition: time
+      weekday:
+        - mon
+  action:
+    - service: counter.reset
+      data:
+       entity_id: counter.coffee_this_week
+
+- alias: Koffiezetapparaat - Reset yearly counter
+  trigger:
+    - platform: time
+      at: "00:00:01"
+  condition:
+    - condition: template
+      value_template: '{{ now().month == 1 and now().day == 1 }}'
+  action:
+    - service: counter.reset
+      data:
+       entity_id: counter.coffee_this_year
+
+- alias: Koffiezetapparaat - Status naar Opwarmen
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.koffiezetapparaat_power
+      above: 500
+  condition:
+    - condition: state
+      entity_id: input_select.koffiezetapparaat_status
+      state: "off"
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.koffiezetapparaat_status
+        option: Opwarmen
+
+- alias: Koffiezetapparaat - Status naar stand-by
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.koffiezetapparaat_power
+      below: 10
+      for:
+        seconds: 2
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: input_select.koffiezetapparaat_status
+        state: Klaar
+      - condition: state
+        entity_id: input_select.koffiezetapparaat_status
+        state: Opwarmen
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.koffiezetapparaat_status
+        option: Stand-by
+
+- alias: Koffiezetapparaat - Status naar koffie zetten
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.koffiezetapparaat_power
+      above: 1000
+      below: 1600
+  condition:
+    - condition: state
+      entity_id: input_select.koffiezetapparaat_status
+      state: Stand-by
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.koffiezetapparaat_status
+        option: Koffie zetten
+
+- alias: Koffiezetapparaat - Status naar Klaar
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.koffiezetapparaat_power
+      below: 5
+  condition:
+    - condition: state
+      entity_id: input_select.koffiezetapparaat_status
+      state: Koffie zetten
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.koffiezetapparaat_status
+        option: Klaar
+
+- alias: Koffiezetapparaat - Status naar spoelen
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.koffiezetapparaat_power
+      above: 40
+      below: 70
+  condition:
+    - condition: state
+      entity_id: input_select.koffiezetapparaat_status
+      state: Stand-by
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.koffiezetapparaat_status
+        option: Spoelen
+
+- alias: Koffiezetapparaat - Status naar uit
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.koffiezetapparaat_power
+      below: 2
+  condition:
+    - condition: state
+      entity_id: input_select.koffiezetapparaat_status
+      state: Spoelen
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.koffiezetapparaat_status
+        option: "off"
+
+- alias: Koffiezetapparaat - Status naar uit bij 21 minuten stand-by
+  trigger:
+    - platform: state
+      entity_id: input_select.koffiezetapparaat_status
+      to: Stand-by
+      for:
+        minutes: 21
+    - platform: state
+      entity_id: input_select.koffiezetapparaat_status
+      to: Klaar
+      for:
+        minutes: 21
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.koffiezetapparaat_status
+        option: "off"
+
+- alias: Koffiezetapparaat - Notificatie en administratie bijwerken
+  trigger:
+    - platform: state
+      entity_id: input_select.koffiezetapparaat_status
+      to: Klaar
+  action:
+    - service: notify.martien
+      data:
+        message: "De koffie is klaar!"
+        title: "☕️ Koffiezetapparaat"
+    - service: counter.increment
+      data:
+        entity_id: counter.coffee_today
+    - service: counter.increment
+      data:
+        entity_id: counter.coffee_this_week
+    - service: counter.increment
+      data:
+        entity_id: counter.coffee_this_year

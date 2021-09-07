@@ -227,6 +227,7 @@
           - media_player.tvkamer
           - media_player.kantoor
           - media_player.veranda
+          - media_player.slaapkamer
 
 - alias: 'Homemode - To away at dark'
   trigger:
@@ -269,6 +270,7 @@
           - media_player.tvkamer
           - media_player.kantoor
           - media_player.veranda
+          - media_player.slaapkamer
 
 ########################################
 ## Homemode To NIGHT automations
@@ -295,9 +297,10 @@
         - switch.veranda_kachel
         - switch.kelderlicht
         - switch.bureau_martien
-        - switch.kerstverlichting_dakgoot
+        #- switch.kerstverlichting_dakgoot
         - switch.veranda_lampjes
-        - switch.kerstboom #kerstboom
+        - switch.achtertuin_lampjes
+        #- switch.kerstboom #kerstboom
     - service: climate.set_temperature
       data:
         entity_id: climate.netatmo_woonkamer
@@ -311,6 +314,7 @@
           - media_player.tvkamer
           - media_player.kantoor
           - media_player.veranda
+          - media_player.slaapkamer
     - service: media_player.volume_set
       data_template:
         volume_level: '0.02'
@@ -321,4 +325,5 @@
           - media_player.tvkamer
           - media_player.kantoor
           - media_player.veranda
+          - media_player.slaapkamer
 

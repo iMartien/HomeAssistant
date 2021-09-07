@@ -1,0 +1,17 @@
+# - alias: "Media: Sync Apple TV and Hue SyncBox"
+#   trigger: 
+#     platform: state
+#     entity_id: media_player.woonkamer_apple_tv
+#     to: "playing"
+#   condition:
+#     condition: and
+#     conditions:
+#       - condition: state
+#         entity_id: light.hue_play_all
+#         state: 'on'
+#       - condition: time
+#         after: '20:00:00'
+#         before: '00:00:00'
+#   action:
+#     service: media_player.media_play
+#     device_id: media_player.sync_box

@@ -1,0 +1,15 @@
+  coffee_today:
+    name: Bakjes vandaag
+    icon: mdi:coffee
+    initial: 0
+    step: 1
+  coffee_this_week:
+    name: Bakjes deze week
+    icon: mdi:coffee
+    initial: 0
+    step: 1
+  coffee_this_year:
+    name: Bakjes dit jaar
+    icon: mdi:coffee
+    initial: 0
+    step: 1

@@ -55,6 +55,15 @@ push:
           authenticationRequired: true
           destructive: true
 
+    - name: katopveranda
+      identifier: 'camera4'
+      actions:
+        - identifier: 'HOND_BLAF'
+          title: 'Let the dogs out!'
+          activationMode: 'background'
+          authenticationRequired: true
+          destructive: true
+
     - name: alarmgaataf
       identifier: 'alarm_gaat_af'
       actions:
@@ -69,15 +78,6 @@ push:
       actions:
         - identifier: 'ALARM_SOS'
           title: 'Alarm SOS!'
-          activationMode: 'background'
-          authenticationRequired: true
-          destructive: true
-
-    - name: verlichtingnogaan
-      identifier: 'verlichting_nog_aan'
-      actions:
-        - identifier: 'ALLE_LICHTEN_UIT'
-          title: 'Uitschakelen'
           activationMode: 'background'
           authenticationRequired: true
           destructive: true

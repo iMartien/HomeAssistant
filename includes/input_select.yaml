@@ -1,16 +1,43 @@
   wasmachine_status:
-    name: Wasmachine Status
+    name: Wasmachine status
     options:
       - "off"
       - Opwarmen
       - Wassen
       - Klaar
     initial: "off"
+  
   droger_status:
-    name: Droger Status
+    name: Droger status
     options:
       - "off"
       - Aan
       - Drogen
       - Klaar
+    initial: "off"
+  
+  koffiezetapparaat_status:
+    name: Koffiezetapparaat status
+    options:
+      - "off"
+      - Stand-by
+      - Opwarmen
+      - Koffie zetten
+      - Spoelen
+      - Klaar
+    initial: "off"
+
+  waterkoker_status:
+    name: Waterkoker status
+    options:
+      - "off"
+      - Warm
+      - Opwarmen
+    initial: "off"
+
+  cv_status:
+    name: CV status
+    options:
+      - "off"
+      - Verwarmen
     initial: "off"

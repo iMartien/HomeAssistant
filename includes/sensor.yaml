@@ -3,7 +3,7 @@
   - platform: season
 
   - platform: darksky
-    api_key: eaeb60c3ef41d7794773842090bdb882
+    api_key: !secret darksky_api
     language: nl
     forecast:
       - 0
@@ -15,35 +15,24 @@
       - icon
       - temperature
 
-  - platform: zoneminder
-
-  - platform: unifigateway
-    host: !secret unifi_host
-    username: !secret unifi_user
-    password: !secret unifi_password
-    monitored_conditions:
-      - www
-      - wan
-      - wlan
-      - lan
-      - alerts
-      - firmware
-
   - platform: p2000
     name: Politie
     regios: 17
-    radius: 1000
+    radius: 500
     disciplines: 3
+    scan_interval: 120
   - platform: p2000
     name: Ambulance
     regios: 17
-    radius: 1000
+    radius: 500
     disciplines: 2
+    scan_interval: 120
   - platform: p2000
     name: Brandweer
     regios: 17
-    radius: 1000
+    radius: 500
     disciplines: 1
+    scan_interval: 120
 
   - platform: qbittorrent
     url: 'http://192.168.1.17:8080'
@@ -87,63 +76,17 @@
     scan_interval: 5
     unit_of_measurement: "kWh"
 
-  - platform: systemmonitor
-    resources:
-      - type: disk_use_percent
-        arg: /
-      - type: disk_free
-        arg: /
-      - type: memory_use
-      - type: memory_free
-      - type: processor_use
-      - type: last_boot
-      - type: network_in
-        arg: eno1
-      - type: network_out
-        arg: eno1
-      - type: throughput_network_in
-        arg: eno1
-      - type: throughput_network_out
-        arg: eno1
-
   - platform: afvalwijzer
     provider: mijnafvalwijzer
     postal_code: 3084LA
     street_number: 471
-
-  # - platform: solaredge
-  #   api_key: RK9LHI2YXWF12HZOE21V1OPI290R5IR3
-  #   site_id: 567805
-  #   name: SolarEdge
-  #   monitored_conditions:
-  #     - current_power
-  #     - energy_today
-  #     - energy_this_month
-  #     - energy_this_year
-  #     - lifetime_energy
 
 #Crypto related sensors
   - platform: bitcoin
     currency: EUR
     display_options:
       - exchangerate
-#  - platform: etherscan
-#    name: Ledger ETH Wallet
-#    address: '0x3A3CD1458c7686B3a2b231b95e06Afe4dE67aBF8'
-#  - platform: etherscan
-#    name: Jaxx ETH Wallet
-#    address: '0xba372441a528be1903e76ea9a2cf385cc30cdfb6'
-#  - platform: sochain
-#    name: Jaxx BTC Wallet
-#    network: BTC
-#    address: '19h2ufbBJVQr6DNSLm7RwB8Kk7Gy4pgM6t'
-  # - platform: sochain
-  #   name: Ledger BTC Wallet
-  #   network: BTC
-  #   address: 'bc1qtat4nhn082hs8028nzwuaske45tn8u4qn92ucn'
-
-  # - platform: plex
-  #   host: 192.168.1.5
+      - trade_volume_btc
 
   - platform: plex_recently_added
     token: ifDYViM4ZDEsKW2VCiH5
@@ -176,23 +119,41 @@
 
   - platform: moon
 
-# Tracking entity to entity
-  - platform: waze_travel_time
-    name: "Reistijd naar huis"
-    origin: device_tracker.iphone_van_martien
-    destination: zone.home
-    region: 'EU'
-  - platform: waze_travel_time
-    name: "Reistijd naar Fujitsu"
-    origin: device_tracker.iphone_van_martien
-    destination: zone.fujitsu_maarssen
-    region: 'EU'
   - platform: pvoutput
     system_id: 55147
     api_key: !secret pv_output_apikey
     scan_interval: 120
   - platform: template
     sensors:
+      netatmo_woonkamer_battery_level:
+        friendly_name: "Netatmo Woonkamer batterij"
+        unit_of_measurement: '%'
+        value_template: "{{ state_attr('climate.netatmo_woonkamer', 'battery_level') }}"
+      netatmo_badkamer_battery_level:
+        friendly_name: "Netatmo Badkamer batterij"
+        unit_of_measurement: '%'
+        value_template: "{{ state_attr('climate.netatmo_badkamer', 'battery_level') }}"
+      netatmo_charlie_s_kamer_battery_level:
+        friendly_name: "Netatmo Charlie's kamer batterij"
+        unit_of_measurement: '%'
+        value_template: "{{ state_attr('climate.netatmo_charlie_s_kamer', 'battery_level') }}"
+      netatmo_gang_battery_level:
+        friendly_name: "Netatmo Gang batterij"
+        unit_of_measurement: '%'
+        value_template: "{{ state_attr('climate.netatmo_gang', 'battery_level') }}"
+      netatmo_kantoor_battery_level:
+        friendly_name: "Netatmo Kantoor batterij"
+        unit_of_measurement: '%'
+        value_template: "{{ state_attr('climate.netatmo_kantoor', 'battery_level') }}"
+      netatmo_keuken_battery_level:
+        friendly_name: "Netatmo Keuken batterij"
+        unit_of_measurement: '%'
+        value_template: "{{ state_attr('climate.netatmo_keuken', 'battery_level') }}"
+      netatmo_slaapkamer_battery_level:
+        friendly_name: "Netatmo Slaapkamer batterij"
+        unit_of_measurement: '%'
+        value_template: "{{ state_attr('climate.netatmo_slaapkamer', 'battery_level') }}"
+
       power_consumption_pvoutput:
         value_template: '{% if is_state_attr("sensor.pvoutput", "power_consumption", "NaN") %}0{% else %}{{ states.sensor.pvoutput.attributes.power_consumption }}{% endif %}'
         friendly_name: 'Using'
@@ -223,7 +184,7 @@
       
       current_lights_on:
         friendly_name: 'Lichten momenteel aan'
-        unit_of_measurement: 'Aan'
+        unit_of_measurement: 'aan'
         value_template: >
           {% set lights = [
           states.light.keuken_1,
@@ -289,6 +250,8 @@
         value_template: >
           {% set devices = [
           states.binary_sensor.keukendeur,
+          states.binary_sensor.cv_ruimte_deur,
+          states.binary_sensor.veranda_buitendeur
           ] %}
           {{ devices | selectattr('state','eq','on') | list | count }}
 
@@ -306,12 +269,13 @@
           states.binary_sensor.woonkamer_raam_1,
           states.binary_sensor.woonkamer_raam_2,
           states.binary_sensor.woonkamer_raam_3,
+          states.binary_sensor.kantoor_raam,
           ] %}
           {{ devices | selectattr('state','eq','on') | list | count }}
 
       current_motion_detected:
         friendly_name: 'Bewegingssensoren actief'
-        unit_of_measurement: 'Aan'
+        unit_of_measurement: 'aan'
         value_template: >
           {% set devices = [
           states.binary_sensor.gang_motion,
@@ -335,17 +299,23 @@
           states.switch.kelderpomp,
           states.switch.marty_mcfly_charger_switch,
           states.switch.bureau_martien,
+          states.sensor.koffiezetapparaat_status,
+          states.sensor.waterkoker_status,
+          states.sensor.cv_status,
           ] %}
           {{ appliances | selectattr('state','!=','off') | list | count }}
 
       current_media_players_playing:
         friendly_name: 'Mediaspelers aan'
-        unit_of_measurement: 'Aan'
+        unit_of_measurement: 'aan'
         value_template: >
           {% set mediaplayers = [
-          states.media_player.woonkamer_plex,
+          states.media_player.plex_woonkamer_apple_tv,
+          states.media_player.plex_slaapkamer_apple_tv,
           states.media_player.woonkamer_live_tv,
           states.media_player.slaapkamer_live_tv,
+          states.media_media_player.woonkamer_apple_tv,
+          states.media_player.slaapkamer_apple_tv,
           states.media_player.tvkamer,
           states.media_player.woonkamer,
           states.media_player.keuken,
@@ -385,7 +355,7 @@
 
       current_climate_devices_heating:
         friendly_name: 'Verwarming aan'
-        unit_of_measurement: 'Aan'
+        unit_of_measurement: 'aan'
         value_template: >
           {% set verwarming = [
           states.sensor.netatmo_woonkamer_status,
@@ -398,27 +368,6 @@
           ] %}
           {{ verwarming | selectattr('state','eq','heating') | list | count }}
 
-
-
-
-  - platform: command_line
-    name: CPU Temperature
-    command: "cat /sys/class/thermal/thermal_zone2/temp"
-    unit_of_measurement: "°C"
-    value_template: '{{ value | multiply(0.001) | round(1) }}'
-  # - platform: synologydsm
-  #   host: !secret synology_ip
-  #   username: !secret synology_username
-  #   password: !secret synology_password
-  #   monitored_conditions:
-  #     - cpu_total_load
-  #     - memory_real_usage
-  #     - network_up
-  #     - network_down
-  #     - volume_status
-  #     - volume_percentage_used
-  #     - volume_size_used
-
   - platform: template
     sensors:
       youless_zonnepanelen_kw:
@@ -430,13 +379,20 @@
     sensors:
       wasmachine_status:
         value_template: '{{ states.input_select.wasmachine_status.state}}'
-        friendly_name: 'Wasmachine Status'
+        friendly_name: 'Wasmachine status'
       droger_status:
         value_template: '{{ states.input_select.droger_status.state}}'
-        friendly_name: 'Droger Status'
-      gangkachel_status:
-        value_template: '{{ states.input_select.gangkachel_status.state}}'
-        friendly_name: 'Gangkachel Status'
+        friendly_name: 'Droger status'
+      koffiezetapparaat_status:
+        value_template: '{{ states.input_select.koffiezetapparaat_status.state}}'
+        friendly_name: 'Koffiezetapparaat status'
+      waterkoker_status:
+        value_template: '{{ states.input_select.waterkoker_status.state}}'
+        friendly_name: 'Waterkoker status'
+      cv_status:
+        value_template: '{{ states.input_select.cv_status.state}}'
+        friendly_name: 'CV status'
+
 
   - platform: mqtt
     name: "Badkamer Fan Verbruik Vandaag"
@@ -466,37 +422,6 @@
   - platform: mqtt
     name: "Badkamer Fan Stroom"
     state_topic: "tele/sonoff_badkamerfan/SENSOR"
-    value_template: '{{ value_json["ENERGY"]["Current"] }}'
-    unit_of_measurement: "A"
-
-  - platform: mqtt
-    name: "Gangkachel Verbruik Vandaag"
-    state_topic: "tele/sonoff_gangkachel/SENSOR"
-    value_template: '{{ value_json["ENERGY"]["Today"] }}'
-    unit_of_measurement: "kWh"
-  - platform: mqtt
-    name: "Gangkachel Verbruik Gister"
-    state_topic: "tele/sonoff_gangkachel/SENSOR"
-    value_template: '{{ value_json["ENERGY"]["Yesterday"] }}'
-    unit_of_measurement: "kWh"
-  - platform: mqtt
-    name: "Gangkachel Verbruik Totaal"
-    state_topic: "tele/sonoff_gangkachel/SENSOR"
-    value_template: '{{ value_json["ENERGY"]["Total"] }}'
-    unit_of_measurement: "kWh"
-  - platform: mqtt
-    name: "Gangkachel Huidig Verbruik"
-    state_topic: "tele/sonoff_gangkachel/SENSOR"
-    value_template: '{{ value_json["ENERGY"]["Power"] }}'
-    unit_of_measurement: "W"
-  - platform: mqtt
-    name: "Gangkachel Voltage"
-    state_topic: "tele/sonoff_gangkachel/SENSOR"
-    value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
-    unit_of_measurement: "V"
-  - platform: mqtt
-    name: "Gangkachel Stroom"
-    state_topic: "tele/sonoff_gangkachel/SENSOR"
     value_template: '{{ value_json["ENERGY"]["Current"] }}'
     unit_of_measurement: "A"
 
@@ -624,42 +549,69 @@
     value_template: '{{ value_json["ENERGY"]["Current"] }}'
     unit_of_measurement: "A"
 
-  - platform: template
-    sensors:
-      unifi_gateway_wan_cpu:
-        friendly_name: "CPU"
-        unit_of_measurement: "%"
-        value_template: "{{ states.sensor.unifi_gateway_wan.attributes['gw_system-stats']['cpu'] }}"
-      unifi_gateway_wan_mem:
-        friendly_name: "Memory"
-        unit_of_measurement: "%"
-        value_template: "{{ states.sensor.unifi_gateway_wan.attributes['gw_system-stats']['mem'] }}"
-      unifi_gateway_www_xput_down:
-        friendly_name: "USG Speedtest Download"
-        unit_of_measurement: Mbps
-        icon_template: "mdi:progress-download"
-        value_template: "{{ states.sensor.unifi_gateway_www.attributes.xput_down }}"
-      unifi_gateway_www_xput_up:
-        friendly_name: "USG Speedtest Upload"
-        unit_of_measurement: Mbps
-        icon_template: "mdi:progress-upload"
-        value_template: "{{ states.sensor.unifi_gateway_www.attributes.xput_up }}"
-      unifi_gateway_www_speedtest_ping:
-        friendly_name: "USG Speedtest Ping"
-        unit_of_measurement: ms
-        icon_template: "mdi:progress-clock"
-        value_template: "{{ states.sensor.unifi_gateway_www.attributes.speedtest_ping }}"
-      unifi_gateway_wlan_num_user:
-        friendly_name: 'Users'
-        value_template: '{{ states.sensor.unifi_gateway_wlan.attributes.num_user }}'
-      unifi_gateway_lan_num_user:
-        friendly_name: 'Users Lan'
-        value_template: '{{ states.sensor.unifi_gateway_lan.attributes.num_user }}'
-      unifi_gateway_wan_download:
-        friendly_name: 'WAN Download'
-        unit_of_measurement: Kbps
-        icon_template: "mdi:speedometer"
-        value_template: "{{ (states.sensor.unifi_gateway_wan.attributes['rx_bytes-r'] / 1024) | int }}"
+  - platform: mqtt
+    name: grote_woonkamer_plant_moisture
+    state_topic: plantgw/my/plants/Grote Woonkamer Plant/
+    value_template: "{{ value_json.moisture | int }}"
+    unit_of_measurement: "%"
+  - platform: mqtt
+    name: grote_woonkamer_plant_battery
+    state_topic: plantgw/my/plants/Grote Woonkamer Plant/
+    value_template: "{{ value_json.battery | int }}"
+    unit_of_measurement: "%"
+  - platform: mqtt
+    name: grote_woonkamer_plant_temperature
+    state_topic: plantgw/my/plants/Grote Woonkamer Plant/
+    value_template: "{{ value_json.temperature | float }}"
+    unit_of_measurement: "°C"
+  - platform: mqtt
+    name: grote_woonkamer_plant_conductivity
+    state_topic: plantgw/my/plants/Grote Woonkamer Plant/
+    value_template: "{{ value_json.conductivity | int }}"
+    unit_of_measurement: "µS/cm"
+  - platform: mqtt
+    name: grote_woonkamer_plant_brightness
+    state_topic: plantgw/my/plants/Grote Woonkamer Plant/
+    value_template: "{{ value_json.brightness | int }}"
+    unit_of_measurement: "Lux"
+
+
+  # - platform: template
+  #   sensors:
+  #     unifi_gateway_wan_cpu:
+  #       friendly_name: "CPU"
+  #       unit_of_measurement: "%"
+  #       value_template: "{{ states.sensor.unifi_gateway_wan.attributes['gw_system-stats']['cpu'] }}"
+  #     unifi_gateway_wan_mem:
+  #       friendly_name: "Memory"
+  #       unit_of_measurement: "%"
+  #       value_template: "{{ states.sensor.unifi_gateway_wan.attributes['gw_system-stats']['mem'] }}"
+  #     unifi_gateway_www_xput_down:
+  #       friendly_name: "USG Speedtest Download"
+  #       unit_of_measurement: Mbps
+  #       icon_template: "mdi:progress-download"
+  #       value_template: "{{ states.sensor.unifi_gateway_www.attributes.xput_down }}"
+  #     unifi_gateway_www_xput_up:
+  #       friendly_name: "USG Speedtest Upload"
+  #       unit_of_measurement: Mbps
+  #       icon_template: "mdi:progress-upload"
+  #       value_template: "{{ states.sensor.unifi_gateway_www.attributes.xput_up }}"
+  #     unifi_gateway_www_speedtest_ping:
+  #       friendly_name: "USG Speedtest Ping"
+  #       unit_of_measurement: ms
+  #       icon_template: "mdi:progress-clock"
+  #       value_template: "{{ states.sensor.unifi_gateway_www.attributes.speedtest_ping }}"
+  #     unifi_gateway_wlan_num_user:
+  #       friendly_name: 'Users'
+  #       value_template: '{{ states.sensor.unifi_gateway_wlan.attributes.num_user }}'
+  #     unifi_gateway_lan_num_user:
+  #       friendly_name: 'Users Lan'
+  #       value_template: '{{ states.sensor.unifi_gateway_lan.attributes.num_user }}'
+  #     unifi_gateway_wan_download:
+  #       friendly_name: 'WAN Download'
+  #       unit_of_measurement: Kbps
+  #       icon_template: "mdi:speedometer"
+  #       value_template: "{{ (states.sensor.unifi_gateway_wan.attributes['rx_bytes-r'] / 1024) | int }}"
 
   - platform: template
     sensors:
@@ -817,7 +769,7 @@
           {% endif %}
 
 
-  ## HDD SNMP Temperatures
+  ## HDD s Temperatures
 
   - platform: snmp
     name: 'UnRAID PARITY Temperature'  

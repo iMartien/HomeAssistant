@@ -1,0 +1,22 @@
+- alias: "CV: Status naar verwarmen"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.cv_huidig_verbruik
+      above: 15
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.cv_status
+        option: Verwarmen
+
+
+- alias: "CV: Status naar uit"
+  trigger:
+    - platform: numeric_state
+      entity_id:  sensor.cv_huidig_verbruik
+      below: 10
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.cv_status
+        option: "off"

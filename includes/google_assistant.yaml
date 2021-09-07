@@ -94,6 +94,12 @@
         name: Badkamer Vloerverwarming
         aliases:
           - Vloerverwarming
+      sensor.temperature_badkamer:
+        expose: true
+        room: Badkamer
+      sensor.humidity_badkamer:
+        expose: true
+        room: Badkamer
       light.badkamer_1:
         expose: true
         room: Badkamer
@@ -130,6 +136,19 @@
         expose: true
         room: Gang
       #Kantoor
+      climate.netatmo_kantoor:
+        expose: true
+        room: Kantoor
+        name: Kantoor Radiatorkraan
+        aliases:
+          - Verwarming
+          - Radiator
+      switch.bureau_martien:
+        expose: true
+        room: Kantoor
+        aliases:
+          - Bureau Martien
+          - Printer
       light.kantoor_1:
         expose: true
         room: Kantoor
@@ -174,10 +193,24 @@
         room: Voortuin
         aliases:
           - Deurbel
+      switch.kerstverlichting_dakgoot:
+        expose: true
+        room: Voortuin
+        name: Voortuin Lampjes
+        aliases:
+          - Verlichting
+          - Lampjes
       #Veranda
       camera.veranda:
         expose: true
         room: Veranda
+      switch.veranda_lampjes:
+        expose: true
+        room: Veranda
+        name: Veranda Lampjes
+        aliases:
+          - Verlichting
+          - Lampjes
       #Achtertuin
       switch.tuinpomp:
         expose: true

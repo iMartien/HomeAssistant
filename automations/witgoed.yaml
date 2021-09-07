@@ -10,7 +10,7 @@
   condition:
     - condition: state
       entity_id: input_select.droger_status
-      state: off
+      state: "off"
   action:
     - service: input_select.select_option
       data:
@@ -35,7 +35,7 @@
     - service: input_select.select_option
       data:
         entity_id: input_select.droger_status
-        option: off
+        option: "off"
 
 - alias: Droger - Status naar Drogen
   trigger:
@@ -50,7 +50,7 @@
         state: Aan
       - condition: state
         entity_id: input_select.droger_status
-        state: off
+        state: "off"
   action:
     - service: input_select.select_option
       data:
@@ -122,7 +122,7 @@
   condition:
     - condition: state
       entity_id: input_select.wasmachine_status
-      state: off
+      state: "off"
   action:
     - service: input_select.select_option
       data:
@@ -144,7 +144,7 @@
     - service: input_select.select_option
       data:
         entity_id: input_select.wasmachine_status
-        option: off
+        option: "off"
 
 - alias: Wasmachine - Status naar Wassen
   trigger:
@@ -160,7 +160,7 @@
         state: Opwarmen
       - condition: state
         entity_id: input_select.wasmachine_status
-        state: off
+        state: "off"
   action:
     - service: input_select.select_option
       data:
@@ -208,7 +208,7 @@
 #     conditions:
 #       - condition: state
 #         entity_id: input_select.gangkachel_status
-#         state: off
+#         state: "off"
 #   action:
 #     - service: input_select.select_option
 #       data:
@@ -250,7 +250,7 @@
 #     - service: input_select.select_option
 #       data:
 #         entity_id: input_select.gangkachel_status
-#         option: off
+#         option: "off"
 
 # - alias: Gangkachel - Status naar Half vermogen
 #   trigger:

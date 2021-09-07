@@ -53,13 +53,9 @@
       data:
         entity_id: climate.netatmo_gang
         temperature: 14
-    - service: homeassistant.turn_on
-      data:
-        entity_id:
-          - switch.badkamerfan_sonoff
     - service: notify.martien
       data:
-        message: "De thermostaat in de badkamer en gang is lager gezet en de ventilator aan omdat het raam is geopend."
+        message: "De thermostaat in de badkamer en gang is lager gezet omdat het raam is geopend."
         title: "🌡 Klimaat"
 
 - alias: "Klimaat: Vorstvrij bij vakantie"
@@ -116,49 +112,49 @@
     - service: climate.set_temperature
       data:
         entity_id: climate.netatmo_badkamer
-        temperature: 14
+        temperature: 12
     - service: climate.set_temperature
       data:
         entity_id: climate.netatmo_gang
+        temperature: 12
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.netatmo_slaapkamer
         temperature: 14
 
 
 ########################################
 ## Badkamer ventilatie
 ########################################
-- alias: 'Klimaat: Turn off Badkamerfan after 60min.'
+- alias: 'Klimaat: Turn off Badkamerfan after 120min.'
   trigger:
     - platform: state
       entity_id: switch.badkamerfan_sonoff
       to: 'on'
       for:
-        minutes: 60
+        minutes: 120
   action:
     - service: homeassistant.turn_off
       data:
         entity_id:
           - switch.badkamerfan_sonoff
 
-- alias: 'Klimaat: Turn on Badkamerfan after 7min.'
+- alias: 'Klimaat: Badkamer ventilator aan bij hoge luchtvochtigheid'
   trigger:
-    - platform: state
-      entity_id: group.badkamer_spots
-      to: 'on'
-      for:
-        minutes: 7
+    - platform: numeric_state
+      entity_id: sensor.humidity_badkamer
+      above: 75
   action:
     - service: homeassistant.turn_on
       data:
         entity_id:
           - switch.badkamerfan_sonoff
 
-- alias: 'Klimaat: Turn off Badkamerfan after lights off for 30min.'
+- alias: 'Klimaat: Badkamer ventilator uit bij normale luchtvochtigheid'
   trigger:
-    - platform: state
-      entity_id: group.badkamer_spots
-      to: 'off'
-      for:
-        minutes: 30
+    - platform: numeric_state
+      entity_id: sensor.humidity_badkamer
+      below: 70
   action:
     - service: homeassistant.turn_off
       data:

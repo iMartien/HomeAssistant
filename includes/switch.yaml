@@ -1,61 +1,6 @@
-#   - platform: rfxtrx
-#     automatic_add: false
-#     devices:
-# #      091300063a9af101f470:
-# #        name: Alarm Remote - Disarm
-# #        fire_event: true
-# #      091300153a9af801ef70:
-# #        name: Alarm Remote - Arm
-# #        fire_event: true
-# #      0913001e3a9af401ef70:
-# #        name: Alarm Remote - Arm Home
-# #        fire_event: true
-# #      091300293a9af201ed70:
-# #        name: Alarm Remote - SOS
-# #        fire_event: true
-#       09130029196081021c60:
-#         name: Alarm Panel - Disarm
-#         fire_event: true
-#       09130025196088021b60:
-#         name: Alarm Panel - Arm
-#         fire_event: true
-#       0913002f196084021b60:
-#         name: Alarm Panel - Arm Home
-#         fire_event: true
-#       0913001a196082021960:
-#         name: Alarm Panel - SOS
-#         fire_event: true
-#       0b11000c0067f51201040f50:
-#         name: Deurbel
-#         fire_event: true
-#       0b11000700303cd601010f70:
-#         name: kaku_switch_3
-#         fire_event: true
-#       0b11000e00303cd602010f70:
-#         name: kaku_switch_2
-#         fire_event: true
-#       0b110005009cb1fa01010f50:
-#         name: kaku_switch_1
-#         fire_event: true
-
-  # - platform: doorbird
-  #   switches:
-  #     - light_on
-  #     - open_door
-
-  # - platform: broadlink
-  #   host: 192.168.2.40
-  #   mac: '78:0f:77:d9:05:62'
-  #   timeout: 30
-  #   switches:
-  #     gangkachel_aanuit:
-  #       friendly_name: "Gangkachel Power"
-  #       command_on: 'JgDgAAABKJQSOBM3ExITNxITEjgTEhM3EzYTExM2FDYTEhQSEjcTNxITEzcTEhM3EzcSExMSExMSNxQSEjcTExITEjgSNxQ2EwAE2wABKUkTAAxiAAEqSBMADGMAASlJEgAMZAABKUkSAAxkAAEpSRMADGMAASlJEwAMZAABKEkUAAxjAAEpSRIADGQAASpIEwAMZAABKEkUAAxjAAEoShMADGMAASlJEgAMZAABKkgTAAxkAAEpSRQADGIAASlJEwAMYwABKkgTAAxkAAEoSRMADGQAAShKEwAMYQABKkoTAA0FAAAAAAAAAAA='
-  #       command_off: 'JgDgAAABKJQSOBM3ExITNxITEjgTEhM3EzYTExM2FDYTEhQSEjcTNxITEzcTEhM3EzcSExMSExMSNxQSEjcTExITEjgSNxQ2EwAE2wABKUkTAAxiAAEqSBMADGMAASlJEgAMZAABKUkSAAxkAAEpSRMADGMAASlJEwAMZAABKEkUAAxjAAEpSRIADGQAASpIEwAMZAABKEkUAAxjAAEoShMADGMAASlJEgAMZAABKkgTAAxkAAEpSRQADGIAASlJEwAMYwABKkgTAAxkAAEoSRMADGQAAShKEwAMYQABKkoTAA0FAAAAAAAAAAA='
-  #     gangkachel_highlow:
-  #       friendly_name: "Gangkachel High Low"
-  #       command_on: 'JgAIAQABKpIUNhM3ExITNxMSEjgTEhM3EzcTEhI4EzYTExITEzcTNhQSEhMUNhM3ExISOBMSEhMTNxM3EhMSExM3EhMTNxM3EwAE2wABKkgTAAxjAAEqSBMADGQAASlIEwAMZAABKUkTAAxjAAEoShIADGQAASlJEgAMZQABKkgTAAxjAAEqSBMADGQAAShKEgAMZAABKkgTAAxkAAEpSBQADGMAASpIEwAMYwABKUkUAAxjAAEpSRMADGMAAShKEwAMYwABKUkUAAxhAAEqShMADGMAASpIEwAMZAABKEkUAAxjAAEpRxYADGMAAShKEwAMYwABKkgUAAxjAAEpSRIADGQAASpIFAANBQ=='
-  #       command_off: 'JgAIAQABKpIUNhM3ExITNxMSEjgTEhM3EzcTEhI4EzYTExITEzcTNhQSEhMUNhM3ExISOBMSEhMTNxM3EhMSExM3EhMTNxM3EwAE2wABKkgTAAxjAAEqSBMADGQAASlIEwAMZAABKUkTAAxjAAEoShIADGQAASlJEgAMZQABKkgTAAxjAAEqSBMADGQAAShKEgAMZAABKkgTAAxkAAEpSBQADGMAASpIEwAMYwABKUkUAAxjAAEpSRMADGMAAShKEwAMYwABKUkUAAxhAAEqShMADGMAASpIEwAMZAABKEkUAAxjAAEpRxYADGMAAShKEwAMYwABKkgUAAxjAAEpSRIADGQAASpIFAANBQ=='
+  - platform: wake_on_lan
+    name: HP LaserJet
+    mac: e8:d8:d1:b0:98:54
 
   - platform: mqtt
     name: "Badkamerfan - Sonoff"
@@ -82,10 +27,10 @@
     retain: true
 
   - platform: mqtt
-    name: "Wasmachine - Sonoff"
-    state_topic: "stat/sonoff_wasmachine/POWER"
-    command_topic: "cmnd/sonoff_wasmachine/POWER"
-    availability_topic: "tele/sonoff_wasmachine/LWT"
+    name: "Achtertuin Lampjes"
+    state_topic: "stat/achtertuin_lampjes/POWER"
+    command_topic: "cmnd/achtertuin_lampjes/POWER"
+    availability_topic: "tele/achtertuin_lampjes/LWT"
     qos: 1
     payload_on: "ON"
     payload_off: "OFF"
@@ -184,18 +129,3 @@
     payload_off: "off"
     retain: true
     optimistic: false
-
-  # - platform: command_line
-  #   scan_interval: 60
-  #   switches:
-  #     synology_home_mode:
-  #       command_on: 'python3 custom_components/synology_home_mode/synology_home_mode.py home'
-  #       command_off: 'python3 custom_components/synology_home_mode/synology_home_mode.py away'
-  #       command_state: 'python3 custom_components/synology_home_mode/synology_home_mode.py status'
-  #       value_template: >
-  #         {% if value_json is defined %}
-  #           {{ value_json.data.on}}
-  #         {% else %}
-  #           {{ states.switch.synology_home_mode.state == 'on' }}
-  #         {% endif %}
-  #       friendly_name: Synology Home Mode

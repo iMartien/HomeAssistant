@@ -1,0 +1,10 @@
+- alias: "Chores: Planten hebben water gehad"
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.grote_woonkamer_plant_moisture
+    above: 20
+  action:
+    - service: notify.martien
+      data:
+        message: "De planten hebben weer water gehad!"
+        title: "🪴 Planten"

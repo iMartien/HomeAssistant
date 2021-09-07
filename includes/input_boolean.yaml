@@ -41,6 +41,11 @@
     name: Thuiswerken
     icon: mdi:briefcase-check-outline
 
+  scene_schoonmaken:
+    name: Schoonmaken
+    icon: mdi:spray-bottle
+
+
   status_donker:
     name: Donker
     icon: mdi:weather-night
@@ -54,6 +59,9 @@
 
   silent_alarm:
     name: Silent Alarm
+    
+  charlies_wekker_stoplicht:
+    name: Charlies Wekker Stoplicht
 
   media_start_netflix:
     name: Netflix

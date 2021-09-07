@@ -204,3 +204,59 @@
     - service: homeassistant.toggle
       data:
         entity_id: "{{ apparaat }}"
+
+- alias: "iOS: Honden Alarm"
+  mode: parallel
+  trigger:
+    platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: HOND_BLAF
+  action:
+    - service: notify.martien
+      data:
+        message: "WOOF! WOOF! WOOF! WOOF!"
+        title: "🐶 Who let the dogs out!!"
+        data:    
+          push:
+            category: camera4
+          entity_id: camera.veranda
+    - service: sonos.snapshot
+      data_template:
+        with_group: yes
+        entity_id:
+          - media_player.woonkamer
+          - media_player.badkamer
+          - media_player.keuken
+          - media_player.tvkamer
+          - media_player.kantoor
+          - media_player.veranda
+    - service: media_player.media_pause
+      data_template:
+        entity_id:
+          - media_player.woonkamer
+          - media_player.badkamer
+          - media_player.keuken
+          - media_player.tvkamer
+          - media_player.kantoor
+    - service: media_player.volume_set
+      data_template:
+        volume_level: '0.9'
+        entity_id:
+          - media_player.veranda
+    - service: media_player.play_media
+      data_template:
+        entity_id:
+          - media_player.veranda
+        media_content_id: https://chateaucharlois.duckdns.org/local/dog.mp3
+        media_content_type: music
+    - delay: '00:00:17'
+    - service: sonos.restore
+      data_template:
+        entity_id:
+          - media_player.woonkamer
+          - media_player.badkamer
+          - media_player.keuken
+          - media_player.tvkamer
+          - media_player.kantoor
+          - media_player.veranda
