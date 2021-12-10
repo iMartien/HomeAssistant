@@ -1,6 +1,16 @@
   - platform: wake_on_lan
-    name: HP LaserJet
-    mac: e8:d8:d1:b0:98:54
+    name: Martiens Mac Mini
+    mac: !secret mac_mini_mac
+    host: !secret mac_mini_ip
+    turn_off:
+      service: shell_command.turn_off_martiens_mac_mini
+
+  - platform: wake_on_lan
+    name: Martiens iMac
+    mac: !secret imac_mac
+    host: !secret imac_ip
+    turn_off:
+      service: shell_command.turn_off_martiens_imac
 
   - platform: mqtt
     name: "Badkamerfan - Sonoff"
@@ -129,3 +139,14 @@
     payload_off: "off"
     retain: true
     optimistic: false
+
+  - platform: broadlink
+    mac: '78:0f:77:d9:05:62'
+    switches:
+      kantoorkachel_aanuit:
+        friendly_name: "Kantoor Kachel Power"
+        command_on: 'JgDgAAABKJQSOBM3ExITNxITEjgTEhM3EzYTExM2FDYTEhQSEjcTNxITEzcTEhM3EzcSExMSExMSNxQSEjcTExITEjgSNxQ2EwAE2wABKUkTAAxiAAEqSBMADGMAASlJEgAMZAABKUkSAAxkAAEpSRMADGMAASlJEwAMZAABKEkUAAxjAAEpSRIADGQAASpIEwAMZAABKEkUAAxjAAEoShMADGMAASlJEgAMZAABKkgTAAxkAAEpSRQADGIAASlJEwAMYwABKkgTAAxkAAEoSRMADGQAAShKEwAMYQABKkoTAA0FAAAAAAAAAAA='
+        command_off: 'JgDgAAABKJQSOBM3ExITNxITEjgTEhM3EzYTExM2FDYTEhQSEjcTNxITEzcTEhM3EzcSExMSExMSNxQSEjcTExITEjgSNxQ2EwAE2wABKUkTAAxiAAEqSBMADGMAASlJEgAMZAABKUkSAAxkAAEpSRMADGMAASlJEwAMZAABKEkUAAxjAAEpSRIADGQAASpIEwAMZAABKEkUAAxjAAEoShMADGMAASlJEgAMZAABKkgTAAxkAAEpSRQADGIAASlJEwAMYwABKkgTAAxkAAEoSRMADGQAAShKEwAMYQABKkoTAA0FAAAAAAAAAAA='
+      kantoorkachel_highlow:
+        friendly_name: "Kantoor Kachel High Low"
+        command_on: 'JgAIAQABKpIUNhM3ExITNxMSEjgTEhM3EzcTEhI4EzYTExITEzcTNhQSEhMUNhM3ExISOBMSEhMTNxM3EhMSExM3EhMTNxM3EwAE2wABKkgTAAxjAAEqSBMADGQAASlIEwAMZAABKUkTAAxjAAEoShIADGQAASlJEgAMZQABKkgTAAxjAAEqSBMADGQAAShKEgAMZAABKkgTAAxkAAEpSBQADGMAASpIEwAMYwABKUkUAAxjAAEpSRMADGMAAShKEwAMYwABKUkUAAxhAAEqShMADGMAASpIEwAMZAABKEkUAAxjAAEpRxYADGMAAShKEwAMYwABKkgUAAxjAAEpSRIADGQAASpIFAANBQ=='

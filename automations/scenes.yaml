@@ -9,6 +9,7 @@
       - input_boolean.scene_normaal
       - input_boolean.scene_aantafel
       - input_boolean.scene_badtijd
+      - input_boolean.scene_thuiswerken
     to: 'on'
     for:
       seconds: 180
@@ -22,6 +23,7 @@
         - input_boolean.scene_normaal
         - input_boolean.scene_aantafel
         - input_boolean.scene_badtijd
+        - input_boolean.scene_thuiswerken
 
 - alias: "Scene: Opstaan elke ochtend beweging"
   trigger:
@@ -64,6 +66,7 @@
         - switch.ganglicht
         - switch.kelderlicht
         - switch.bureau_martien
+        - switch.kerstboom
         #- switch.kerstverlichting_dakgoot
         #- switch.kerstboom #kerstboom
     - service: media_player.media_pause
@@ -97,10 +100,9 @@
         - input_boolean.scene_sfeer
     - service: homeassistant.turn_on
       entity_id:
-        - switch.plex_server
-        - switch.tv_meubel
         - input_boolean.homemode_home
         - switch.bureau_martien
+        - switch.kerstboom
     - service: input_boolean.turn_off
       data:
         entity_id: input_boolean.text_to_speech_mute
@@ -141,10 +143,9 @@
     - service: homeassistant.turn_on
       entity_id:
         - switch.veranda_lampjes
-        #- switch.kerstverlichting_dakgoot
+        - switch.kerstverlichting_dakgoot
         - switch.achtertuin_lampjes
-        - switch.kerstboom #kerstboom
-
+        
 - alias: 'Scene - Sfeer aan'
   trigger:
     - platform: state
@@ -267,18 +268,18 @@
         entity_id: media_player.kantoor
         source: "KINK"
 
-- alias: 'Scene: Thuiswerken uit'
-  trigger:
-    - platform: state
-      entity_id: input_boolean.scene_thuiswerken
-      to: 'off'
-  action:
-    - service: homeassistant.turn_off
-      entity_id:
-          - switch.bureau_martien
-          - light.kantoor_bureaulampen
-          - light.kantoor_spots
-    - service: media_player.media_stop
-      data_template:
-        entity_id:
-          - media_player.kantoor
+# - alias: 'Scene: Thuiswerken uit'
+#   trigger:
+#     - platform: state
+#       entity_id: input_boolean.scene_thuiswerken
+#       to: 'off'
+#   action:
+#     - service: homeassistant.turn_off
+#       entity_id:
+#           - switch.bureau_martien
+#           - light.kantoor_bureaulampen
+#           - light.kantoor_spots
+#     - service: media_player.media_stop
+#       data_template:
+#         entity_id:
+#           - media_player.kantoor

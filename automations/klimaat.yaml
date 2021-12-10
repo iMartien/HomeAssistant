@@ -126,22 +126,32 @@
 ########################################
 ## Badkamer ventilatie
 ########################################
-- alias: 'Klimaat: Turn off Badkamerfan after 120min.'
+- alias: 'Klimaat: Turn off Badkamerfan after 60min.'
   trigger:
     - platform: state
       entity_id: switch.badkamerfan_sonoff
       to: 'on'
       for:
-        minutes: 120
+        minutes: 60
   action:
     - service: homeassistant.turn_off
       data:
         entity_id:
           - switch.badkamerfan_sonoff
 
-- alias: 'Klimaat: Badkamer ventilator aan bij hoge luchtvochtigheid'
+
+- alias: 'Klimaat: Badkamer ventilator aan bij hoge luchtvochtigheid of licht aan'
   trigger:
     - platform: numeric_state
+      entity_id: sensor.humidity_badkamer
+      above: 75
+    - platform: state
+      entity_id: light.badkamer_spotjes
+      to: 'on'
+      for:
+        minutes: 7
+  condition:
+    - condition: numeric_state
       entity_id: sensor.humidity_badkamer
       above: 75
   action:
@@ -155,19 +165,37 @@
     - platform: numeric_state
       entity_id: sensor.humidity_badkamer
       below: 70
+      for:
+        minutes: 10
   action:
     - service: homeassistant.turn_off
       data:
         entity_id:
           - switch.badkamerfan_sonoff
 
-- alias: "Klimaat: MeteoAlarm meldingen"
+
+- alias: 'Klimaat: Serverrack fan aan bij hoge CPU temp'
   trigger:
-    platform: state
-    entity_id: binary_sensor.meteoalarm
-    to: 'on'
+    - platform: numeric_state
+      entity_id: sensor.glances_package_id_0_temperature_2
+      above: 65
+      for:
+        minutes: 1
   action:
-    - service: notify.notifyall
-      data_template:
-        title: "{{state_attr('binary_sensor.meteoalarm', 'headline')}}"
-        message: "{{state_attr('binary_sensor.meteoalarm', 'description')}}"
+    - service: homeassistant.turn_on
+      data:
+        entity_id:
+          - switch.server_rack_fan
+
+- alias: 'Klimaat: Serverrack fan uit bij normale CPU temp'
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.glances_package_id_0_temperature_2
+      below: 60
+      for:
+       minutes: 5
+  action:
+    - service: homeassistant.turn_off
+      data:
+        entity_id:
+          - switch.server_rack_fan

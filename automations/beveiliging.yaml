@@ -115,33 +115,33 @@
 #########################################
 # Sentrymode aan en uit acties
 #########################################
-- alias: 'Beveiliging: Tesla Sentry mode aan wanneer nacht en auto thuis'
-  trigger:
-    platform: state
-    entity_id: input_boolean.homemode_night
-    to: "on"
-  condition:
-    - condition: state
-      entity_id: device_tracker.marty_mcfly_location_tracker
-      state: 'home'
-  action:
-    - service: homeassistant.turn_on
-      entity_id:
-        - switch.marty_mcfly_sentry_mode_switch
+# - alias: 'Beveiliging: Tesla Sentry mode aan wanneer nacht en auto thuis'
+#   trigger:
+#     platform: state
+#     entity_id: input_boolean.homemode_night
+#     to: "on"
+#   condition:
+#     - condition: state
+#       entity_id: device_tracker.marty_mcfly_location_tracker
+#       state: 'home'
+#   action:
+#     - service: homeassistant.turn_on
+#       entity_id:
+#         - switch.marty_mcfly_sentry_mode_switch
 
-- alias: 'Beveiliging: Tesla Sentry mode uit wanneer overdag en auto thuis'
-  trigger:
-    platform: state
-    entity_id: input_boolean.homemode_home
-    to: "on"
-  condition:
-    - condition: state
-      entity_id: device_tracker.marty_mcfly_location_tracker
-      state: 'home'
-  action:
-    - service: homeassistant.turn_off
-      entity_id:
-        - switch.marty_mcfly_sentry_mode_switch
+# - alias: 'Beveiliging: Tesla Sentry mode uit wanneer overdag en auto thuis'
+#   trigger:
+#     platform: state
+#     entity_id: input_boolean.homemode_home
+#     to: "on"
+#   condition:
+#     - condition: state
+#       entity_id: device_tracker.marty_mcfly_location_tracker
+#       state: 'home'
+#   action:
+#     - service: homeassistant.turn_off
+#       entity_id:
+#         - switch.marty_mcfly_sentry_mode_switch
 
 #########################################
 # Alarm actions from HA
@@ -257,9 +257,9 @@
         entity_id: input_boolean.homemode_guest
         state: 'on'
   action:
-    - service: homeassistant.turn_on
+    - service: lock.unlock
       data:
-        entity_id: switch.deurbel_relay_1
+        entity_id: lock.hek
     - service: script.speak
       data:
         what: 'Alarm is ingeschakeld.'

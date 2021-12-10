@@ -1,18 +1,18 @@
 waterverbruik_per_dag:     
-  source: sensor.waterverbruik_in_liters     
+  source: sensor.watermeter_water_consumptie_liter    
   cycle: daily       
 waterverbruik_per_uur:     
-  source: sensor.waterverbruik_in_liters     
+  source: sensor.watermeter_water_consumptie_liter    
   cycle: hourly
 waterverbruik_per_week:
-  source: sensor.waterverbruik_in_liters
+  source: sensor.watermeter_water_consumptie_liter
   cycle: weekly   
 waterverbruik_per_maand:     
-  source: sensor.waterverbruik_in_liters
+  source: sensor.watermeter_water_consumptie_liter
   cycle: monthly   
 waterverbruik_per_kwartaal:
-  source: sensor.waterverbruik_in_liters     
+  source: sensor.watermeter_water_consumptie_liter 
   cycle: quarterly   
 waterverbruik_per_jaar:     
-  source: sensor.waterverbruik_in_liters
+  source: sensor.watermeter_water_consumptie_liter
   cycle: yearly   

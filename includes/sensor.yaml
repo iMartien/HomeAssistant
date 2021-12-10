@@ -1,3 +1,14 @@
+  - platform: bunq
+    api_key: !secret bunq_api_key
+    permitted_ips: !secret bunq_permitted_ip
+
+  - platform: dahua_vto
+    name: Deurbel
+    host: 192.168.1.11
+    username: admin
+    password: Deborah99!
+    scan_interval: 5
+
   - platform: time_date
 
   - platform: season
@@ -251,7 +262,8 @@
           {% set devices = [
           states.binary_sensor.keukendeur,
           states.binary_sensor.cv_ruimte_deur,
-          states.binary_sensor.veranda_buitendeur
+          states.binary_sensor.veranda_buitendeur,
+          states.binary_sensor.washok_deur
           ] %}
           {{ devices | selectattr('state','eq','on') | list | count }}
 

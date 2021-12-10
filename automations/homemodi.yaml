@@ -188,6 +188,9 @@
       data:
         entity_id: climate.badkamer_vloerverwarming
         hvac_mode: 'auto'
+    - service: homeassistant.turn_on
+      entity_id:
+        - switch.kerstboom #kerstboom
 
 ########################################
 ## Homemode To AWAY automations
@@ -297,10 +300,10 @@
         - switch.veranda_kachel
         - switch.kelderlicht
         - switch.bureau_martien
-        #- switch.kerstverlichting_dakgoot
+        - switch.kerstverlichting_dakgoot
         - switch.veranda_lampjes
         - switch.achtertuin_lampjes
-        #- switch.kerstboom #kerstboom
+        - switch.kerstboom #kerstboom
     - service: climate.set_temperature
       data:
         entity_id: climate.netatmo_woonkamer

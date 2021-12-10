@@ -69,4 +69,4 @@
             en de droger {{ states.sensor.wasmachine_verbruik_vandaag.state | int | string }}.
             De kachel in de gang heeft vandaag {{ states.sensor.gangkachel_verbruik_vandaag.state | int | string }} kilowattuur gebruikt.
             Er is vandaag {{ states.sensor.power_production_today_total.state | int | string }} kilowattuur terug geleverd aan het net.
-            Het totale gasverbruik vandaag is {{ states.sensor.gas_consumption_today.state | int | string }} kuub.
+            Het totale gasverbruik vandaag is {{ states.sensor.dsmr_day_consumption_gas.state | int | string }} kuub.

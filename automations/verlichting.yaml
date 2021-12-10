@@ -14,20 +14,6 @@
         - light.keuken_verlichting
         - light.overloop_spotjes
         - light.slaapkamer_spotjes
-#        - switch.kerstverlichting_dakgoot
-        - switch.veranda_lampjes
-        - switch.achtertuin_lampjes
-
-# - alias: 'Verlichting: Kerstverlichting buiten aan om 16u'
-#   trigger:
-#     platform: time
-#     at: '16:00:00'
-#   action:
-#     - service: switch.turn_on
-#       entity_id: 
-#         - switch.kerstverlichting_dakgoot
-#         - switch.veranda_lampjes
-#         - switch.smart_plug_6 #kerstboom
 
 - alias: "Verlichting: Sfeerverlichting in woonkamer bij TV kijken"
   trigger:
@@ -62,9 +48,27 @@
   action:
     - service: switch.turn_on
       entity_id:
-#        - switch.kerstverlichting_dakgoot
         - switch.veranda_lampjes
         - switch.achtertuin_lampjes
+
+- alias: 'Verlichting: Dakgootlampjes aan bij donker in herfst en winter'
+  trigger:
+    platform: state
+    entity_id: input_boolean.status_donker
+    to: 'on'
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: sensor.season
+        state: 'autumn'
+      - condition: state
+        entity_id: sensor.season
+        state: 'winter'
+  action:
+    - service: switch.turn_on
+      entity_id: 
+        - switch.kerstverlichting_dakgoot
 
 - alias: 'Verlichting: Buitenverlichting uit wanneer licht'
   trigger:
@@ -74,7 +78,7 @@
   action:
     - service: switch.turn_off
       entity_id:
-#        - switch.kerstverlichting_dakgoot
+        - switch.kerstverlichting_dakgoot
         - switch.veranda_lampjes
         - switch.achtertuin_lampjes
 
@@ -178,6 +182,45 @@
   action:
     - service: homeassistant.turn_off
       entity_id: light.cv_ruimte
+
+
+- alias: 'Verlichting: Washok verlichting aan bij deur open'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.washok_deur
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_home
+        state: 'on'
+      - condition: state
+        entity_id: light.washok_spots
+        state: 'off'
+  action:
+    - service: hue.hue_activate_scene
+      data:
+        group_name: "Washok"
+        scene_name: "Energie"
+
+- alias: 'Verlichting: Washok verlichting uit bij deur dicht'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.washok_deur
+    to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.homemode_home
+        state: 'on'
+      - condition: state
+        entity_id: light.washok_spots
+        state: 'on'
+  action:
+    - service: homeassistant.turn_off
+      entity_id: light.washok_spots
 
 - alias: 'Verlichting: Licht aan wanneer donker en niemand thuis'
   trigger:

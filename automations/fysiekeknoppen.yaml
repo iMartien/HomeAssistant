@@ -11,9 +11,9 @@
       event_data:
         actionName: OPEN_HEK
   action:
-    - service: switch.turn_on
-      entity_id:
-        - switch.deurbel_relay_1
+    - service: lock.unlock
+      data:
+        entity_id: lock.hek
     - service: tts.google_say
       entity_id: media_player.google_home_mini
       data:

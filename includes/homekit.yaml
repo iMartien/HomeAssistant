@@ -1,11 +1,11 @@
   - filter:
       include_entity_globs:
         - binary_sensor.*_raam*
-        - climate.netatmo_*
+        # - climate.netatmo_*
         - lock.marty_mcfly*
       include_entities:
         - alarm_control_panel.alarm
-        - lock.inrijpoort
+        - lock.hek
         - light.rieten_lamp
         - light.glazenbol
         - light.hue_bloom
@@ -39,57 +39,98 @@
         - light.badkamer_5
         - light.slaapkamer_spot_1
         - light.slaapkamer_spot_2
+        - light.charlieskamer
         - light.overloop_1
         - light.overloop_2
+        - light.wc_beneden
+        - light.washok_spots
+        - light.cv_ruimte
         - climate.marty_mcfly_hvac_climate_system
         - climate.gang_vloerverwarming
         - climate.badkamer_vloerverwarming
         - climate.veranda_kachel
         - sensor.temperature_slaapkamer
-        - sensor.temperature_gang
+        - sensor.temperature_badkamer
+        - sensor.humidity_badkamer
         - sensor.temperature_keuken
         - sensor.temperature_gang
+        - sensor.humidity_gang
         - sensor.temperature_babykamer
+        - sensor.humidity_babykamer
         - sensor.temperature_charlies_kamer
+        - sensor.humidity_charlies_kamer
         - sensor.temperature_kantoor
+        - sensor.humidity_kantoor
         - sensor.temperature_kelder
+        - sensor.humidity_kelder
+        - sensor.wc_beneden_temperatuur
+        - sensor.humidity_wc_beneden
+        - sensor.dark_sky_temperature
         - sensor.marty_mcfly_temperature_sensor_inside
         - sensor.marty_mcfly_temperature_sensor_outside
+        - sensor.ikea_vindriktning_pm25_1
+        - sensor.ikea_vindriktning_pm25_2
         - binary_sensor.woonkamer_motion
         - binary_sensor.tv_kamer_motion
         - binary_sensor.keuken_motion
         - binary_sensor.kantoor_motion
         - binary_sensor.gang_motion
+        - binary_sensor.wc_beneden_motion
         - binary_sensor.overloop_motion
-        - binary_sensor.keukendeur
         - binary_sensor.rookmelder_overloop
         - binary_sensor.rookmelder_woonkamer
         - binary_sensor.rookmelder_keuken
+        - binary_sensor.keuken_deur
+        - binary_sensor.cv_ruimte_deur
+        - binary_sensor.washok_deur
+        - binary_sensor.keuken_deur
+        - binary_sensor.veranda_buitendeur
+        - binary_sensor.badkamerraam
         - switch.ganglicht
         - switch.veranda_lampjes
         - switch.achtertuin_lampjes
+        - switch.kerstverlichting_dakgoot
         - switch.badkamerfan_sonoff
         - switch.serverkast
+        - switch.server_rack_fan
+        - switch.cv_hoofdschakelaar
+        - sensor.glances_package_id_0_temperature_2 #cpu temp
         - switch.bureau_martien
         - switch.droger
-        - switch.washmachine
+        - switch.wasmachine
         - switch.koffiezetapparaat
         - switch.waterkoker
         - switch.kelderlicht
         - switch.tv_meubel
-        - switch.marty_mcfly_charger_switch
-        - switch.marty_mcfly_sentry_mode_switch
-        - switch.marty_mcfly_maxrange_switch
+        - switch.kerstboom
+        # - switch.marty_mcfly_charger_switch
+        # - switch.marty_mcfly_sentry_mode_switch
+        # - switch.marty_mcfly_maxrange_switch
         - camera.deurbel
         - camera.opritcamera
         - camera.veranda
         - camera.charliescam
+        - input_boolean.homemode_home
+        - input_boolean.homemode_night
+        - input_boolean.homemode_away
+        - input_boolean.homemode_guest
+        - input_boolean.scene_goodmorning
+        - input_boolean.scene_bedtime
+        - input_boolean.scene_thuiswerken
+        - sensor.co2_intensity
     entity_config:
       alarm_control_panel.home:
         code: !secret alarm_panel_code
       camera.veranda:
         linked_motion_sensor: binary_sensor.veranda_person_motion
+        support_audio: true
+        audio_packet_size: 3008
+      camera.charliescam:
+        support_audio: true
+        audio_packet_size: 3008
       camera.opritcamera:
         linked_motion_sensor: binary_sensor.opritcamera_person_motion
       camera.deurbel: 
+        support_audio: true
         linked_motion_sensor: binary_sensor.deurbel_person_motion
+        linked_doorbell_sensor: binary_sensor.deurbel_ingedrukt

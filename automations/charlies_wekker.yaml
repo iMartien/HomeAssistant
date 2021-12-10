@@ -1,7 +1,7 @@
-- alias: 'Charlies Wekker Stoplicht: Rood om 6u in de ochtend'
+- alias: 'Charlies Wekker Stoplicht: Rood om 6:30u in de ochtend'
   trigger:
     platform: time
-    at: '6:00:00'
+    at: '6:30:00'
   condition:
     condition: and
     conditions:
@@ -43,10 +43,10 @@
         brightness: 1
         color_name: green
 
-- alias: 'Charlies Wekker Stoplicht: Groen om 8:00 in de ochtend op vrije dagen'
+- alias: 'Charlies Wekker Stoplicht: Groen om 8:30 in de ochtend op vrije dagen'
   trigger:
     platform: time
-    at: '8:00:00'
+    at: '8:30:00'
   condition:
     condition: and
     conditions:

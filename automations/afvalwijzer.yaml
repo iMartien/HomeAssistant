@@ -1,7 +1,7 @@
 - alias: "Notification - Container moet morgen naar buiten"
   trigger:
     platform: time
-    at: '20:00:00'
+    at: '19:30:00'
   condition:
     - condition: template
       value_template: "{{ not is_state('sensor.afvalwijzer_tomorrow','Geen') }}"

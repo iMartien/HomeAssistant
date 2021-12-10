@@ -1,0 +1,2 @@
+  turn_off_martiens_mac_mini: "/usr/bin/ssh -i /config/.ssh/id_rsa.pub martien@192.168.1.99 sudo pm-suspend"
+  turn_off_martiens_imac: "/usr/bin/ssh -i /config/.ssh/id_rsa.pub martien@192.168.1.98 sudo pm-suspend"
