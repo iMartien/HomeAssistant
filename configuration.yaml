@@ -214,11 +214,6 @@ notify:
       - service: mobile_app_martiens_ipad_pro
       - service: mobile_app_macbook_pro_van_martien
 
-# tesla:
-#   username: !secret tesla_username
-#   password: !secret tesla_password
-#   scan_interval: 900
-
 input_datetime:
   besproeiingstarttijd:
     name: Besproeiing Starttijd
@@ -233,8 +228,7 @@ input_text:
 
 lovelace:
   mode: storage
-
-#panel_iframe: !include includes/panel_iframe.yaml    
+ 
 ios: !include includes/ios.yaml
 google_assistant: !include includes/google_assistant.yaml
 homekit: !include includes/homekit.yaml
