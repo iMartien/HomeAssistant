@@ -4,9 +4,9 @@
 
   - platform: dahua_vto
     name: Deurbel
-    host: 192.168.1.11
-    username: admin
-    password: Deborah99!
+    host: !secret DeurbelIP
+    username: !secret DeurbelUser
+    password: !secret DeurbelPass
     scan_interval: 5
 
   - platform: time_date

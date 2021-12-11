@@ -86,6 +86,9 @@
         - binary_sensor.keuken_deur
         - binary_sensor.veranda_buitendeur
         - binary_sensor.badkamerraam
+        - binary_sensor.lekkage_badkamer
+        - binary_sensor.lekkage_gootsteenkastje
+        - binary_sensor.lekkage_wc_boven
         - switch.ganglicht
         - switch.veranda_lampjes
         - switch.achtertuin_lampjes
@@ -101,7 +104,7 @@
         - switch.koffiezetapparaat
         - switch.waterkoker
         - switch.kelderlicht
-        - switch.tv_meubel
+        - switch.douchecabine
         - switch.kerstboom
         # - switch.marty_mcfly_charger_switch
         # - switch.marty_mcfly_sentry_mode_switch
@@ -117,7 +120,7 @@
         - input_boolean.scene_goodmorning
         - input_boolean.scene_bedtime
         - input_boolean.scene_thuiswerken
-        - sensor.co2_intensity
+        - sensor.co2_intensity # luchtkwaliteit buiten
     entity_config:
       alarm_control_panel.home:
         code: !secret alarm_panel_code
