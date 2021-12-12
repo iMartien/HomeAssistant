@@ -210,6 +210,8 @@
         - light.alle_verlichting
         - switch.ganglicht
         - switch.kerstboom #kerstboom
+        - switch.kelderlicht
+        - switch.douchecabine
     - service: climate.set_preset_mode
       data:
         entity_id: climate.netatmo_woonkamer
@@ -242,6 +244,11 @@
       entity_id: input_boolean.status_donker
       state: 'on'
   action:
+    - service: homeassistant.turn_off
+      entity_id:
+        - switch.ganglicht
+        - switch.kelderlicht
+        - switch.douchecabine
     - service: climate.set_preset_mode
       data:
         entity_id: climate.netatmo_woonkamer
@@ -304,6 +311,7 @@
         - switch.veranda_lampjes
         - switch.achtertuin_lampjes
         - switch.kerstboom #kerstboom
+        - switch.douchecabine
     - service: climate.set_temperature
       data:
         entity_id: climate.netatmo_woonkamer

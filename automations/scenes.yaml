@@ -103,6 +103,7 @@
         - input_boolean.homemode_home
         - switch.bureau_martien
         - switch.kerstboom
+        - switch.douchecabine
     - service: input_boolean.turn_off
       data:
         entity_id: input_boolean.text_to_speech_mute
